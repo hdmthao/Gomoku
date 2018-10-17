@@ -2,7 +2,7 @@
 #define AnimationOX_H_DEFINED
 
 #include "Animation.hpp"
-#include <Engine/Helpers/Timer.hpp>
+#include <Helpers/Timer.hpp>
 
 #include <vector>
 

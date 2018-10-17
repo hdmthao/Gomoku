@@ -1,9 +1,9 @@
 #ifndef GAMESTATEMAINMENU_H_DEFINED
 #define GAMESTATEMAINMENU_H_DEFINED
 
-#include <Engine/GameState.hpp>
+#include <GameState.hpp>
 #include <Display/Layouts/LayoutMainMenu.hpp>
-#include <Engine/Graphics/Menu.hpp>
+#include <Display/Menu.hpp>
 #include <Display/WindowAbout.hpp>
 
 // Trạng thái menu

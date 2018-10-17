@@ -1,7 +1,7 @@
 #ifndef WindowAbout_H_DEFINED
 #define WindowAbout_H_DEFINED
 
-#include <Engine/Graphics/Window.hpp>
+#include <Display/Window.hpp>
 
 #include <vector>
 

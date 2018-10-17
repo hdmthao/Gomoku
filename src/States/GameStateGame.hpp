@@ -1,8 +1,8 @@
 #ifndef GAMESTATEGAME_H_DEFINED
 #define GAMESTATEGAME_H_DEFINED
 
-#include <Engine/GameState.hpp>
-#include <Entities/Game.hpp>
+#include <GameState.hpp>
+#include <Game.hpp>
 
 class GameStateGame: public GameState
 {

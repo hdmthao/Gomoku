@@ -1,8 +1,8 @@
 #ifndef LAYOUTGAME_H_DEFINED
 #define LAYOUTGAME_H_DEFINED
 
-#include <Engine/Graphics/Layout.hpp>
-#include <Entities/Game.hpp>
+#include <Display/Layouts/Layout.hpp>
+#include <Game.hpp>
 
 class LayoutGame: public Layout
 {

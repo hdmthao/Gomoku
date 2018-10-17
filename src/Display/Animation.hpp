@@ -1,7 +1,7 @@
 #ifndef ANIMATION_H_DEFINED
 #define ANIMATION_H_DEFINED
 
-#include <Engine/Graphics/Window.hpp>
+#include <Display/Window.hpp>
 
 /// Abstract interface to any kind of Animation.
 class Animation

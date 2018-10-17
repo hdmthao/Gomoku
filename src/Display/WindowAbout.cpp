@@ -1,8 +1,8 @@
 #include <Display/WindowAbout.hpp>
-#include <Engine/Graphics/Colors.hpp>
-#include <Engine/EngineGlobals.hpp>
-#include <Engine/Input.hpp>
-#include <Engine/Helpers/Utils.hpp>
+#include <Display/Colors.hpp>
+#include <EngineGlobals.hpp>
+#include <Input.hpp>
+#include <Helpers/Utils.hpp>
 
 WindowAbout::WindowAbout(int screenWidth, int screenHeight) {
 	int width  = 60;

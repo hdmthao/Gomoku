@@ -1,7 +1,7 @@
 #include <Display/Layouts/LayoutMainMenu.hpp>
-#include <Engine/Graphics/Colors.hpp>
-#include <Engine/EngineGlobals.hpp>
-#include <Engine/Helpers/Utils.hpp>
+#include <Display/Colors.hpp>
+#include <EngineGlobals.hpp>
+#include <Helpers/Utils.hpp>
 #include <States/GameStateMainMenu.hpp>
 #include <Display/AnimationOX.hpp>
 

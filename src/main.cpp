@@ -1,9 +1,9 @@
-#include <Engine/StateManager.hpp>
-#include <Engine/Helpers/Utils.hpp>
-#include <Engine/EngineGlobals.hpp>
+#include <StateManager.hpp>
+#include <Helpers/Utils.hpp>
+#include <EngineGlobals.hpp>
 #include <States/GameStateMainMenu.hpp>
-#include <Engine/Input.hpp>
-#include <Engine/GameState.hpp>
+#include <Input.hpp>
+#include <GameState.hpp>
 
 #include <ncurses.h>
 #include <cstdlib>

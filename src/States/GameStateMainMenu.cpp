@@ -1,8 +1,8 @@
 #include <States/GameStateMainMenu.hpp>
-#include <Engine/Input.hpp>
-#include <Engine/EngineGlobals.hpp>
+#include <Input.hpp>
+#include <EngineGlobals.hpp>
 
-#include <Engine/StateManager.hpp>
+#include <StateManager.hpp>
 #include <States/GameStateGame.hpp>
 
 enum Label_Id {

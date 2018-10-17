@@ -1,8 +1,8 @@
 #include <States/GameStateGame.hpp>
-#include <Engine/StateManager.hpp>
-#include <Engine/Helpers/Utils.hpp>
+#include <StateManager.hpp>
+#include <Helpers/Utils.hpp>
 
-#include <Engine/StateManager.hpp>
+#include <StateManager.hpp>
 #include <States/GameStateMainMenu.hpp>
 
 GameStateGame::GameStateGame():

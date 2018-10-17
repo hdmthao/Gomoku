@@ -1,6 +1,6 @@
 #include <Display/AnimationOX.hpp>
-#include <Engine/Graphics/Colors.hpp>
-#include <Engine/Helpers/Utils.hpp>
+#include <Display/Colors.hpp>
+#include <Helpers/Utils.hpp>
 #include <stdlib.h>
 
 AnimationOX::AnimationOX(Window* window):

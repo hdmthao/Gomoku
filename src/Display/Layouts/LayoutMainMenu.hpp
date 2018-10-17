@@ -1,8 +1,8 @@
 #ifndef LAYOUTMAINMENU_H_DEFINED
 #define LAYOUTMAINMENU_H_DEFINED
 
-#include <Engine/Graphics/Window.hpp>
-#include <Engine/Graphics/Menu.hpp>
+#include <Display/Window.hpp>
+#include <Display/Menu.hpp>
 #include <Display/Animation.hpp>
 
 class LayoutMainMenu
