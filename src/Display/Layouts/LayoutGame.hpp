@@ -1,0 +1,24 @@
+#ifndef LAYOUTGAME_H_DEFINED
+#define LAYOUTGAME_H_DEFINED
+
+#include <Engine/Graphics/Layout.hpp>
+#include <Entities/Game.hpp>
+
+class LayoutGame: public Layout
+{
+public:
+	using Layout::draw;
+
+	LayoutGame(Game* game, int width, int height);
+	virtual ~LayoutGame();
+
+	void windowsInit();
+	void windowsExit();
+
+	void draw();
+
+private:
+	Game* game;
+};
+
+#endif //LAYOUTGAME_H_DEFINED
