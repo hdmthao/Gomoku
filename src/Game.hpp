@@ -1,9 +1,7 @@
 #ifndef GAME_H_DEFINED
 #define GAME_H_DEFINED
 
-
-#include <vector>
-
+#include <string>
 
 class LayoutGame;
 
@@ -22,6 +20,8 @@ public:
 	void draw();
 
 	bool willQuit();
+	bool willPlay();
+	bool isPlay;
 
 protected:
 	LayoutGame* layout;

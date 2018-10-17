@@ -3,6 +3,7 @@
 
 #include <GameState.hpp>
 #include <Game.hpp>
+#include <string>
 
 class GameStateGame: public GameState
 {
@@ -16,6 +17,7 @@ public:
 	void update();
     void draw();
 
+	void showDialog(std::string, int width, int height);
 private:
 	Game* game;
 

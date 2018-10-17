@@ -2,7 +2,7 @@
 #include <Helpers/Utils.hpp>
 #include <Display/Layouts/LayoutGame.hpp>
 #include <Input.hpp>
-
+#include <Display/Window.hpp>
 
 Game::Game():
 	layout(NULL)
@@ -15,7 +15,8 @@ void Game::start()
 {
 	SAFE_DELETE(this->layout);
 
-	this->isQuit     = false;
+	this->isPlay = false;
+	this->isQuit = false;
 
 	this->layout = new LayoutGame(this, 80, 24);
 }
@@ -38,4 +39,8 @@ void Game::draw()
 bool Game::willQuit()
 {
 	return this->isQuit;
+}
+bool Game::willPlay()
+{
+	return this->isPlay;
 }

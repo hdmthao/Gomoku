@@ -19,6 +19,8 @@ public:
 
 private:
 	Game* game;
+
+	Window* info;
 };
 
 #endif //LAYOUTGAME_H_DEFINED
