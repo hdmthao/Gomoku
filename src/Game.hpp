@@ -2,6 +2,7 @@
 #define GAME_H_DEFINED
 
 #include <string>
+#include <Board.hpp>
 
 class LayoutGame;
 
@@ -26,6 +27,7 @@ public:
 protected:
 	LayoutGame* layout;
 
+	Board* board;
 	bool isQuit;
 };
 

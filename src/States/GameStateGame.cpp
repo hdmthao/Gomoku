@@ -9,6 +9,7 @@
 GameStateGame::GameStateGame():
 	game(NULL),
 	willQuit(false)
+
 { }
 GameStateGame::~GameStateGame()
 { }

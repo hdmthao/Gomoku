@@ -21,17 +21,20 @@ public:
 
 	void update();
     void draw();
+	bool isActivatedPVP;
 
 private:
 	LayoutMainMenu* layout;
 
 	// Menu chính
 	Menu* menu;
+	Menu* boardMenu;
 
 	// màn hình about và intro
 	WindowAbout* about;
 
 	void createMainMenu();
+	void createBoardMenu();
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

@@ -53,13 +53,11 @@ void Menu::handleInput()
 		return;
 
 	if (Input::isPressed("down") ||
-	    Input::isPressed(KEY_DOWN) ||
-	    Input::isPressed('\t'))
+	    Input::isPressed(KEY_DOWN))
 		this->goNext();
 
 	else if (Input::isPressed("up") ||
-	         Input::isPressed(KEY_UP) ||
-	         Input::isPressed(KEY_BTAB))
+	         Input::isPressed(KEY_UP))
 		this->goPrevious();
 	else if (Input::isPressed(KEY_ENTER) ||
 	         Input::isPressed('\n'))

@@ -26,7 +26,6 @@ bool Input::isPressed(std::string key) {
 	return (Input::isPressed(Input::binds[key]));
 }
 
-// hàm getInput tham khảo từ nguồn internet.
 int Input::getInput(int delay_ms) {
 	int retval = 0;
 	int c      = 0;

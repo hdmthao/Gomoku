@@ -3,9 +3,11 @@
 #include <Display/Layouts/LayoutGame.hpp>
 #include <Input.hpp>
 #include <Display/Window.hpp>
+#include <EngineGlobals.hpp>
 
 Game::Game():
-	layout(NULL)
+	layout(NULL),
+	board(NULL)
 { }
 Game::~Game()
 {
@@ -18,7 +20,10 @@ void Game::start()
 	this->isPlay = false;
 	this->isQuit = false;
 
-	this->layout = new LayoutGame(this, 80, 24);
+	this->layout = new LayoutGame(this, 80, 30);
+
+	this->board = new Board();
+	this->board->setType(EngineGlobals::Board::style);
 }
 void Game::handleInput()
 {

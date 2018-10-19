@@ -12,6 +12,7 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	main(NULL),
 	logo(NULL),
 	menu(NULL),
+	boardMenu(NULL),
 	animationwin(NULL),
 	animation(NULL)
 {
@@ -31,7 +32,7 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 
 	int posX = 0;
 	int posY = 0;
-
+	
 	posX = current_width/2 - width/2 - 10;
 	posY = current_height/2 - height/2;
 
@@ -45,6 +46,11 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->menu->setTitle("Main Menu");
 	this->menu->refresh();
 
+	posX = posX + width/2 - 10;
+	posY = posY + height/2 - 3;
+	this->boardMenu = new Window(posX, posY, 23, 7);
+	this->boardMenu->setTitle("Choose Board Size");
+	this->boardMenu->borders(Window::BORDER_FANCY);
 
 	this->logo = new Window(this->main,
 	                        20, 0,
@@ -72,9 +78,10 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->logo);
 	SAFE_DELETE(this->animationwin);
 	SAFE_DELETE(this->animation);
+	SAFE_DELETE(this->boardMenu);
 }
 
-void LayoutMainMenu::draw(Menu* menu) {
+void LayoutMainMenu::draw(Menu* menu, bool isSubMenu) {
 	this->animation->update();
 
 	this->main->clear();
@@ -95,14 +102,22 @@ void LayoutMainMenu::draw(Menu* menu) {
 	this->logo->refresh();
 
 	// Yay!
-	this->menu->clear();
+	if (!isSubMenu)
+	{
+		this->boardMenu->clear();
+		menu->draw(this->boardMenu);
+		this->boardMenu->refresh();
+	}
+	else
+	{
+		this->menu->clear();
 
-	menu->draw(this->menu);
+		menu->draw(this->menu);
 
-	this->menu->refresh();
+		this->menu->refresh();
 
-	this->main->refresh();
-
+		this->main->refresh();
+	}
 	// NCURSES NEEDS THIS
 	refresh();
 }

@@ -2,11 +2,13 @@
 #define ENGINEGLOBALS_H_DEFINED
 
 #include <Display/Colors.hpp>
-
 // Cài đặt cho các thông số của game.
+
+class Board;
 
 namespace EngineGlobals
 {
+
 	namespace Screen
 	{
 		extern bool show_borders;
@@ -21,7 +23,18 @@ namespace EngineGlobals
 		extern ColorPair textbox;
 	};
 
+	namespace Board
+	{
+		enum Style
+		{
+			TICTACTOE, SMALL, NORMAL, BIG
+		};
+		extern Style style;
+		void setGameStyle(Style _style);
+
+	}
 	void init();
+
 };
 
 #endif //ENGINEGLOBALS_H_DEFINED

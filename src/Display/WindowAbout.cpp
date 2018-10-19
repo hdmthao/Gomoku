@@ -8,8 +8,8 @@ WindowAbout::WindowAbout(int screenWidth, int screenHeight) {
 	int width  = 60;
 	int height = 18;
 
-	int windowx = screenWidth/2 - 10;
-	int windowy = screenHeight/2 - 5;
+	int windowx = screenWidth/2 - 4;
+	int windowy = screenHeight/2 - 1;
 
 	this->main = new Window(windowx, windowy, width, height);
 
