@@ -2,7 +2,6 @@
 #include <EngineGlobals.hpp>
 
 #include <sstream>				// stringstream
-#include <iostream>
 
 Window::Window(int x, int y, int w, int h):
 	win(NULL),
@@ -46,13 +45,11 @@ Window::Window(Window* parent, int x, int y, int width, int height):
 
 	this->setBorders();
 }
-
 Window::~Window()
 {
 	if (this->win)
 		delwin(this->win);
 }
-
 void Window::print(std::string str, int x, int y, ColorPair pair)
 {
 	Colors::pairActivate(this->win, pair);
@@ -60,30 +57,32 @@ void Window::print(std::string str, int x, int y, ColorPair pair)
 	if (! str.empty())
 		mvwaddstr(this->win, y, x, str.c_str());
 }
-
 void Window::print(std::vector<std::string> lines, int x, int y, ColorPair pair)
 {
 	for (size_t i = 0; i < lines.size(); i++)
 		this->print(lines[i], x, (y + i), pair);
 }
-
 void Window::printChar(int c, int x, int y, ColorPair pair)
 {
 	Colors::pairActivate(this->win, pair);
 
 	mvwaddch(this->win, y, x, c);
 }
-
+void Window::printChar(int c, int x, int y, bool isBlink, ColorPair pair)
+{
+	Colors::pairActivate(this->win, pair);
+	if (isBlink) wattron(this->win, A_BLINK);
+	mvwaddch(this->win, y, x, c);
+	if (isBlink) wattroff(this->win, A_BLINK);
+}
 void Window::setBackground(chtype ch, ColorPair pair)
 {
 	wbkgd(this->win, (ch | pair.ncurses_pair));
 }
-
 void Window::refresh()
 {
 	wnoutrefresh(this->win);
 }
-
 void Window::clear()
 {
 	werase(this->win);
@@ -98,7 +97,6 @@ void Window::clear()
 		            Colors::pair("yellow", "default"));
 	}
 }
-
 int Window::getW() const
 {
 	return this->width;
@@ -142,12 +140,10 @@ void Window::borders(BorderType type)
 		wborder(this->win, '|', '|', '-', '-', '+', '+', '+', '+');
 	}
 }
-
 void Window::setBorders()
 {
 	this->borders(Window::BORDER_FANCY);
 }
-
 void Window::setTitle(std::string title, WindowTitlePosition position)
 {
 	switch (position)

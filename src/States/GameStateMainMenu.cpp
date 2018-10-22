@@ -18,8 +18,7 @@ GameStateMainMenu::GameStateMainMenu():
 	layout(NULL),
 	menu(NULL),
 	boardMenu(NULL),
-	about(NULL),
-	isActivatedPVP(false)
+	about(NULL)
 { }
 
 void GameStateMainMenu::load() {

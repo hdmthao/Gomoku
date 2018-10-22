@@ -18,12 +18,9 @@ void LayoutGame::windowsInit()
 	Layout::windowsInit();
 	this->main->setTitle("Gomoku - PvP Mode");
 
-	// this->info = new Window(130, 10, 20, 10);
 }
 void LayoutGame::windowsExit()
 {
-	// this->info->clear();
-	// SAFE_DELETE(info);
 	this->main->clear(); // clear() as in Window
 	this->main->refresh(); // clear() as in Window
 
@@ -36,10 +33,7 @@ void LayoutGame::draw()
 
 	this->main->clear();
 
-	if (this->game->isPlay)
-	{
-		this->game->board->draw(this->main);
-	}
+	this->game->board->draw(this->main, this->game->currentPlayer);
 	this->main->refresh();
 
 	// this->info->refresh();

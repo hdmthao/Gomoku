@@ -27,7 +27,7 @@ public:
 	void print(std::string str, int x, int y, ColorPair pair=ColorPair());
 	void print(std::vector<std::string> lines, int x, int y, ColorPair pair=ColorPair());
 	void printChar(int c, int x, int y, ColorPair pair=ColorPair());
-
+	void printChar(int c, int x, int y, bool isBlink, ColorPair pair=ColorPair());
 	void setBackground(chtype ch, ColorPair pair);
 
 	void refresh();

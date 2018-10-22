@@ -4,13 +4,10 @@ Color::Color(std::string name):
 	name(name),
 	ncurses_color(COLOR_WHITE)
 { }
-
-
 ColorPair::ColorPair():
 	bold(false),
 	ncurses_pair(0)
 { }
-
 ColorPair::ColorPair(Color foreground, Color background):
 	foreground(foreground),
 	background(background),
@@ -67,8 +64,6 @@ bool Colors::init()
 	}
 	return true;
 }
-
-
 ColorPair Colors::pair(Color& foreground, Color& background, bool is_bold)
 {
 	ColorPair pair(foreground, background);
@@ -76,13 +71,18 @@ ColorPair Colors::pair(Color& foreground, Color& background, bool is_bold)
 		pair.bold = true;
 
 	short fg = foreground.ncurses_color;
-	
-	if (is_bold) pair.ncurses_pair = COLOR_PAIR(64 + fg) | A_BOLD;
-	else pair.ncurses_pair = COLOR_PAIR(64 + fg);
+	short bg = background.ncurses_color;
 
+	if (bg == COLOR_DEFAULT)
+	{
+		if (is_bold) pair.ncurses_pair = COLOR_PAIR(64 + fg) | A_BOLD;
+		else pair.ncurses_pair = COLOR_PAIR(64 + fg);
+		return pair;
+	}
+	if (is_bold) pair.ncurses_pair = COLOR_PAIR(fg * 8 + bg + 1) | A_BOLD;
+	else pair.ncurses_pair = COLOR_PAIR(fg * 8 + bg + 1);
 	return pair;
 }
-
 Color Colors::name(std::string str)
 {
 	Color color;
@@ -103,7 +103,6 @@ Color Colors::name(std::string str)
 	color.name = str;
 	return color;
 }
-
 ColorPair Colors::pair(std::string foreground, std::string background, bool is_bold)
 {
 	if (foreground.empty() || background.empty())
@@ -114,14 +113,12 @@ ColorPair Colors::pair(std::string foreground, std::string background, bool is_b
 
 	return Colors::pair(f, b, is_bold);
 }
-
 void Colors::activate(WINDOW* window, Color& foreground, Color& background)
 {
 	ColorPair pair = Colors::pair(foreground, background);
 
 	Colors::pairActivate(window, pair);
 }
-
 void Colors::pairActivate(WINDOW* window, ColorPair& color)
 {
 	wattrset(window, color.ncurses_pair);

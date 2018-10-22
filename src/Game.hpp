@@ -22,13 +22,18 @@ public:
 
 	bool willQuit();
 	bool willPlay();
+	bool willOver();
 	bool isPlay;
 
 protected:
 	LayoutGame* layout;
 
 	Board* board;
+
 	bool isQuit;
+	bool gameOver;
+
+	Board::role currentPlayer;
 };
 
 #endif //GAME_H_DEFINED

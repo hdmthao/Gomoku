@@ -68,7 +68,7 @@ void WindowAbout::run() {
 			this->intro->print(Utils::String::split("More about GOMOKU:\n"
 													" https://en.wikipedia.org/wiki/Gomoku"
 													, '\n'),
-													1, 12, Colors::pair("white", "defualt"));
+													1, 12, Colors::pair("white", "default"));
 			this->credit->print(Utils::String::split("Press KeyRight To Open Credits\n"
 													 "Press Enter To Return Main Menu\n", '\n'),
 													13, 14, Colors::pair("red", "default", true));
