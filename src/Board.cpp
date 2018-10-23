@@ -29,8 +29,8 @@ void Board::setType(EngineGlobals::Board::Style _style)
         case EngineGlobals::Board::SMALL:
             this->width = 9;
             this->height = 9;
-            this->currentX = 4;
-            this->currentY = 4;
+            this->currentX = 5;
+            this->currentY = 5;
             break;
         case EngineGlobals::Board::NORMAL:
             this->width = 13;
@@ -87,9 +87,9 @@ void Board::draw(Window *win, role currentPlayer)
                 else
                 {
                     virtualY++;
-                    if (virtualX == currentX && virtualY == currentY)
+                    if (virtualX == this->currentX && virtualY == this->currentY)
                     {
-                        switch (board[currentX][currentY])
+                        switch (board[this->currentX][this->currentY])
                         {
                             case EMPTY:
                                 if (currentPlayer == PLAYER_1)
@@ -181,9 +181,9 @@ void Board::draw(Window *win, role currentPlayer)
                     } else
                     {
                         virtualY++;
-                        if (currentX == virtualX && currentY == virtualY)
+                        if (this->currentX == virtualX && this->currentY == virtualY)
                         {
-                            switch (board[currentX][currentY])
+                            switch (board[this->currentX][this->currentY])
                             {
                                 case EMPTY:
                                     if (currentPlayer == PLAYER_1)
@@ -274,9 +274,9 @@ void Board::draw(Window *win, role currentPlayer)
                     } else
                     {
                         virtualY++;
-                        if (currentX == virtualX && currentY == virtualY)
+                        if (this->currentX == virtualX && this->currentY == virtualY)
                         {
-                            switch (board[currentX][currentY])
+                            switch (board[this->currentX][this->currentY])
                             {
                                 case EMPTY:
                                     if (currentPlayer == PLAYER_1)
@@ -364,9 +364,9 @@ void Board::draw(Window *win, role currentPlayer)
                 else
                 {
                     virtualY++;
-                    if (currentX == virtualX && currentY == virtualY)
+                    if (this->currentX == virtualX && this->currentY == virtualY)
                     {
-                        switch (board[currentX][currentY])
+                        switch (board[this->currentX][this->currentY])
                         {
                             case EMPTY:
                                 if (currentPlayer == PLAYER_1)
@@ -441,26 +441,90 @@ void Board::moveDown()
 }
 bool Board::update(role currentPlayer)
 {
-    if (board[currentX][currentY] != EMPTY) return false;
+    if (board[this->currentX][this->currentY] != EMPTY) return false;
     if (currentPlayer == PLAYER_1)
     {
-        board[currentX][currentY] = X;
-        stone.x = currentX;
-        stone.y = currentY;
-        stone.role = X;
+        board[this->currentX][this->currentY] = X;
+        stone.x = this->currentX;
+        stone.y = this->currentY;
+        stone.kind = X;
         contains.push_back(stone);
     }
     else if (currentPlayer == PLAYER_2)
     {
-        board[currentX][currentY] = O;
-        stone.x = currentX;
-        stone.y = currentY;
-        stone.role = O;
+        board[this->currentX][this->currentY] = O;
+        stone.x = this->currentX;
+        stone.y = this->currentY;
+        stone.kind = O;
         contains.push_back(stone);
     }
     return true;
 }
+bool Board::isOutOfBoard(int x, int y)
+{
+    if (x < 1 || x > this->height) return true;
+    if (y < 1 || y > this->width) return true;
+    return false;
+}
+void Board::searchForStone(Board::kindStone currentStone, int& count, int x, int y, int direction)
+{
+    if (isOutOfBoard(x, y)) return;
+    if (board[x][y] == currentStone)
+    {
+        count++;
+        Board::searchForStone(currentStone, count, x + dx[direction], y + dy[direction], direction);
+    }
+    return;
+}
+
 bool Board::isCheckedForWin()
 {
+    int principalDiagonal = 0;
+    int secondaryDiagonal = 0;
+    int verticalLine = 0;
+    int horizontalLine = 0;
+    int stoneExpected = 0;
+
+    if (this->style == EngineGlobals::Board::TICTACTOE)
+    {
+        stoneExpected = 3;
+    }
+    else
+    {
+        stoneExpected = 5;
+    }
+    Board::searchForStone(board[this->currentX][this->currentY], principalDiagonal, this->currentX, this->currentY, 4);
+    Board::searchForStone(board[this->currentX][this->currentY], principalDiagonal, this->currentX, this->currentY, 6);
+
+    if (board[this->currentX][this->currentY] == X)
+    if (principalDiagonal - 1 >= stoneExpected)
+    {
+        return true;
+    }
+
+    Board::searchForStone(board[this->currentX][this->currentY], verticalLine, this->currentX, this->currentY, 0);
+    Board::searchForStone(board[this->currentX][this->currentY], verticalLine, this->currentX, this->currentY, 2);
+
+    if (verticalLine - 1 >= stoneExpected)
+    {
+        return true;
+    }
+
+    Board::searchForStone(board[this->currentX][this->currentY], horizontalLine, this->currentX, this->currentY, 1);
+    Board::searchForStone(board[this->currentX][this->currentY], horizontalLine, this->currentX, this->currentY, 3);
+
+    if (horizontalLine - 1 >= stoneExpected)
+    {
+        return true;
+    }
+
+    Board::searchForStone(board[this->currentX][this->currentY], secondaryDiagonal, this->currentX, this->currentY, 5);
+    Board::searchForStone(board[this->currentX][this->currentY], secondaryDiagonal, this->currentX, this->currentY, 7);
+
+    if (secondaryDiagonal - 1 >= stoneExpected)
+    {
+        return true;
+    }
+
     return false;
 }

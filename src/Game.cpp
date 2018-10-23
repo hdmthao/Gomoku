@@ -61,6 +61,7 @@ void Game::handleInput()
 			if (this->board->isCheckedForWin())
 			{
 				this->gameOver = true;
+				return;
 			}
 			if (this->currentPlayer == Board::PLAYER_1)
 			{

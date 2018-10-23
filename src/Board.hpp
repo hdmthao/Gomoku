@@ -22,7 +22,7 @@ public:
     {
         int x;
         int y;
-        kindStone role;
+        kindStone kind;
     } stone;
 
     int width;
@@ -46,8 +46,10 @@ public:
     void moveUp();
     void moveDown();
 
+    bool isOutOfBoard(int x, int y);
+    void searchForStone(kindStone currentStone, int& count, int x, int y, int direction);
     bool isCheckedForWin();
-
+    
     bool update(role currentPlayer);
     vector< vector<kindStone> > board;
     vector< infoBoard > contains;

@@ -1,10 +1,10 @@
-#include <States/GameStateGame.hpp>
+#include <GameStateGame.hpp>
 #include <StateManager.hpp>
 #include <Helpers/Utils.hpp>
 #include <Input.hpp>
 #include <Display/Window.hpp>
 #include <StateManager.hpp>
-#include <States/GameStateMainMenu.hpp>
+#include <GameStateMainMenu.hpp>
 
 GameStateGame::GameStateGame():
 	game(NULL),

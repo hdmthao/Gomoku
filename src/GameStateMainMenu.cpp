@@ -1,9 +1,9 @@
-#include <States/GameStateMainMenu.hpp>
+#include <GameStateMainMenu.hpp>
 #include <Input.hpp>
 #include <EngineGlobals.hpp>
 
 #include <StateManager.hpp>
-#include <States/GameStateGame.hpp>
+#include <GameStateGame.hpp>
 
 enum Label_Id {
 	// Main Menu

@@ -1,7 +1,7 @@
 #include <StateManager.hpp>
 #include <Helpers/Utils.hpp>
 #include <EngineGlobals.hpp>
-#include <States/GameStateMainMenu.hpp>
+#include <GameStateMainMenu.hpp>
 #include <Input.hpp>
 #include <GameState.hpp>
 

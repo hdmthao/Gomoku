@@ -2,7 +2,7 @@
 #include <Display/Colors.hpp>
 #include <EngineGlobals.hpp>
 #include <Helpers/Utils.hpp>
-#include <States/GameStateMainMenu.hpp>
+#include <GameStateMainMenu.hpp>
 #include <Display/AnimationOX.hpp>
 
 
