@@ -107,6 +107,12 @@ void Board::draw(Window *win, role currentPlayer)
                             case X:
                                 win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                 break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                break;
                             default:
                                 break;
                         }
@@ -121,6 +127,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 break;
                             case O:
                                 win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                break;
                             default:
                                 break;
                         }
@@ -137,6 +150,12 @@ void Board::draw(Window *win, role currentPlayer)
                                 break;
                             case X:
                                 win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
                             default:
                                 break;
@@ -201,6 +220,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 case X:
                                     win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                     break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -215,6 +241,13 @@ void Board::draw(Window *win, role currentPlayer)
                                     break;
                                 case O:
                                     win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                    break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    break;
                                 default:
                                     break;
                             }
@@ -231,6 +264,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 case X:
                                     win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
                                     break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -294,6 +334,14 @@ void Board::draw(Window *win, role currentPlayer)
                                 case X:
                                     win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                     break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    break;
+
+                                    break;
                                 default:
                                     break;
                             }
@@ -308,6 +356,14 @@ void Board::draw(Window *win, role currentPlayer)
                                     break;
                                 case O:
                                     win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                    break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -324,6 +380,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 case X:
                                     win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
                                     break;
+                                case XW:
+                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    break;
+                                case OW:
+                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -383,6 +446,13 @@ void Board::draw(Window *win, role currentPlayer)
                             case O:
                                 win->printChar('O', posX + x, posY + y, Colors::pair("white", "black", true));
                                 break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                break;
+
                         }
                     }
                     else if (!contains.empty() && virtualX == contains.back().x && virtualY == contains.back().y)
@@ -394,6 +464,14 @@ void Board::draw(Window *win, role currentPlayer)
                                 break;
                             case O:
                                 win->printChar('O', posX + x, posY + y, Colors::pair("white", "blue", true));
+                                break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                break;
+
                             default:
                                 break;
                         }
@@ -408,6 +486,13 @@ void Board::draw(Window *win, role currentPlayer)
                             case O:
                                 win->printChar('O', posX + x, posY + y, Colors::pair("white", "default", true));
                                 break;
+                            case XW:
+                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                break;
+                            case OW:
+                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                break;
+
                             default:
                                 break;
                         }
@@ -476,8 +561,19 @@ void Board::searchForStone(Board::kindStone currentStone, int& count, int x, int
     }
     return;
 }
-
-bool Board::isCheckedForWin()
+void Board::markStateWin(Board::kindStone currentStone, int& count, int x, int y, int direction)
+{
+    if (isOutOfBoard(x, y) || count == 5) return;
+    if (board[x][y] == currentStone)
+    {
+        if (currentStone == X) board[x][y] = XW;
+        else board[x][y] = OW;
+        count++;
+        Board::markStateWin(currentStone, count, x + dx[direction], y + dy[direction], direction);
+    }
+    return;
+}
+int Board::isCheckedForWin(int x, int y)
 {
     int principalDiagonal = 0;
     int secondaryDiagonal = 0;
@@ -485,6 +581,7 @@ bool Board::isCheckedForWin()
     int horizontalLine = 0;
     int stoneExpected = 0;
 
+    int count = 0;
     if (this->style == EngineGlobals::Board::TICTACTOE)
     {
         stoneExpected = 3;
@@ -493,38 +590,76 @@ bool Board::isCheckedForWin()
     {
         stoneExpected = 5;
     }
-    Board::searchForStone(board[this->currentX][this->currentY], principalDiagonal, this->currentX, this->currentY, 4);
-    Board::searchForStone(board[this->currentX][this->currentY], principalDiagonal, this->currentX, this->currentY, 6);
+    Board::searchForStone(board[x][y], principalDiagonal, x, y, 4);
+    Board::searchForStone(board[x][y], principalDiagonal, x, y, 6);
 
-    if (board[this->currentX][this->currentY] == X)
     if (principalDiagonal - 1 >= stoneExpected)
     {
-        return true;
+        return 1;
     }
 
-    Board::searchForStone(board[this->currentX][this->currentY], verticalLine, this->currentX, this->currentY, 0);
-    Board::searchForStone(board[this->currentX][this->currentY], verticalLine, this->currentX, this->currentY, 2);
+    Board::searchForStone(board[x][y], verticalLine, x, y, 0);
+    Board::searchForStone(board[x][y], verticalLine, x, y, 2);
 
     if (verticalLine - 1 >= stoneExpected)
     {
-        return true;
+        return 2;
     }
 
-    Board::searchForStone(board[this->currentX][this->currentY], horizontalLine, this->currentX, this->currentY, 1);
-    Board::searchForStone(board[this->currentX][this->currentY], horizontalLine, this->currentX, this->currentY, 3);
+    Board::searchForStone(board[x][y], horizontalLine, x, y, 1);
+    Board::searchForStone(board[x][y], horizontalLine, x, y, 3);
 
     if (horizontalLine - 1 >= stoneExpected)
     {
-        return true;
+        return 3;
     }
 
-    Board::searchForStone(board[this->currentX][this->currentY], secondaryDiagonal, this->currentX, this->currentY, 5);
-    Board::searchForStone(board[this->currentX][this->currentY], secondaryDiagonal, this->currentX, this->currentY, 7);
+    Board::searchForStone(board[x][y], secondaryDiagonal, x, y, 5);
+    Board::searchForStone(board[x][y], secondaryDiagonal, x, y, 7);
 
     if (secondaryDiagonal - 1 >= stoneExpected)
     {
-        return true;
+        return 4;
     }
 
-    return false;
+    return 0;
+}
+void Board::animationWin(int directionWin)
+{
+    int x = this->currentX;
+    int y = this->currentY;
+    int count = 0;
+    Board::kindStone tmp;
+
+    if (directionWin == 1)
+    {
+        tmp = board[x][y];
+        Board::markStateWin(tmp, count, x, y, 4);
+        Board::markStateWin(tmp, count, x + dx[6], y + dy[6], 6);
+        return;
+    }
+
+    if (directionWin == 2)
+    {
+        tmp = board[x][y];
+        Board::markStateWin(tmp, count, x, y, 0);
+        Board::markStateWin(tmp, count, x + dx[2], y + dy[2], 2);
+        return;
+    }
+
+    if (directionWin == 3)
+    {
+        tmp = board[x][y];
+        Board::markStateWin(tmp, count, x, y, 1);
+        Board::markStateWin(tmp, count, x + dx[3], y + dy[3], 3);
+        return;
+    }
+
+    if (directionWin == 4)
+    {
+        tmp = board[x][y];
+        Board::markStateWin(tmp, count, x, y, 5);
+        Board::markStateWin(tmp, count, x + dx[7], y + dy[7], 7);
+        return;
+    }
 }

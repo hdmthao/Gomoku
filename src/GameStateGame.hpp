@@ -22,6 +22,8 @@ public:
 private:
 	Game* game;
 
+	int score1;
+	int score2;
 	bool willQuit;
 	bool isReady;
 };

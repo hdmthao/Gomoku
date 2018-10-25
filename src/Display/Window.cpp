@@ -40,8 +40,6 @@ Window::Window(Window* parent, int x, int y, int width, int height):
 	this->height = height;
 
 	this->win = derwin(parent->win, height, width, y, x);
-	if (!win)
-		throw "Could not create Ncurses Window";
 
 	this->setBorders();
 }
@@ -56,6 +54,15 @@ void Window::print(std::string str, int x, int y, ColorPair pair)
 
 	if (! str.empty())
 		mvwaddstr(this->win, y, x, str.c_str());
+}
+void Window::print(std::string str, int x, int y, bool isAttr, ColorPair pair)
+{
+	Colors::pairActivate(this->win, pair);
+	if (isAttr) wattron(this->win, A_BLINK);
+
+	if (! str.empty())
+		mvwaddstr(this->win, y, x, str.c_str());
+	if (isAttr) wattroff(this->win, A_BLINK);
 }
 void Window::print(std::vector<std::string> lines, int x, int y, ColorPair pair)
 {
@@ -122,15 +129,10 @@ void Window::borders(BorderType type)
 
 	if (type == Window::BORDER_FANCY)
 	{
-		wborder(this->win,
-		        ACS_VLINE    | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_VLINE    | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_HLINE    | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_HLINE    | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_ULCORNER | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_URCORNER | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_LLCORNER | Colors::pair("red", "default", true).ncurses_pair,
-		        ACS_LRCORNER | Colors::pair("red", "default", true).ncurses_pair);
+		ColorPair red = Colors::pair("red", "default", true);
+
+		Colors::pairActivate(this->win, red);
+		wborder(this->win, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
 	}
 	else if (type == Window::BORDER_REGULAR)
 	{
@@ -138,6 +140,20 @@ void Window::borders(BorderType type)
 
 		Colors::pairActivate(this->win, red);
 		wborder(this->win, '|', '|', '-', '-', '+', '+', '+', '+');
+	}
+	else if (type == Window::BORDER_GAME)
+	{
+		ColorPair cyan = Colors::pair("cyan", "default", true);
+		Colors::pairActivate(this->win, cyan);
+		wborder(this->win, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI);
+	}
+	else if (type == Window::BORDER_GAME_WIN)
+	{
+		ColorPair cyan = Colors::pair("cyan", "default", true);
+		Colors::pairActivate(this->win, cyan);
+		wattron(this->win, A_BLINK);
+		wborder(this->win, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI);
+		wattroff(this->win, A_BLINK);
 	}
 }
 void Window::setBorders()

@@ -13,13 +13,13 @@ CXXFILES = $(shell find src -type f -name '*.cpp')
 OBJECTS  = $(CFILES:.c=.o) \
            $(CXXFILES:.cpp=.o)
 
-$(EXE): $(OBJECTS) $(ENGINE_OBJECTS)
+$(EXE): $(OBJECTS)
 	# Linking...
-	$(CXX) $(OBJECTS) $(ENGINE_OBJECTS) -o bin/$(EXE) $(LDFLAGS)
+	$(CXX) $(OBJECTS) -o bin/$(EXE) $(LDFLAGS)
 
 src/%.o: src/%.cpp
 	# Compiling $<...
-	$(CXX) $(CXXFLAGS) $(CDEBUG) $< -c -o $@ $(INCLUDESDIR)
+	$(CXX) $(CXXFLAGS) $(CDEBUG) $< -c -o  $@ $(INCLUDESDIR)
 
 run: dirs $(EXE)
 	# Running...

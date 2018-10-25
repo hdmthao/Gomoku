@@ -14,7 +14,7 @@ class Window
 public:
 	enum BorderType
 	{
-		BORDER_NONE, BORDER_REGULAR, BORDER_FANCY
+		BORDER_NONE, BORDER_REGULAR, BORDER_FANCY, BORDER_GAME, BORDER_GAME_WIN
 	};
 
 	Window(int x, int y, int w, int h);
@@ -25,6 +25,7 @@ public:
 
 	// in ra màn hình
 	void print(std::string str, int x, int y, ColorPair pair=ColorPair());
+	void print(std::string str, int x, int y, bool isAttr, ColorPair pair=ColorPair());
 	void print(std::vector<std::string> lines, int x, int y, ColorPair pair=ColorPair());
 	void printChar(int c, int x, int y, ColorPair pair=ColorPair());
 	void printChar(int c, int x, int y, bool isBlink, ColorPair pair=ColorPair());

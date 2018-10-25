@@ -16,11 +16,15 @@ public:
 	void windowsExit();
 
 	void draw();
+	void drawNumberTop(int number, bool isVip=false);
+	void drawNumberBot(int number, bool isVip=false);
 
 private:
 	Game* game;
-
-	// Window* info;
+	Window* infoTop;
+	Window* infoBot;
+	Window* scoreBoardTop;
+	Window* scoreBoardBot;
 };
 
 #endif //LAYOUTGAME_H_DEFINED

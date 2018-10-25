@@ -41,9 +41,9 @@ int main() {
 		states.currentState->load();
 
 
-		// Game là một vòng lặp : GetInput --> Update --> render --> GetInput
+		// vòng lặp : GetInput --> Update --> render --> GetInput
 		// vòng lặp chính của game
-
+		// Dùng try catch exception để đổi trạng thái, thoát game.
 		while (true) {
 			try {
 				// luôn luôn nhận input từ user

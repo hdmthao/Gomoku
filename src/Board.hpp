@@ -11,7 +11,7 @@ class Board
 public:
     enum kindStone
     {
-        EMPTY, X, O
+        EMPTY, X, O, XW, OW
     };
 
     enum role
@@ -48,8 +48,10 @@ public:
 
     bool isOutOfBoard(int x, int y);
     void searchForStone(kindStone currentStone, int& count, int x, int y, int direction);
-    bool isCheckedForWin();
-    
+    void markStateWin(kindStone currentStone, int& count, int x, int y, int direction);
+    int isCheckedForWin(int x, int y);
+    void animationWin(int directionWin);
+
     bool update(role currentPlayer);
     vector< vector<kindStone> > board;
     vector< infoBoard > contains;

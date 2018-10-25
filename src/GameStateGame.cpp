@@ -9,14 +9,16 @@
 GameStateGame::GameStateGame():
 	game(NULL),
 	willQuit(false),
-	isReady(false)
+	isReady(false),
+	score1(0),
+	score2(0)
 { }
 GameStateGame::~GameStateGame()
 { }
 void GameStateGame::load()
 {
 		this->game = new Game();
-		this->game->start();
+		this->game->start(this->isReady, this->score1, this->score2);
 }
 void GameStateGame::unload()
 {
@@ -36,7 +38,17 @@ void GameStateGame::update()
 	}
 	if (this->game->willOver())
 	{
+		if (this->game->checkPlayerWin() == 1)
+		{
+			this->score1++;
+		}
+		else
+		{
+			this->score2++;
+		}
+		this->game->updateScore(this->score1, this->score2);
 		this->game->draw();
+		Input::update(4000);
 		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
 		{
 			this->load();
@@ -68,7 +80,12 @@ void GameStateGame::showDialog(std::string message, int width, int height)
 	refresh();
 	Input::update(-1);
 	dialog.clear();
-	if (Input::isPressed(27)) this->willQuit = true; else this->isReady = true;
+	if (Input::isPressed(27)) this->willQuit = true;
+	else
+	{
+		this->isReady = true;
+		this->game->isPlay = true;
+	}
 }
 
 bool GameStateGame::showRetryDialog(std::string message, int width, int height)
@@ -96,6 +113,7 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 	else
 	{
 		this->isReady = true;
+		this->game->isPlay = true;
 		return true;
 	}
 }

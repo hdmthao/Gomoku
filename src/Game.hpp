@@ -3,6 +3,7 @@
 
 #include <string>
 #include <Board.hpp>
+#include <Player.hpp>
 
 class LayoutGame;
 
@@ -14,21 +15,27 @@ public:
 	Game();
 	virtual ~Game();
 
-	void start();
+	void start(bool isReady, int m_score1, int m_score2);
 
 	void handleInput();
 	void update();
 	void draw();
 
 	bool willQuit();
-	bool willPlay();
+	bool isPlaying();
 	bool willOver();
+	int checkPlayerWin();
+	void updateScore(int score1, int score2);
 	bool isPlay;
+
+	int numberOfGame;
 
 protected:
 	LayoutGame* layout;
 
 	Board* board;
+	Player* player1;
+	Player* player2;
 
 	bool isQuit;
 	bool gameOver;

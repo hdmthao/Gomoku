@@ -4,21 +4,36 @@
 #include <Input.hpp>
 #include <Display/Window.hpp>
 #include <EngineGlobals.hpp>
+#include <iostream>
 
 Game::Game():
 	layout(NULL),
-	board(NULL)
-{ }
+	board(NULL),
+	player1(NULL),
+	player2(NULL)
+{
+}
 Game::~Game()
 {
 	SAFE_DELETE(this->layout);
 	SAFE_DELETE(this->board);
+	SAFE_DELETE(this->player1);
+	SAFE_DELETE(this->player2);
+
 }
-void Game::start()
+void Game::start(bool isReady, int m_score1, int m_score2)
 {
 	SAFE_DELETE(this->layout);
 
-	this->isPlay = false;
+	if (isReady)
+	{
+		this->isPlay = true;
+	}
+	else
+	{
+		this->isPlay = false;
+	}
+
 	this->isQuit = false;
 	this->gameOver = false;
 
@@ -28,10 +43,17 @@ void Game::start()
 	this->board->setType(EngineGlobals::Board::style);
 	this->board->setBoard();
 
-	this->currentPlayer = Board::PLAYER_1;
+	this->player1 = new Player(m_score1);
+	this->player2 = new Player(m_score2);
+
+	this->numberOfGame++;
+	if (rand() % 2 == 1) this->currentPlayer = Board::PLAYER_1;
+	else this->currentPlayer = Board::PLAYER_2;
+
 }
 void Game::handleInput()
 {
+
 	if (Input::noKeyPressed())
 		return;
 	if (Input::isPressed(27))
@@ -58,8 +80,10 @@ void Game::handleInput()
 	{
 		if (this->board->update(currentPlayer))
 		{
-			if (this->board->isCheckedForWin())
+			int directionWin = this->board->isCheckedForWin(this->board->currentX, this->board->currentY);
+			if (directionWin != 0)
 			{
+				this->board->animationWin(directionWin);
 				this->gameOver = true;
 				return;
 			}
@@ -84,11 +108,27 @@ bool Game::willQuit()
 {
 	return this->isQuit;
 }
-bool Game::willPlay()
+bool Game::isPlaying()
 {
 	return this->isPlay;
 }
 bool Game::willOver()
 {
 	return this->gameOver;
+}
+int Game::checkPlayerWin()
+{
+	if (this->currentPlayer == Board::PLAYER_1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 2;
+	}
+}
+void Game::updateScore(int score1, int score2)
+{
+	this->player1->setScore(score1);
+	this->player2->setScore(score2);
 }
