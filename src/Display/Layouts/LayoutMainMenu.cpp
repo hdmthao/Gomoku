@@ -13,6 +13,8 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	logo(NULL),
 	menu(NULL),
 	boardMenu(NULL),
+	loadMenu(NULL),
+	loadHelpWin(NULL),
 	animationwin(NULL),
 	animation(NULL)
 {
@@ -32,7 +34,7 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 
 	int posX = 0;
 	int posY = 0;
-	
+
 	posX = current_width/2 - width/2 - 10;
 	posY = current_height/2 - height/2;
 
@@ -46,11 +48,18 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->menu->setTitle("Main Menu");
 	this->menu->refresh();
 
+	this->loadHelpWin = new Window(posX + width + 1, posY + 15, 24, 5);
+
 	posX = posX + width/2 - 10;
 	posY = posY + height/2 - 3;
 	this->boardMenu = new Window(posX, posY, 23, 7);
 	this->boardMenu->setTitle("Choose Board Size");
 	this->boardMenu->borders(Window::BORDER_FANCY);
+
+
+	this->loadMenu = new Window(posX - 4, posY, 30, 13);
+	this->loadMenu->setTitle("Choose Game");
+	this->loadMenu->borders(Window::BORDER_FANCY);
 
 	this->logo = new Window(this->main,
 	                        20, 0,
@@ -79,9 +88,11 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->animationwin);
 	SAFE_DELETE(this->animation);
 	SAFE_DELETE(this->boardMenu);
+	SAFE_DELETE(this->loadMenu);
+	SAFE_DELETE(this->loadHelpWin);
 }
 
-void LayoutMainMenu::draw(Menu* menu, bool isSubMenu) {
+void LayoutMainMenu::draw(Menu* menu, int isSubMenu) {
 	this->animation->update();
 
 	this->main->clear();
@@ -102,14 +113,36 @@ void LayoutMainMenu::draw(Menu* menu, bool isSubMenu) {
 	this->logo->refresh();
 
 	// Yay!
-	if (!isSubMenu)
+	if (isSubMenu == 1)
 	{
 		this->boardMenu->clear();
 		menu->draw(this->boardMenu);
 		this->boardMenu->refresh();
 	}
+	else if (isSubMenu == 2)
+	{
+		this->loadHelpWin->setTitle("Help");
+		this->loadHelpWin->borders(Window::BORDER_FANCY);
+
+		this->loadMenu->clear();
+		this->loadHelpWin->clear();
+
+		menu->draw(this->loadMenu);
+		this->loadHelpWin->print("Load game", 2, 2, Colors::pair("cyan", "default", true));
+		this->loadHelpWin->print("Enter", 16, 2);
+		this->loadHelpWin->print("Delete game", 2, 3, Colors::pair("cyan", "default", true));
+		this->loadHelpWin->print("Delete", 16, 3);
+
+		this->loadMenu->refresh();
+		this->loadHelpWin->refresh();
+	}
 	else
 	{
+		this->loadHelpWin->setTitle("");
+		this->loadHelpWin->borders(Window::BORDER_NONE);
+		this->loadHelpWin->clear();
+		this->loadHelpWin->refresh();
+
 		this->menu->clear();
 
 		menu->draw(this->menu);

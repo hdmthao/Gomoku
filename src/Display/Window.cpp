@@ -154,6 +154,11 @@ void Window::borders(BorderType type)
 		wattron(this->win, A_BLINK);
 		wborder(this->win, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI, ACS_PI);
 		wattroff(this->win, A_BLINK);
+	} else if (type == Window::BORDER_INFO)
+	{
+		ColorPair red = Colors::pair("red", "default");
+		Colors::pairActivate(this->win, red);
+		wborder(this->win, ACS_DIAMOND, ACS_DIAMOND, ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND);
 	}
 }
 void Window::setBorders()

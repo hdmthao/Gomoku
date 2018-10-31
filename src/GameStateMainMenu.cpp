@@ -1,9 +1,10 @@
 #include <GameStateMainMenu.hpp>
 #include <Input.hpp>
 #include <EngineGlobals.hpp>
-
+#include <LoadGame.hpp>
 #include <StateManager.hpp>
 #include <GameStateGame.hpp>
+#include <iostream>
 
 enum Label_Id {
 	// Main Menu
@@ -18,6 +19,7 @@ GameStateMainMenu::GameStateMainMenu():
 	layout(NULL),
 	menu(NULL),
 	boardMenu(NULL),
+	loadMenu(NULL),
 	about(NULL)
 { }
 
@@ -26,8 +28,10 @@ void GameStateMainMenu::load() {
 
 	createMainMenu();
 	createBoardMenu();
+	createLoadMenu();
 
 	this->isActivatedPVP = false;
+	this->isActivatedLOAD = false;
 	this->about = new WindowAbout(100, 30);
 }
 
@@ -35,6 +39,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->layout);
 	SAFE_DELETE(this->menu);
 	SAFE_DELETE(this->boardMenu);
+	SAFE_DELETE(this->loadMenu);
 }
 
 void GameStateMainMenu::update()
@@ -73,6 +78,24 @@ void GameStateMainMenu::update()
 			this->boardMenu->reset();
 		}
 	}
+	else if (this->isActivatedLOAD)
+	{
+		this->loadMenu->handleInput();
+		if(this->loadMenu->willQuit())
+		{
+			switch(this->loadMenu->currentID())
+			{
+				case RETURN:
+					this->isActivatedLOAD = false;
+					break;
+				default:
+					EngineGlobals::Game::setLoadGame(this->loadMenu->currentLabel());
+					StateManager::change(new GameStateGame());
+					break;
+			}
+		}
+		this->loadMenu->reset();
+	}
 	else
 	{
 		this->menu->handleInput();
@@ -81,8 +104,12 @@ void GameStateMainMenu::update()
 			switch(this->menu->currentID())
 			{
 				case PVP:
+					EngineGlobals::Game::setLoadGame("");
 					this->isActivatedPVP = true;
 					// StateManager::change(new GameStateGame());
+					break;
+				case LOAD:
+					this->isActivatedLOAD = true;
 					break;
 				case ABOUT:
 					this->about->run();
@@ -100,11 +127,15 @@ void GameStateMainMenu::update()
 void GameStateMainMenu::draw() {
 	if (this->isActivatedPVP)
 	{
-		this->layout->draw(this->boardMenu, 0);
+		this->layout->draw(this->boardMenu, 1);
+	}
+	else if (this->isActivatedLOAD)
+	{
+		this->layout->draw(this->loadMenu, 2);
 	}
 	else
 	{
-		this->layout->draw(this->menu, 1);
+		this->layout->draw(this->menu, 0);
 	}
 }
 
@@ -169,4 +200,23 @@ void GameStateMainMenu::createBoardMenu()
 	boardMenu->add(item);
 	item = new MenuItem("Return Menu", RETURN);
 	boardMenu->add(item);
+}
+void GameStateMainMenu::createLoadMenu()
+{
+	SAFE_DELETE(this->loadMenu);
+
+	this->loadMenu = new Menu(1, 1, this->layout->loadMenu->getW() - 2, this->layout->loadMenu->getH() - 2);
+
+	MenuItem* item;
+
+	std::vector<std::string> games = LoadGame::listGames();
+	std::vector<std::string> infos = LoadGame::listInfos();
+
+	for (unsigned int i = 0; i < games.size(); ++i) {
+		for (int j = games[i].length(); j < 10; ++j) games[i] += " ";
+		item = new MenuItem(games[i]+infos[i], i);
+		loadMenu->add(item);
+	}
+	item = new MenuItem("Return Menu", RETURN);
+	loadMenu->add(item);
 }

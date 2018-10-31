@@ -38,7 +38,7 @@ public:
     ~Board();
 
     void setType(EngineGlobals::Board::Style _style);
-    void setBoard();
+    void setBoard(bool willLoad);
     void draw(Window* win, role currentPlayer);
 
     void moveLeft();
@@ -52,6 +52,8 @@ public:
     int isCheckedForWin(int x, int y);
     void animationWin(int directionWin);
 
+    int getSize();
+    vector< std::pair<int, int> > getLastBoard();
     bool update(role currentPlayer);
     vector< vector<kindStone> > board;
     vector< infoBoard > contains;

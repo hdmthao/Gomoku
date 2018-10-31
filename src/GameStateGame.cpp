@@ -5,20 +5,26 @@
 #include <Display/Window.hpp>
 #include <StateManager.hpp>
 #include <GameStateMainMenu.hpp>
+#include <LoadGame.hpp>
 
 GameStateGame::GameStateGame():
 	game(NULL),
 	willQuit(false),
-	isReady(false),
-	score1(0),
-	score2(0)
-{ }
+	isReady(false)
+{
+	LoadGame::load(EngineGlobals::Game::currentGame);
+	this->score1 = LoadGame::loadScore(1);
+	this->score2 = LoadGame::loadScore(2);
+}
 GameStateGame::~GameStateGame()
 { }
 void GameStateGame::load()
 {
 		this->game = new Game();
-		this->game->start(this->isReady, this->score1, this->score2);
+		if (!this->isReady && EngineGlobals::Game::currentGame != "")
+			this->game->start(this->isReady, this->score1, this->score2, 1);
+		else
+			this->game->start(this->isReady, this->score1, this->score2, 0);
 }
 void GameStateGame::unload()
 {

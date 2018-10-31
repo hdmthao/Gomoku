@@ -5,6 +5,7 @@
 LayoutGame::LayoutGame(Game* game, int width, int height):
 	Layout(width, height),
 	game(game),
+	pause(NULL),
 	infoTop(NULL),
 	infoBot(NULL),
 	scoreBoardTop(NULL),
@@ -20,6 +21,10 @@ void LayoutGame::windowsInit()
 {
 	Layout::windowsInit();
 	this->main->setTitle("Gomoku - PvP Mode");
+
+
+	this->pause = new Window(this->main, this->main->getW() / 4, this->main->getH() / 2 - 3, this->main->getW() / 2, 7);
+	this->pause->setTitle("Paused");
 
 	this->infoTop = new Window(130, 6, 24, 8);
 	this->infoTop->borders(Window::BORDER_FANCY);
@@ -44,19 +49,43 @@ void LayoutGame::windowsExit()
 	SAFE_DELETE(this->infoBot);
 	SAFE_DELETE(this->scoreBoardTop);
 	SAFE_DELETE(this->scoreBoardBot);
+	SAFE_DELETE(this->pause);
 
 	this->main->clear(); // clear() as in Window
 	this->main->refresh(); // clear() as in Window
 
 	Layout::windowsExit();
 }
-void LayoutGame::draw()
+void LayoutGame::draw(Menu *menu, std::string filename)
 {
 	if (! this->game)
 		return;
 
 	this->main->clear();
 
+	if (this->game->userAskedToSaveGame)
+	{
+		this->pause->setTitle("Save Game");
+		this->pause->clear();
+		this->pause->print("Name:", 4, 1, Colors::pair("black", "default", true));
+		this->pause->print(filename, 9, 1, Colors::pair("cyan", "default", true));
+		this->pause->print("Must has at most 8 characters", 2, 3);
+		this->pause->print("Allow alphabet character, number, \'_\'", 2, 4);
+		this->pause->print("Default is \"GOMOKUxx\"", 2, 5);
+		this->pause->refresh();
+
+		refresh();
+		return;
+	}
+	if (this->game->isPause)
+	{
+		this->pause->clear();
+		menu->draw(this->pause);
+		this->pause->refresh();
+
+		refresh();
+		return;
+	}
 	this->game->board->draw(this->main, this->game->currentPlayer);
 	this->main->refresh();
 

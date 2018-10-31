@@ -2,7 +2,9 @@
 #define LAYOUTGAME_H_DEFINED
 
 #include <Display/Layouts/Layout.hpp>
+#include <Display/Menu.hpp>
 #include <Game.hpp>
+#include <string>
 
 class LayoutGame: public Layout
 {
@@ -15,7 +17,7 @@ public:
 	void windowsInit();
 	void windowsExit();
 
-	void draw();
+	void draw(Menu* menu, std::string filename);
 	void drawNumberTop(int number, bool isVip=false);
 	void drawNumberBot(int number, bool isVip=false);
 
@@ -25,6 +27,9 @@ private:
 	Window* infoBot;
 	Window* scoreBoardTop;
 	Window* scoreBoardBot;
+
+public:
+	Window* pause;
 };
 
 #endif //LAYOUTGAME_H_DEFINED

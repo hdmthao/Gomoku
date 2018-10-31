@@ -19,14 +19,6 @@
 
 namespace Input
 {
-	// Map #name cho #key.
-	void bind(std::string name, int key);
-
-	/// Removes all keybindings for #name.
-	void unbind(std::string name);
-
-	// trả về  #key của #name
-	int getBind(std::string name);
 
 	// True nếu không có phím nào được bấm
 	bool noKeyPressed();
@@ -45,7 +37,7 @@ namespace Input
 	// Nếu delay_ms > 0 thì sẽ đợi user bấm phím trong delay_ms milisecond.
 	void update(int delay_ms=0);
 
-
+	char getAlphabet();
 	// phím nào đã được nhấn
 	extern int pressedKey;
 

@@ -26,6 +26,22 @@ bool Input::isPressed(std::string key) {
 	return (Input::isPressed(Input::binds[key]));
 }
 
+char Input::getAlphabet() {
+	for (int i = 65; i <= 90; ++i)
+	{
+		if (Input::isPressed(i)) return (char)(i);
+	}
+	for (int i = 97; i <= 122; ++i)
+	{
+		if (Input::isPressed(i)) return (char)(i);
+	}
+	for (int i = 48; i <= 57; ++i)
+	{
+		if (Input::isPressed(i)) return (char)(i);
+	}
+	if (Input::isPressed(95)) return (char)(95);
+	return ' ';
+}
 int Input::getInput(int delay_ms) {
 	int retval = 0;
 	int c      = 0;

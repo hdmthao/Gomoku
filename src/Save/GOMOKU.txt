@@ -1,0 +1,5 @@
+player1_score=0
+player2_score=0
+height=13
+width=13
+last_player=1

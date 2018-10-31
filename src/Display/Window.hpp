@@ -14,7 +14,7 @@ class Window
 public:
 	enum BorderType
 	{
-		BORDER_NONE, BORDER_REGULAR, BORDER_FANCY, BORDER_GAME, BORDER_GAME_WIN
+		BORDER_NONE, BORDER_REGULAR, BORDER_FANCY, BORDER_GAME, BORDER_GAME_WIN, BORDER_INFO
 	};
 
 	Window(int x, int y, int w, int h);

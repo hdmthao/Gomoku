@@ -15,7 +15,7 @@ public:
 	void windowsExit();
 
 	// Vẽ menu chính
-	void draw(Menu* menu, bool isSubMenu);
+	void draw(Menu* menu, int isSubMenu);
 
 	void redraw();
 
@@ -24,6 +24,8 @@ public:
 	Window* logo;
 	Window* menu;
 	Window* boardMenu;
+	Window* loadMenu;
+	Window* loadHelpWin;
 	Window* animationwin;
 
 	Animation* animation;

@@ -2,6 +2,8 @@
 #define ENGINEGLOBALS_H_DEFINED
 
 #include <Display/Colors.hpp>
+#include <string>
+
 // Cài đặt cho các thông số của game.
 
 class Board;
@@ -32,7 +34,14 @@ namespace EngineGlobals
 		extern Style style;
 		void setGameStyle(Style _style);
 
-	}
+	};
+
+	namespace Game
+	{
+		extern std::string currentGame;
+		void setLoadGame(std::string filegame);
+	};
+
 	void init();
 
 };

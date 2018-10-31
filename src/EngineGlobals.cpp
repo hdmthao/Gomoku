@@ -4,7 +4,7 @@ ColorPair EngineGlobals::Theme::text;
 ColorPair EngineGlobals::Theme::hilite_text;
 ColorPair EngineGlobals::Theme::textbox;
 EngineGlobals::Board::Style EngineGlobals::Board::style;
-
+std::string EngineGlobals::Game::currentGame;
 void EngineGlobals::init()
 {
 	EngineGlobals::Theme::text        = Colors::pair("white", "default", true);
@@ -16,4 +16,14 @@ void EngineGlobals::init()
 void EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style _style)
 {
 	EngineGlobals::Board::style = _style;
+}
+
+void EngineGlobals::Game::setLoadGame(std::string filegame)
+{
+	std::string tmp = "";
+	for (unsigned int i = 0; i < filegame.length(); ++i) {
+		if (filegame[i] == ' ') break;
+		tmp += filegame[i];
+	}
+	EngineGlobals::Game::currentGame = tmp;
 }

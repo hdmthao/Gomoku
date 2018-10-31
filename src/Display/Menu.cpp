@@ -42,7 +42,38 @@ void Menu::add(MenuItem* item)
 
 void Menu::draw(Window* window)
 {
-	for (unsigned int curitem = 0, yoffset = 0; curitem < this->item.size(); curitem++, yoffset++) {
+	unsigned int draw_begin = 0;
+	unsigned int draw_end   = this->item.size();
+
+	if (this->height < (int)this->item.size())
+	{
+		if ((int)this->currentIndex <= this->height/2)
+		{
+			draw_end = this->height - 1;
+		}
+		else if ((int)this->currentIndex < ((int)this->item.size() - this->height/2) - 1)
+		{
+			draw_begin = this->currentIndex - this->height/2;
+			draw_end   = this->currentIndex + this->height/2;
+		}
+		else
+		{
+			draw_begin = this->item.size() - this->height;
+		}
+	}
+
+	for (unsigned int curitem = draw_begin, yoffset = 0; curitem < draw_end; curitem++, yoffset++)
+	{
+		if ((curitem == draw_begin) && (curitem != 0))
+		{
+			window->print("(more)", this->x + this->width/2 - 3, this->y + yoffset, Colors::pair("white", "default"));
+			continue;
+		}
+		if ((curitem == draw_end - 1) && (curitem != this->item.size() - 1))
+		{
+			window->print("(more)", this->x + this->width/2 - 3, this->y + yoffset + 1, Colors::pair("white", "default"));
+			continue;
+		}
 		this->item[curitem]->draw(window, this->x, this->y + yoffset, this->width, (this->item[curitem] == this->current));
 	}
 }
@@ -52,15 +83,9 @@ void Menu::handleInput()
 	if (Input::noKeyPressed())
 		return;
 
-	if (Input::isPressed("down") ||
-	    Input::isPressed(KEY_DOWN))
-		this->goNext();
-
-	else if (Input::isPressed("up") ||
-	         Input::isPressed(KEY_UP))
-		this->goPrevious();
-	else if (Input::isPressed(KEY_ENTER) ||
-	         Input::isPressed('\n'))
+	if (Input::isPressed(KEY_DOWN)) this->goNext();
+	else if (Input::isPressed(KEY_UP)) this->goPrevious();
+	else if (Input::isPressed('\n'))
 	{
 		if (this->current->type == MenuItem::ITEM ||
 			this->current->type == MenuItem::LABEL)

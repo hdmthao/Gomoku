@@ -1,4 +1,5 @@
 #include <Board.hpp>
+#include <LoadGame.hpp>
 #include <iostream>
 
 
@@ -11,10 +12,12 @@ Board::Board():
     style(EngineGlobals::Board::TICTACTOE)
 {
     board.clear();
+    contains.clear();
 }
 Board::~Board()
 {
     board.clear();
+    contains.clear();
 }
 void Board::setType(EngineGlobals::Board::Style _style)
 {
@@ -47,18 +50,48 @@ void Board::setType(EngineGlobals::Board::Style _style)
             break;
     }
 }
-void Board::setBoard()
+void Board::setBoard(bool willLoad)
 {
     board.resize(this->height + 1);
     for (int i = 1; i <= this->height; ++i)
     {
         board[i].resize(this->width + 1);
     }
-    for (int i = 1; i <= this->height; ++i)
+
+    if (willLoad)
     {
-        for (int j = 1; j <= this->width; ++j)
+        std::vector< std::vector<char> > loadboard;
+        loadboard = LoadGame::loadBoard();
+        for (int i = 1; i <= this->height; ++i)
         {
-            this->board[i][j] = EMPTY;
+            for (int j = 1; j <= this->width; ++j)
+            {
+                if (loadboard[i][j] == '1')
+                    this->board[i][j] = X;
+                else if (loadboard[i][j] == '2')
+                    this->board[i][j] = O;
+                else
+                    this->board[i][j] = EMPTY;
+            }
+        }
+        std::vector< std::pair<std::pair<int, int>, char> > loadcontains;
+        loadcontains = LoadGame::loadContainBoard();
+        for (unsigned int i = 0 ; i < loadcontains.size(); ++i) {
+            std::pair< std::pair<int, int>, char> st;
+            st = loadcontains[i];
+            if (st.second == '1') stone.kind = X; else stone.kind = O;
+            stone.x = st.first.first;
+            stone.y = st.first.second;
+            contains.push_back(stone);
+        }
+    } else
+    {
+        for (int i = 1; i <= this->height; ++i)
+        {
+            for (int j = 1; j <= this->width; ++j)
+            {
+                this->board[i][j] = EMPTY;
+            }
         }
     }
 }
@@ -662,4 +695,27 @@ void Board::animationWin(int directionWin)
         Board::markStateWin(tmp, count, x + dx[7], y + dy[7], 7);
         return;
     }
+}
+int Board::getSize()
+{
+    return this->width;
+}
+vector< std::pair<int, int> > Board::getLastBoard()
+{
+    vector< std::pair<int, int> > lb;
+
+    int num = 0;
+    int curr = 1;
+    for (unsigned int i = 0; i < contains.size(); ++i)
+    {
+        infoBoard tmp;
+        tmp = contains[i];
+        num = (tmp.x - 1) * (this->width) + tmp.y;
+        if (tmp.kind == Board::PLAYER_1)
+            curr = 1;
+        else
+            curr = 2;
+        lb.push_back(std::make_pair(num, curr));
+    }
+    return lb;
 }
