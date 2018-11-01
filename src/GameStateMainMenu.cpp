@@ -106,7 +106,6 @@ void GameStateMainMenu::update()
 				case PVP:
 					EngineGlobals::Game::setLoadGame("");
 					this->isActivatedPVP = true;
-					// StateManager::change(new GameStateGame());
 					break;
 				case LOAD:
 					this->isActivatedLOAD = true;
@@ -213,7 +212,7 @@ void GameStateMainMenu::createLoadMenu()
 	std::vector<std::string> infos = LoadGame::listInfos();
 
 	for (unsigned int i = 0; i < games.size(); ++i) {
-		for (int j = games[i].length(); j < 10; ++j) games[i] += " ";
+		for (int j = games[i].length(); j < 11; ++j) games[i] += " ";
 		item = new MenuItem(games[i]+infos[i], i);
 		loadMenu->add(item);
 	}

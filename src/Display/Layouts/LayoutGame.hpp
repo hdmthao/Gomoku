@@ -17,7 +17,7 @@ public:
 	void windowsInit();
 	void windowsExit();
 
-	void draw(Menu* menu, std::string filename);
+	void draw(Menu* menu, std::string filename, bool isDefault=false);
 	void drawNumberTop(int number, bool isVip=false);
 	void drawNumberBot(int number, bool isVip=false);
 
@@ -27,7 +27,8 @@ private:
 	Window* infoBot;
 	Window* scoreBoardTop;
 	Window* scoreBoardBot;
-
+	Window* help;
+	
 public:
 	Window* pause;
 };

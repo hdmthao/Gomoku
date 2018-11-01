@@ -12,9 +12,17 @@ GameStateGame::GameStateGame():
 	willQuit(false),
 	isReady(false)
 {
-	LoadGame::load(EngineGlobals::Game::currentGame);
-	this->score1 = LoadGame::loadScore(1);
-	this->score2 = LoadGame::loadScore(2);
+	if (EngineGlobals::Game::currentGame == "")
+	{
+		this->score1 = 0;
+		this->score2 = 0;
+	}
+	else
+	{
+		LoadGame::load(EngineGlobals::Game::currentGame);
+		this->score1 = LoadGame::loadScore(1);
+		this->score2 = LoadGame::loadScore(2);
+	}
 }
 GameStateGame::~GameStateGame()
 { }
@@ -22,7 +30,10 @@ void GameStateGame::load()
 {
 		this->game = new Game();
 		if (!this->isReady && EngineGlobals::Game::currentGame != "")
+		{
 			this->game->start(this->isReady, this->score1, this->score2, 1);
+			this->isReady = true;
+		}
 		else
 			this->game->start(this->isReady, this->score1, this->score2, 0);
 }

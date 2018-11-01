@@ -83,6 +83,7 @@ void Board::setBoard(bool willLoad)
             stone.x = st.first.first;
             stone.y = st.first.second;
             contains.push_back(stone);
+            std::cout << stone.x << " " << stone.y;
         }
     } else
     {
@@ -578,6 +579,16 @@ bool Board::update(role currentPlayer)
     }
     return true;
 }
+bool Board::undo()
+{
+    if (contains.empty()) return false;
+    infoBoard tmp;
+    tmp.x = contains.back().x;
+    tmp.y = contains.back().y;
+    board[tmp.x][tmp.y] = EMPTY;
+    contains.pop_back();
+    return true;
+}
 bool Board::isOutOfBoard(int x, int y)
 {
     if (x < 1 || x > this->height) return true;
@@ -711,7 +722,7 @@ vector< std::pair<int, int> > Board::getLastBoard()
         infoBoard tmp;
         tmp = contains[i];
         num = (tmp.x - 1) * (this->width) + tmp.y;
-        if (tmp.kind == Board::PLAYER_1)
+        if (tmp.kind == Board::X)
             curr = 1;
         else
             curr = 2;

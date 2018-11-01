@@ -6,6 +6,7 @@ LayoutGame::LayoutGame(Game* game, int width, int height):
 	Layout(width, height),
 	game(game),
 	pause(NULL),
+	help(NULL),
 	infoTop(NULL),
 	infoBot(NULL),
 	scoreBoardTop(NULL),
@@ -25,6 +26,10 @@ void LayoutGame::windowsInit()
 
 	this->pause = new Window(this->main, this->main->getW() / 4, this->main->getH() / 2 - 3, this->main->getW() / 2, 7);
 	this->pause->setTitle("Paused");
+
+	this->help = new Window(130, 15, 24, 10);
+	this->help->borders(Window::BORDER_FANCY);
+	this->help->setTitle("Help");
 
 	this->infoTop = new Window(130, 6, 24, 8);
 	this->infoTop->borders(Window::BORDER_FANCY);
@@ -50,43 +55,79 @@ void LayoutGame::windowsExit()
 	SAFE_DELETE(this->scoreBoardTop);
 	SAFE_DELETE(this->scoreBoardBot);
 	SAFE_DELETE(this->pause);
+	SAFE_DELETE(this->help);
 
 	this->main->clear(); // clear() as in Window
 	this->main->refresh(); // clear() as in Window
 
 	Layout::windowsExit();
 }
-void LayoutGame::draw(Menu *menu, std::string filename)
+void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 {
 	if (! this->game)
 		return;
 
 	this->main->clear();
+	this->help->clear();
 
 	if (this->game->userAskedToSaveGame)
 	{
 		this->pause->setTitle("Save Game");
 		this->pause->clear();
 		this->pause->print("Name:", 4, 1, Colors::pair("black", "default", true));
-		this->pause->print(filename, 9, 1, Colors::pair("cyan", "default", true));
-		this->pause->print("Must has at most 8 characters", 2, 3);
-		this->pause->print("Allow alphabet character, number, \'_\'", 2, 4);
-		this->pause->print("Default is \"GOMOKUxx\"", 2, 5);
+		if (isDefault)
+		{
+			this->pause->print(filename, 9, 1, Colors::pair("black", "default", true));
+			this->pause->print("Default name is \"GOMOKU_xx\"", 2, 3);
+		}
+		else
+		{
+			this->pause->print(filename, 9, 1, Colors::pair("cyan", "default", true));
+		}
+		this->pause->print("Must has at most 9 characters", 2, 4);
+		this->pause->print("Allow alphabet character, number, \'_\'", 2, 5);
 		this->pause->refresh();
 
+		this->help->print("Save and quit", 2, 2, Colors::pair("cyan", "default", true));
+		this->help->print("Enter", 16, 2);
+		this->help->print("Back", 2, 3, Colors::pair("cyan", "default", true));
+		this->help->print("Esc", 16, 3);
+		this->help->refresh();
 		refresh();
 		return;
 	}
-	if (this->game->isPause)
+	else if (this->game->isPause)
 	{
 		this->pause->clear();
 		menu->draw(this->pause);
 		this->pause->refresh();
 
+		this->help->print("Choose option", 2, 2, Colors::pair("cyan", "default", true));
+		this->help->print("Enter", 16, 2);
+		this->help->print("Back", 2, 3, Colors::pair("cyan", "default", true));
+		this->help->print("Esc", 16, 3);
+		this->help->refresh();
 		refresh();
 		return;
 	}
+	else
+	{
+		this->help->print("Movement", 2, 2, Colors::pair("cyan", "default", true));
+		this->help->print("Key-Arrow", 14, 2);
+		this->help->print("Undo", 2, 3, Colors::pair("cyan", "default", true));
+		this->help->print("z", 14, 3);
+		this->help->print("Resign \"GG\"", 2, 4, Colors::pair("cyan", "default", true));
+		this->help->print("g", 14, 4);
+		this->help->print("Rule", 2, 5, Colors::pair("cyan", "default", true));
+		this->help->print("r", 14, 5);
+		this->help->print("Pause", 2, 6, Colors::pair("cyan", "default", true));
+		this->help->print("Esc", 14, 6);
+		this->help->print("Quit", 2, 7, Colors::pair("cyan", "default", true));
+		this->help->print("q", 14, 7);
+		this->help->refresh();
+	}
 	this->game->board->draw(this->main, this->game->currentPlayer);
+
 	this->main->refresh();
 
 
@@ -122,7 +163,8 @@ void LayoutGame::draw(Menu *menu, std::string filename)
 														  "o   o\n"
 														  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-				this->infoTop->print("YASUO WIN!!!", this->infoTop->getW() / 2 - 6, 6, true, Colors::pair("magenta", "default", true));
+				this->infoTop->print("YASUO WIN^^", this->infoTop->getW() / 2 - 6, 6, true, Colors::pair("magenta", "default", true));
+				this->infoBot->print("INVOKER LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
 
 				LayoutGame::drawNumberTop(this->game->player1->getScore(), true);
 				LayoutGame::drawNumberBot(this->game->player2->getScore());
@@ -136,8 +178,8 @@ void LayoutGame::draw(Menu *menu, std::string filename)
 				this->infoBot->print(Utils::String::split(" o o \n"
 												  		  "o   o\n"
 												  		  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
-
-				this->infoBot->print("INVOKER WIN!!!", this->infoTop->getW() / 2 - 7, 6, true, Colors::pair("magenta", "default", true));
+				this->infoTop->print("YASUO LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
+				this->infoBot->print("INVOKER WIN^^", this->infoTop->getW() / 2 - 7, 6, true, Colors::pair("magenta", "default", true));
 				LayoutGame::drawNumberTop(this->game->player1->getScore());
 				LayoutGame::drawNumberBot(this->game->player2->getScore(), true);
 

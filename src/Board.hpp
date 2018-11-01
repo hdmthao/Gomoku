@@ -45,6 +45,7 @@ public:
     void moveRight();
     void moveUp();
     void moveDown();
+    bool undo();
 
     bool isOutOfBoard(int x, int y);
     void searchForStone(kindStone currentStone, int& count, int x, int y, int direction);

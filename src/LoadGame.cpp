@@ -92,14 +92,22 @@ std::vector< std::vector<char> > LoadGame::loadBoard()
     int num = 0;
     std::string line = LoadGame::str;
     for (unsigned int i = 0; i < line.length(); ++i) {
-        if (line[i] == ' ') continue;
-        ++cnt;
-        if (cnt % 2 == 1)
+        if (line[i] == ' ')
+        {
+            ++cnt;
+            continue;
+        }
+        if (cnt % 2 == 0)
             num = num*10 + (line[i] - '0');
         else
         {
             y = num % LoadGame::width;
             x = num / LoadGame::width + 1;
+            if (num % LoadGame::width == 0)
+            {
+                y += LoadGame::width;
+                x--;
+            }
             board[x][y] = line[i];
             num = 0;
         }
@@ -116,14 +124,23 @@ std::vector< std::pair<std::pair<int, int>, char> > LoadGame::loadContainBoard()
     int num = 0;
     std::string line = LoadGame::str;
     for (unsigned int i = 0; i < line.length(); ++i) {
-        if (line[i] == ' ') continue;
-        ++cnt;
-        if (cnt % 2 == 1)
+        if (line[i] == ' ')
+        {
+            ++cnt;
+            continue;
+        }
+        if (cnt % 2 == 0)
             num = num*10 + (line[i] - '0');
         else
         {
             y = num % LoadGame::width;
             x = num / LoadGame::width + 1;
+
+            if (num % LoadGame::width == 0)
+            {
+                y += LoadGame::width;
+                x--;
+            }
             contains.push_back(std::make_pair(std::make_pair(x, y), line[i]));
             num = 0;
         }

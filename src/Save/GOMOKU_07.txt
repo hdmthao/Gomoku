@@ -1,0 +1,6 @@
+player1_score=0
+player2_score=0
+height=13
+width=13
+last_player=1
+85 2 86 1 73 2 74 1 61 2 87 1 101 2 88 1 75 2 

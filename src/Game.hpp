@@ -25,6 +25,7 @@ public:
 	bool willQuit();
 	bool isPlaying();
 	bool willOver();
+	void swapRole();
 	int checkPlayerWin();
 	void updateScore(int score1, int score2);
 	bool isPlay;

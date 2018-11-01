@@ -5,7 +5,7 @@
 #include <Display/Window.hpp>
 #include <EngineGlobals.hpp>
 #include <LoadGame.hpp>
-#include <ncurses.h>
+#include <vector>
 
 enum Label_Id
 {
@@ -18,7 +18,7 @@ Game::Game():
 	pauseMenu(NULL),
 	player1(NULL),
 	player2(NULL),
-	filename("GOMOKU")
+	filename("GOMOKU_")
 {
 }
 Game::~Game()
@@ -53,6 +53,7 @@ void Game::start(bool isReady, int m_score1, int m_score2, bool willLoad)
 	if (willLoad)
 	{
 		int kindBoard = LoadGame::loadTypeBoard();
+		this->isPlay = true;
 		switch (kindBoard)
 		{
 			case 1:
@@ -108,30 +109,30 @@ void Game::handleInput()
 
 	if (Input::noKeyPressed())
 		return;
+	if (Input::isPressed(81) || Input::isPressed(113))
+	{
+		if (this->isPause) this->pause(false); else this->isQuit = true;
+	}else
 	if (Input::isPressed(27))
 	{
-		this->isQuit = true;
-	}
-	if (Input::isPressed(80) || Input::isPressed(112))
-	{
 		if (this->isPause) this->pause(false); else this->pause(true);
-	}
+	}else
 	if (Input::isPressed(KEY_LEFT))
 	{
 		this->board->moveLeft();
-	}
+	}else
 	if (Input::isPressed(KEY_RIGHT))
 	{
 		this->board->moveRight();
-	}
+	}else
 	if (Input::isPressed(KEY_UP))
 	{
 		this->board->moveUp();
-	}
+	}else
 	if (Input::isPressed(KEY_DOWN))
 	{
 		this->board->moveDown();
-	}
+	} else
 	if (Input::isPressed(32))
 	{
 		if (this->board->update(currentPlayer))
@@ -143,14 +144,21 @@ void Game::handleInput()
 				this->gameOver = true;
 				return;
 			}
-			if (this->currentPlayer == Board::PLAYER_1)
-			{
-				this->currentPlayer = Board::PLAYER_2;
-			} else
-			{
-				this->currentPlayer = Board::PLAYER_1;
-			}
+			this->swapRole();
 		}
+	} else
+	if (Input::isPressed(90) || Input::isPressed(122))
+	{
+		if (this->board->undo())
+		{
+			this->swapRole();
+		}
+	} else
+	if (Input::isPressed(103) || Input::isPressed(71))
+	{
+		this->swapRole();
+		this->gameOver = true;
+		return;
 	}
 }
 void Game::update()
@@ -193,7 +201,7 @@ void Game::update()
 }
 void Game::draw()
 {
-	this->layout->draw(this->pauseMenu, this->filename);
+	this->layout->draw(this->pauseMenu, this->filename, false);
 }
 bool Game::willQuit()
 {
@@ -206,6 +214,16 @@ bool Game::isPlaying()
 bool Game::willOver()
 {
 	return this->gameOver;
+}
+void Game::swapRole()
+{
+	if (this->currentPlayer == Board::PLAYER_1)
+	{
+		this->currentPlayer = Board::PLAYER_2;
+	} else
+	{
+		this->currentPlayer = Board::PLAYER_1;
+	}
 }
 int Game::checkPlayerWin()
 {
@@ -239,16 +257,27 @@ void Game::saveGame()
 		lastPlayer = 2;
 	int len = 0;
 	std::string tempFileName ="";
+	std::vector<std::string> games = LoadGame::listGames();
+	int siz = games.size() + 1;
+	if (siz < 9)
+	{
+		this->filename = this->filename + "0" + (char)(siz + '0');
+	}
+	else
+	{
+		this->filename = this->filename + (char)(siz / 10 + '0') + (char)(siz % 10 + '0');
+	}
 	while (1)
 	{
 		if (tempFileName != "")
-			this->layout->draw(this->pauseMenu, tempFileName);
+			this->layout->draw(this->pauseMenu, tempFileName, false);
 		else
-			this->layout->draw(this->pauseMenu, filename);
+			this->layout->draw(this->pauseMenu, filename, true);
 		Input::update(-1);
 		if (Input::isPressed(27))
 		{
 			this->userAskedToSaveGame = false;
+			this->filename = "GOMOKU_";
 			return;
 		}
 		if (Input::isPressed('\n')) break;
@@ -259,7 +288,7 @@ void Game::saveGame()
 		}
 		char c = ' ';
 		c = Input::getAlphabet();
-		if (c == ' ' || len == 8) continue;
+		if (c == ' ' || len == 9) continue;
 		len++;
 		tempFileName = tempFileName + c;
 	}
