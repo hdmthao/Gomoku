@@ -29,7 +29,7 @@ Game::~Game()
 	SAFE_DELETE(this->player2);
 	SAFE_DELETE(this->pauseMenu);
 }
-void Game::start(bool isReady, int m_score1, int m_score2, bool willLoad)
+void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad)
 {
 	SAFE_DELETE(this->layout);
 	SAFE_DELETE(this->board);
@@ -81,8 +81,8 @@ void Game::start(bool isReady, int m_score1, int m_score2, bool willLoad)
 		if (rand() % 2 == 1) this->currentPlayer = Board::PLAYER_1;
 		else this->currentPlayer = Board::PLAYER_2;
 	}
-	this->player1 = new Player(m_score1);
-	this->player2 = new Player(m_score2);
+	this->player1 = new Player(m_score1, namePlayer1);
+	this->player2 = new Player(m_score2, namePlayer2);
 
 
 	this->pauseMenu = new Menu(1,
@@ -183,7 +183,7 @@ void Game::update()
 				break;
 
 			case RESTART:
-				this->start(true, this->player1->getScore(), this->player2->getScore(), false);
+				this->start(true, this->player1->getScore(), this->player2->getScore(), this->player1->getName(), this->player2->getName(), false);
 				return;
 
 			case SAVE:
@@ -293,7 +293,7 @@ void Game::saveGame()
 		tempFileName = tempFileName + c;
 	}
 	if (tempFileName != "") this->filename = tempFileName;
-	LoadGame::saveGame(this->filename, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
+	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
 lastPlayer, this->board->getLastBoard());
 	this->isQuit = true;
 }

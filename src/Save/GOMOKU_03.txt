@@ -1,6 +1,0 @@
-player1_score=1
-player2_score=0
-height=13
-width=13
-last_player=1
-85 2 98 2 97 2 84 2 71 2 58 2 59 2 72 2 73 2 60 2 

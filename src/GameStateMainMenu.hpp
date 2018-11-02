@@ -23,18 +23,26 @@ public:
     void draw();
 	bool isActivatedPVP;
 	bool isActivatedLOAD;
+	bool isActivatedName1;
+	bool isActivatedName2;
+
 private:
 	LayoutMainMenu* layout;
 
 	// Menu chính
 	Menu* menu;
 	Menu* boardMenu;
+	Menu* marvelMenu;
+	Menu* mobaMenu;
 	Menu* loadMenu;
+
 	// màn hình about và intro
 	WindowAbout* about;
 
 	void createMainMenu();
 	void createBoardMenu();
+	void createMarvelMenu();
+	void createMobaMenu();
 	void createLoadMenu();
 };
 

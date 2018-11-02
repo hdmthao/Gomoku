@@ -20,6 +20,7 @@ public:
 	// Thêm item cho menu
 	void add(MenuItem* item);
 
+	void addBlank();
 	// vẽ Menu ra màn hình
 	void draw(Window* window);
 
@@ -32,6 +33,8 @@ public:
 
 	// true nếu như user chọn một nhãn làm thoát menu hiện t
 	bool willQuit();
+
+	bool willDelete();
 
 	// trả về nhãn của item đang được chọn
 	std::string currentLabel();
@@ -58,6 +61,7 @@ protected:
 
 	// true nếu như user nhấn chọn một item .
 	bool selected;
+	bool deleted;
 
 	/// cho biết item nào user đang nhấn chọn.
 	MenuItem* selectedItem;

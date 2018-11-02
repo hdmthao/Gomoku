@@ -6,6 +6,8 @@
 #include <Player.hpp>
 #include <Display/Menu.hpp>
 
+using std::string;
+
 class LayoutGame;
 
 class Game
@@ -16,7 +18,7 @@ public:
 	Game();
 	virtual ~Game();
 
-	void start(bool isReady, int m_score1, int m_score2, bool willLoad);
+	void start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad);
 
 	void handleInput();
 	void update();

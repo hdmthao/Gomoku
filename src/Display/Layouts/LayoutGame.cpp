@@ -33,11 +33,11 @@ void LayoutGame::windowsInit()
 
 	this->infoTop = new Window(130, 6, 24, 8);
 	this->infoTop->borders(Window::BORDER_FANCY);
-	this->infoTop->setTitle("YASUO");
+	this->infoTop->setTitle("aa");
 
 	this->infoBot = new Window(130, 26, 24, 8);
 	this->infoBot->borders(Window::BORDER_FANCY);
-	this->infoBot->setTitle("INVOKER");
+	this->infoBot->setTitle("");
 
 	this->scoreBoardTop = new Window(this->infoTop, 10, 2, 11, 4);
 	this->scoreBoardTop->borders(Window::BORDER_NONE);
@@ -130,6 +130,8 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 
 	this->main->refresh();
 
+	this->infoTop->setTitle(this->game->player1->getName());
+	this->infoBot->setTitle(this->game->player2->getName());
 
 	if (this->game->isPlaying())
 	{
@@ -144,7 +146,6 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 			this->infoTop->borders(Window::BORDER_FANCY);
 			this->infoBot->borders(Window::BORDER_GAME);
 		}
-
 		this->infoTop->clear();
 		this->infoBot->clear();
 		this->scoreBoardTop->clear();
@@ -158,13 +159,13 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 			{
 				this->infoTop->print(Utils::String::split("#   #\n"
 														  "  #  \n"
-														  "#   #\n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
+														  "#   #\n", '\n'), 2, 2, true, Colors::pair("cyan", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 														  "o   o\n"
 														  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-				this->infoTop->print("YASUO WIN^^", this->infoTop->getW() / 2 - 6, 6, true, Colors::pair("magenta", "default", true));
-				this->infoBot->print("INVOKER LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
+				this->infoTop->print(this->game->player1->getName() + " WIN^^", this->infoTop->getW() / 2 - 6, 6, true, Colors::pair("magenta", "default", true));
+				this->infoBot->print(this->game->player2->getName() + " LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
 
 				LayoutGame::drawNumberTop(this->game->player1->getScore(), true);
 				LayoutGame::drawNumberBot(this->game->player2->getScore());
@@ -177,9 +178,9 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 													  	  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 												  		  "o   o\n"
-												  		  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
-				this->infoTop->print("YASUO LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
-				this->infoBot->print("INVOKER WIN^^", this->infoTop->getW() / 2 - 7, 6, true, Colors::pair("magenta", "default", true));
+												  		  " o o \n", '\n'), 2, 2, true, Colors::pair("cyan", "default", true));
+				this->infoTop->print(this->game->player1->getName() + " LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
+				this->infoBot->print(this->game->player2->getName() + " WIN^^", this->infoTop->getW() / 2 - 7, 6, true, Colors::pair("magenta", "default", true));
 				LayoutGame::drawNumberTop(this->game->player1->getScore());
 				LayoutGame::drawNumberBot(this->game->player2->getScore(), true);
 
@@ -199,7 +200,7 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 														  "o   o\n"
 														  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-				this->infoTop->print("YASUO's TURN", this->infoTop->getW() / 2 - 6, 6, Colors::pair("white", "default", true));
+				this->infoTop->print(this->game->player1->getName() + "'s TURN", this->infoTop->getW() / 2 - 6, 6, Colors::pair("white", "default", true));
 
 			}
 			else
@@ -211,7 +212,7 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 												  		  "o   o\n"
 												  		  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
 
-				this->infoBot->print("INVOKER's TURN", this->infoBot->getW() / 2 - 7, 6, Colors::pair("white", "default", true));
+				this->infoBot->print(this->game->player2->getName() + "'s TURN", this->infoBot->getW() / 2 - 7, 6, Colors::pair("white", "default", true));
 			}
 		}
 	}

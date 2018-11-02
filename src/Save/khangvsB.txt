@@ -1,6 +1,0 @@
-player1_score=8
-player2_score=4
-height=15
-width=15
-last_player=1
-1 2 4 1 5 2

@@ -28,7 +28,7 @@ private:
 	Window* scoreBoardTop;
 	Window* scoreBoardBot;
 	Window* help;
-	
+
 public:
 	Window* pause;
 };

@@ -16,12 +16,16 @@ GameStateGame::GameStateGame():
 	{
 		this->score1 = 0;
 		this->score2 = 0;
+		this->namePlayer1 = EngineGlobals::Game::namePlayer1;
+		this->namePlayer2 = EngineGlobals::Game::namePlayer2;
 	}
 	else
 	{
 		LoadGame::load(EngineGlobals::Game::currentGame);
 		this->score1 = LoadGame::loadScore(1);
 		this->score2 = LoadGame::loadScore(2);
+		this->namePlayer1 = LoadGame::loadName(1);
+		this->namePlayer2 = LoadGame::loadName(2);
 	}
 }
 GameStateGame::~GameStateGame()
@@ -31,11 +35,11 @@ void GameStateGame::load()
 		this->game = new Game();
 		if (!this->isReady && EngineGlobals::Game::currentGame != "")
 		{
-			this->game->start(this->isReady, this->score1, this->score2, 1);
+			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 1);
 			this->isReady = true;
 		}
 		else
-			this->game->start(this->isReady, this->score1, this->score2, 0);
+			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 0);
 }
 void GameStateGame::unload()
 {

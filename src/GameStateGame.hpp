@@ -5,6 +5,8 @@
 #include <Game.hpp>
 #include <string>
 
+using std::string;
+
 class GameStateGame: public GameState
 {
 public:
@@ -17,13 +19,15 @@ public:
 	void update();
     void draw();
 
-	void showDialog(std::string, int width, int height);
-	bool showRetryDialog(std::string, int width, int height);
+	void showDialog(string, int width, int height);
+	bool showRetryDialog(string, int width, int height);
 private:
 	Game* game;
 
 	int score1;
 	int score2;
+	string namePlayer1;
+	string namePlayer2;
 	bool willQuit;
 	bool isReady;
 };

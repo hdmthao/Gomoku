@@ -16,13 +16,17 @@ int LoadGame::score2 = 0;
 int LoadGame::width = 0;
 int LoadGame::height = 0;
 int LoadGame::lastPlayer = 1;
+std::string LoadGame::namePlayer1 = "";
+std::string LoadGame::namePlayer2 = "";
 std::string LoadGame::str = "";
-void LoadGame::saveGame(std::string m_filename, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
+void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::string namePlayer2, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
 {
     std::string filename = path + m_filename + ".txt";
     std::ofstream file;
     file.open(filename);
 
+    file << namePlayer1 << "\n";
+    file << namePlayer2 << "\n";
     file << "player1_score=" << m_score1 << "\n";
     file << "player2_score=" << m_score2 << "\n";
     file << "height=" << size << "\n";
@@ -46,18 +50,25 @@ void LoadGame::load(std::string filename)
     int countLine = 0;
     while (std::getline(file, line)) {
         ++countLine;
-        if (countLine == 1) LoadGame::score1 = LoadGame::getInt(line);
-        if (countLine == 2) LoadGame::score2 = LoadGame::getInt(line);
-        if (countLine == 3) LoadGame::width = LoadGame::getInt(line);
-        if (countLine == 4) LoadGame::height = LoadGame::getInt(line);
-        if (countLine == 5) LoadGame::lastPlayer = LoadGame::getInt(line);
-        if (countLine == 6) LoadGame::str = line;
+        if (countLine == 1) LoadGame::namePlayer1 = line;
+        if (countLine == 2) LoadGame::namePlayer2 = line;
+        if (countLine == 3) LoadGame::score1 = LoadGame::getInt(line);
+        if (countLine == 4) LoadGame::score2 = LoadGame::getInt(line);
+        if (countLine == 5) LoadGame::width = LoadGame::getInt(line);
+        if (countLine == 6) LoadGame::height = LoadGame::getInt(line);
+        if (countLine == 7) LoadGame::lastPlayer = LoadGame::getInt(line);
+        if (countLine == 8) LoadGame::str = line;
     }
 }
 int LoadGame::loadScore(int currentPlayer)
 {
     if (currentPlayer == 1) return LoadGame::score1;
     else return LoadGame::score2;
+}
+std::string LoadGame::loadName(int currentPlayer)
+{
+    if (currentPlayer == 1) return LoadGame::namePlayer1;
+    else return LoadGame::namePlayer2;
 }
 int LoadGame::loadTypeBoard()
 {
@@ -74,6 +85,9 @@ int LoadGame::loadTypeBoard()
             break;
         case 19:
             return 4;
+            break;
+        default:
+            return 0;
             break;
     }
 }
@@ -232,4 +246,17 @@ std::vector<std::string> LoadGame::listInfos()
     }
     closedir(dir);
 	return infos;
+}
+void LoadGame::removeLoadGame(std::string filename)
+{
+    std::string tmp = "";
+    for (unsigned int i = 0; i < filename.length(); ++i) {
+        if (filename[i] == ' ') break;
+        tmp += filename[i];
+    }
+    filename = path + tmp + ".txt";
+
+    std::string command = "rm -f " + filename;
+
+    system(command.c_str());
 }

@@ -69,6 +69,12 @@ void Window::print(std::vector<std::string> lines, int x, int y, ColorPair pair)
 	for (size_t i = 0; i < lines.size(); i++)
 		this->print(lines[i], x, (y + i), pair);
 }
+void Window::print(std::vector<std::string> lines, int x, int y, bool isAttr, ColorPair pair)
+{
+
+	for (size_t i = 0; i < lines.size(); i++)
+		this->print(lines[i], x, (y + i), true, pair);
+}
 void Window::printChar(int c, int x, int y, ColorPair pair)
 {
 	Colors::pairActivate(this->win, pair);

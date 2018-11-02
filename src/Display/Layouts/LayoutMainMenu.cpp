@@ -14,6 +14,7 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	menu(NULL),
 	boardMenu(NULL),
 	loadMenu(NULL),
+	nameMenu(NULL),
 	loadHelpWin(NULL),
 	animationwin(NULL),
 	animation(NULL)
@@ -57,6 +58,9 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->boardMenu->borders(Window::BORDER_FANCY);
 
 
+	this->nameMenu = new Window(posX, posY, 30	, 12);
+	this->nameMenu->borders(Window::BORDER_FANCY);
+
 	this->loadMenu = new Window(posX - 4, posY, 30, 13);
 	this->loadMenu->setTitle("Choose Game");
 	this->loadMenu->borders(Window::BORDER_FANCY);
@@ -88,6 +92,7 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->animationwin);
 	SAFE_DELETE(this->animation);
 	SAFE_DELETE(this->boardMenu);
+	SAFE_DELETE(this->nameMenu);
 	SAFE_DELETE(this->loadMenu);
 	SAFE_DELETE(this->loadHelpWin);
 }
@@ -135,6 +140,20 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu) {
 
 		this->loadMenu->refresh();
 		this->loadHelpWin->refresh();
+	}
+	else if (isSubMenu == 3)
+	{
+		this->nameMenu->setTitle("Choose Player1 Character");
+		this->nameMenu->clear();
+		menu->draw(this->nameMenu);
+		this->nameMenu->refresh();
+	}
+	else if (isSubMenu == 4)
+	{
+		this->nameMenu->setTitle("Choose Player2 Character");
+		this->nameMenu->clear();
+		menu->draw(this->nameMenu);
+		this->nameMenu->refresh();
 	}
 	else
 	{

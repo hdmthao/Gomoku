@@ -2,6 +2,7 @@
 
 *.o
 *.gch
+*.txt
 
 # Logs #
 *.log

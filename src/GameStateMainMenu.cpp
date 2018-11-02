@@ -11,14 +11,20 @@ enum Label_Id {
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
 
 	// Size Board Menu
-	RETURN, TICTACTOE, SMALL, NORMAL, BIG
+	RETURN, TICTACTOE, SMALL, NORMAL, BIG,
 
+	//Marvel Menu
+	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
+
+	XERATH, ELISE, YASUO, PANTHEON, RENEKTON, ANNIE, ORNN, IRELIA
 };
 
 GameStateMainMenu::GameStateMainMenu():
 	layout(NULL),
 	menu(NULL),
 	boardMenu(NULL),
+	marvelMenu(NULL),
+	mobaMenu(NULL),
 	loadMenu(NULL),
 	about(NULL)
 { }
@@ -29,9 +35,13 @@ void GameStateMainMenu::load() {
 	createMainMenu();
 	createBoardMenu();
 	createLoadMenu();
+	createMarvelMenu();
+	createMobaMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
+	this->isActivatedName1 = false;
+	this->isActivatedName2 = false;
 	this->about = new WindowAbout(100, 30);
 }
 
@@ -40,10 +50,53 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->menu);
 	SAFE_DELETE(this->boardMenu);
 	SAFE_DELETE(this->loadMenu);
+	SAFE_DELETE(this->marvelMenu);
+	SAFE_DELETE(this->mobaMenu);
 }
 
 void GameStateMainMenu::update()
 {
+	if (this->isActivatedName1)
+	{
+		this->marvelMenu->handleInput();
+		if (this->marvelMenu->willQuit())
+		{
+			switch(this->marvelMenu->currentID())
+			{
+				case RETURN:
+					this->isActivatedName1 = false;
+					break;
+				default:
+					this->isActivatedName1 = false;
+					this->isActivatedName2 = true;
+					EngineGlobals::Game::setNamePlayer(this->marvelMenu->currentLabel(), 1);
+					break;
+			}
+		}
+		this->marvelMenu->reset();
+	}
+	else
+	if (this->isActivatedName2)
+	{
+		this->mobaMenu->handleInput();
+		if (this->mobaMenu->willQuit())
+		{
+			switch(this->mobaMenu->currentID())
+			{
+				case RETURN:
+					this->isActivatedName2 = false;
+					this->isActivatedName1 = true;
+					break;
+				default:
+					this->isActivatedName2 = false;
+					EngineGlobals::Game::setNamePlayer(this->mobaMenu->currentLabel(), 0);
+					StateManager::change(new GameStateGame());
+					break;
+			}
+		}
+		this->mobaMenu->reset();
+	}
+	else
 	if (this->isActivatedPVP)
 	{
 		this->boardMenu->handleInput();
@@ -94,6 +147,11 @@ void GameStateMainMenu::update()
 					break;
 			}
 		}
+		else if (this->loadMenu->willDelete())
+		{
+			LoadGame::removeLoadGame(this->loadMenu->currentLabel());
+			createLoadMenu();
+		}
 		this->loadMenu->reset();
 	}
 	else
@@ -105,7 +163,7 @@ void GameStateMainMenu::update()
 			{
 				case PVP:
 					EngineGlobals::Game::setLoadGame("");
-					this->isActivatedPVP = true;
+					this->isActivatedName1 = true;
 					break;
 				case LOAD:
 					this->isActivatedLOAD = true;
@@ -124,7 +182,15 @@ void GameStateMainMenu::update()
 }
 
 void GameStateMainMenu::draw() {
-	if (this->isActivatedPVP)
+	if (this->isActivatedName1)
+	{
+		this->layout->draw(this->marvelMenu, 3);
+	}
+	else if (this->isActivatedName2)
+	{
+		this->layout->draw(this->mobaMenu, 4);
+	}
+	else if (this->isActivatedPVP)
 	{
 		this->layout->draw(this->boardMenu, 1);
 	}
@@ -178,6 +244,81 @@ void GameStateMainMenu::createMainMenu() {
 	item = new MenuItem("Quit", QUIT);
 	menu->add(item);
 }
+void GameStateMainMenu::createMarvelMenu()
+{
+	SAFE_DELETE(this->marvelMenu);
+
+	this->marvelMenu = new Menu(1, 1, this->layout->nameMenu->getW() - 2, this->layout->nameMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Iron Man", IRON);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Spider Man", SPIDER);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Thanos", THANOS);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Captain America", CAPTAIN);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Hulk", HULK);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Black Panther", PANTHER);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Thor", THOR);
+	marvelMenu->add(item);
+
+	item = new MenuItem("Deadpool", DEADPOOL);
+	marvelMenu->add(item);
+
+	marvelMenu->addBlank();
+	item = new MenuItem("Back", RETURN);
+	marvelMenu->add(item);
+
+}
+void GameStateMainMenu::createMobaMenu()
+{
+	SAFE_DELETE(this->mobaMenu);
+
+	this->mobaMenu = new Menu(1, 1, this->layout->nameMenu->getW() - 2, this->layout->nameMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Xerath", XERATH);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Elise", ELISE);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Yasuo", YASUO);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Pantheon", PANTHEON);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Renekton", RENEKTON);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Annie", ANNIE);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Ornn", ORNN);
+	mobaMenu->add(item);
+
+	item = new MenuItem("Irelia", IRELIA);
+	mobaMenu->add(item);
+
+	mobaMenu->addBlank();
+	item = new MenuItem("Back", RETURN);
+	mobaMenu->add(item);
+
+}
+
 void GameStateMainMenu::createBoardMenu()
 {
 	SAFE_DELETE(this->boardMenu);

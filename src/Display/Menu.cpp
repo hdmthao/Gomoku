@@ -11,6 +11,7 @@ Menu::Menu(int x, int y, int width, int height):
 	width(width),
 	height(height),
 	selected(false),
+	deleted(false),
 	selectedItem(NULL)
 { }
 Menu::~Menu()
@@ -39,7 +40,10 @@ void Menu::add(MenuItem* item)
 	this->current      = this->item[i];
 	this->currentIndex = i;
 }
-
+void Menu::addBlank()
+{
+	this->item.push_back(NULL);
+}
 void Menu::draw(Window* window)
 {
 	unsigned int draw_begin = 0;
@@ -74,6 +78,15 @@ void Menu::draw(Window* window)
 			window->print("(more)", this->x + this->width/2 - 3, this->y + yoffset + 1, Colors::pair("white", "default"));
 			continue;
 		}
+		if (! this->item[curitem])
+		{
+			for (int j = 0; j < (this->width); j++)
+				window->printChar(
+								   ACS_HLINE,
+								  this->x + j,
+								  this->y + yoffset,
+								  Colors::pair("white", "default"));
+		} else
 		this->item[curitem]->draw(window, this->x, this->y + yoffset, this->width, (this->item[curitem] == this->current));
 	}
 }
@@ -96,10 +109,18 @@ void Menu::handleInput()
 		else
 			this->current->handleInput();
 	}
+	else if (Input::isPressed(97))
+	{
+		if (this->current->type == MenuItem::ITEM || this->current->type == MenuItem::LABEL)
+		{
+			this->deleted = true;
+			this->selectedItem = this->current;
+		}
+		else this->current->handleInput();
+	}
 	else
 	{
-		if (this->current)
-			this->current->handleInput();
+		if (this->current) this->current->handleInput();
 	}
 }
 
@@ -122,6 +143,8 @@ void Menu::goNext()
 
 	this->currentIndex++;
 	this->current = this->item[this->currentIndex];
+
+	if (!this->current) this->goNext();
 }
 
 void Menu::goPrevious()
@@ -143,12 +166,19 @@ void Menu::goPrevious()
 
 	this->currentIndex--;
 	this->current = this->item[this->currentIndex];
+
+	if (!this->current) this->goPrevious();
 }
 
 bool Menu::willQuit()
 {
 	// Thoát nếu như user chọn một item
 	return (this->selected && this->selectedItem);
+}
+
+bool Menu::willDelete()
+{
+	return (this->deleted && this->selectedItem);
 }
 
 std::string Menu::currentLabel()
