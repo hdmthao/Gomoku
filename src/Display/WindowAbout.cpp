@@ -41,7 +41,6 @@ void WindowAbout::run() {
 
 		this->helpWin->setTitle("Help");
 		this->helpWin->borders(Window::BORDER_FANCY);
-		this->helpWin->setBackground(' ', Colors::pair("black", "white", true));
 		this->helpWin->clear();
 
 		this->main->print(((activatedIndex == 0) ?
