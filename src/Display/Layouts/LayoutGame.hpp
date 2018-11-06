@@ -20,7 +20,8 @@ public:
 	void draw(Menu* menu, std::string filename, bool isDefault=false);
 	void drawNumberTop(int number, bool isVip=false);
 	void drawNumberBot(int number, bool isVip=false);
-
+	std::string toString(int num);
+	
 private:
 	Game* game;
 	Window* infoTop;

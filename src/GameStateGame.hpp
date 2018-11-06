@@ -4,13 +4,16 @@
 #include <GameState.hpp>
 #include <Game.hpp>
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
+using std::pair;
 
 class GameStateGame: public GameState
 {
 public:
-	GameStateGame();
+	GameStateGame(bool aiMod);
     virtual ~GameStateGame();
 
     void load();
@@ -21,6 +24,9 @@ public:
 
 	void showDialog(string, int width, int height);
 	bool showRetryDialog(string, int width, int height);
+
+	void saveHistory();
+
 private:
 	Game* game;
 
@@ -30,6 +36,12 @@ private:
 	string namePlayer2;
 	bool willQuit;
 	bool isReady;
+	bool isAi;
+	
+	string filename;
+	int countGame;
+	vector<pair<int, int>> vecScore;
+	vector< vector< pair<int, int> > > vecBoard;
 };
 
 #endif //GAMESTATEGAME_H_DEFINED

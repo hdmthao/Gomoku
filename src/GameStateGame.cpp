@@ -6,18 +6,31 @@
 #include <StateManager.hpp>
 #include <GameStateMainMenu.hpp>
 #include <LoadGame.hpp>
+#include <LoadStat.hpp>
+#include <iostream>
 
-GameStateGame::GameStateGame():
+GameStateGame::GameStateGame(bool aiMod):
 	game(NULL),
 	willQuit(false),
-	isReady(false)
+	isReady(false),
+	filename("Gomoku_"),
+	countGame(0)
 {
+	LoadGame::loadStatictis();
 	if (EngineGlobals::Game::currentGame == "")
 	{
 		this->score1 = 0;
 		this->score2 = 0;
 		this->namePlayer1 = EngineGlobals::Game::namePlayer1;
 		this->namePlayer2 = EngineGlobals::Game::namePlayer2;
+		if (!aiMod){
+			for (unsigned int i = 1; i <= 16; ++i)
+			{
+				if (LoadGame::name[i] == this->namePlayer1) LoadGame::count[i]++;
+				if (LoadGame::name[i] == this->namePlayer2) LoadGame::count[i]++;
+			}
+		}
+		this->isAi = aiMod;
 	}
 	else
 	{
@@ -26,20 +39,28 @@ GameStateGame::GameStateGame():
 		this->score2 = LoadGame::loadScore(2);
 		this->namePlayer1 = LoadGame::loadName(1);
 		this->namePlayer2 = LoadGame::loadName(2);
+		this->isAi = LoadGame::isAiMod;
 	}
 }
 GameStateGame::~GameStateGame()
-{ }
+{
+	LoadGame::saveStatictis();
+	if (this->countGame > 0 && EngineGlobals::Game::currentGame == "") saveHistory();
+	vecScore.clear();
+	vecBoard.clear();
+
+}
 void GameStateGame::load()
 {
+
 		this->game = new Game();
 		if (!this->isReady && EngineGlobals::Game::currentGame != "")
 		{
-			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 1);
+			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 1, this->isAi);
 			this->isReady = true;
 		}
 		else
-			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 0);
+			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 0, this->isAi);
 }
 void GameStateGame::unload()
 {
@@ -62,13 +83,18 @@ void GameStateGame::update()
 		if (this->game->checkPlayerWin() == 1)
 		{
 			this->score1++;
+			this->vecScore.push_back(std::make_pair(this->score1, this->score2));
 		}
 		else
 		{
 			this->score2++;
+			this->vecScore.push_back(std::make_pair(this->score1, this->score2));
 		}
 		this->game->updateScore(this->score1, this->score2);
 		this->game->draw();
+		LoadGame::playedGameMul++;
+		this->countGame++;
+		this->vecBoard.push_back(this->game->getLastBoard());
 		Input::update(4000);
 		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
 		{
@@ -137,4 +163,19 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 		this->game->isPlay = true;
 		return true;
 	}
+}
+void GameStateGame::saveHistory()
+{
+	std::string tempFileName ="";
+	std::vector<std::string> games = LoadStat::listGames();
+	int siz = games.size() + 1;
+	if (siz < 9)
+	{
+		this->filename = this->filename + "0" + (char)(siz + '0');
+	}
+	else
+	{
+		this->filename = this->filename + (char)(siz / 10 + '0') + (char)(siz % 10 + '0');
+	}
+	LoadStat::saveStat(this->filename, this->namePlayer1, this->namePlayer2, this->isAi, 13, 1, this->score1, this->score2, this->countGame, this->vecScore, this->vecBoard);
 }

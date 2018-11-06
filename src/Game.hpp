@@ -2,6 +2,7 @@
 #define GAME_H_DEFINED
 
 #include <string>
+#include <vector>
 #include <Board.hpp>
 #include <Player.hpp>
 #include <Display/Menu.hpp>
@@ -18,7 +19,7 @@ public:
 	Game();
 	virtual ~Game();
 
-	void start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad);
+	void start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad, bool aiMod);
 
 	void handleInput();
 	void update();
@@ -32,9 +33,13 @@ public:
 	void updateScore(int score1, int score2);
 	bool isPlay;
 	bool isPause;
+	int round;
+	bool isAi;
 	void pause(bool option);
 
 	void saveGame();
+
+	std::vector< std::pair<int, int> > getLastBoard();
 
 	int numberOfGame;
 

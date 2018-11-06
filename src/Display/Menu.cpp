@@ -109,7 +109,7 @@ void Menu::handleInput()
 		else
 			this->current->handleInput();
 	}
-	else if (Input::isPressed(97))
+	else if (Input::isPressed(KEY_DC))
 	{
 		if (this->current->type == MenuItem::ITEM || this->current->type == MenuItem::LABEL)
 		{

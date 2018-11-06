@@ -14,10 +14,10 @@ WindowAbout::WindowAbout(int screenWidth, int screenHeight) {
 	this->main = new Window(windowx, windowy, width, height);
 
 	// Help
-	this->intro = new Window(this->main, 0, 0, WINDOW_FILL, WINDOW_FILL);
+	this->intro = new Window(this->main, 0, 0, 0, 0);
 	this->intro->borders(Window::BORDER_NONE);
 
-	this->credit = new Window(this->main, 0, 0, WINDOW_FILL, WINDOW_FILL);
+	this->credit = new Window(this->main, 0, 0, 0, 0);
 	this->credit->borders(Window::BORDER_NONE);
 }
 

@@ -68,6 +68,8 @@ protected:
 	BorderType borderType;
 
 	std::string centerTitle;
+	std::string leftTitle;
+	std::string rightTitle;
 };
 
 #endif //WINDOW_H_DEFINED

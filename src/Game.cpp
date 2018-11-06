@@ -18,7 +18,8 @@ Game::Game():
 	pauseMenu(NULL),
 	player1(NULL),
 	player2(NULL),
-	filename("GOMOKU_")
+	filename("GOMOKU_"),
+	round(0)
 {
 }
 Game::~Game()
@@ -29,7 +30,7 @@ Game::~Game()
 	SAFE_DELETE(this->player2);
 	SAFE_DELETE(this->pauseMenu);
 }
-void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad)
+void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad, bool aiMod)
 {
 	SAFE_DELETE(this->layout);
 	SAFE_DELETE(this->board);
@@ -42,13 +43,13 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 	{
 		this->isPlay = false;
 	}
-
+	this->isAi = aiMod;
 	this->isQuit = false;
 	this->gameOver = false;
 	this->isPause = false;
 	this->userAskedToSaveGame = false;
+	this->round = m_score1 + m_score2 + 1;
 	this->layout = new LayoutGame(this, 80, 30);
-
 	this->board = new Board();
 	if (willLoad)
 	{
@@ -183,7 +184,7 @@ void Game::update()
 				break;
 
 			case RESTART:
-				this->start(true, this->player1->getScore(), this->player2->getScore(), this->player1->getName(), this->player2->getName(), false);
+				this->start(true, this->player1->getScore(), this->player2->getScore(), this->player1->getName(), this->player2->getName(), false, this->isAi);
 				return;
 
 			case SAVE:
@@ -293,7 +294,12 @@ void Game::saveGame()
 		tempFileName = tempFileName + c;
 	}
 	if (tempFileName != "") this->filename = tempFileName;
-	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
+	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), this->isAi, 4, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
 lastPlayer, this->board->getLastBoard());
 	this->isQuit = true;
+}
+
+std::vector< std::pair<int, int> > Game::getLastBoard()
+{
+	return this->board->getLastBoard();
 }

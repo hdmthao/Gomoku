@@ -8,8 +8,10 @@
 #include <time.h>
 #include <string.h>
 #include <langinfo.h>
+#include <iomanip>
 
 const std::string path = "/home/himt/cs/cs161/projects/Gomoku/src/Save/";
+const std::string pathStats = "/home/himt/cs/cs161/projects/Gomoku/src/Statistic/stats.txt";
 
 int LoadGame::score1 = 0;
 int LoadGame::score2 = 0;
@@ -18,8 +20,21 @@ int LoadGame::height = 0;
 int LoadGame::lastPlayer = 1;
 std::string LoadGame::namePlayer1 = "";
 std::string LoadGame::namePlayer2 = "";
+bool LoadGame::isAiMod = false;
+int LoadGame::gameRule = 0;
 std::string LoadGame::str = "";
-void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::string namePlayer2, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
+
+int LoadGame::rating = 0;
+int LoadGame::playedGameMul = 0;
+int LoadGame::playedGameCamp = 0;
+int LoadGame::winGame = 0;
+std::string LoadGame::winRate = "";
+std::string LoadGame::topCharacterMoba = "";
+std::string LoadGame::topCharacterMarvel = "";
+int LoadGame::count[20] = {0};
+std::string LoadGame::name[20] = {""};
+
+void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::string namePlayer2, bool m_aimod, int m_gameRule, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
 {
     std::string filename = path + m_filename + ".txt";
     std::ofstream file;
@@ -27,11 +42,16 @@ void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::st
 
     file << namePlayer1 << "\n";
     file << namePlayer2 << "\n";
-    file << "player1_score=" << m_score1 << "\n";
-    file << "player2_score=" << m_score2 << "\n";
-    file << "height=" << size << "\n";
-    file << "width=" << size << "\n";
-    file << "last_player=" << currentPlayer << "\n";
+    file << "\"player1_score\":" << m_score1 << "\n";
+    file << "\"player2_score\":" << m_score2 << "\n";
+    if (m_aimod)
+        file << "\"game_mod\":" << 1 << "\n";
+    else
+        file << "\"game_mod\":" << 0 << "\n";
+    file << "\"game_rule\":" << m_gameRule << "\n";
+    file << "\"height\":" << size << "\n";
+    file << "\"width\":" << size << "\n";
+    file << "\"last_player\":" << currentPlayer << "\n";
     for (unsigned int i = 0; i < board.size(); ++i) {
         std::pair<int, int> ii;
         ii = board[i];
@@ -54,10 +74,12 @@ void LoadGame::load(std::string filename)
         if (countLine == 2) LoadGame::namePlayer2 = line;
         if (countLine == 3) LoadGame::score1 = LoadGame::getInt(line);
         if (countLine == 4) LoadGame::score2 = LoadGame::getInt(line);
-        if (countLine == 5) LoadGame::width = LoadGame::getInt(line);
-        if (countLine == 6) LoadGame::height = LoadGame::getInt(line);
-        if (countLine == 7) LoadGame::lastPlayer = LoadGame::getInt(line);
-        if (countLine == 8) LoadGame::str = line;
+        if (countLine == 5) LoadGame::isAiMod = LoadGame::getInt(line);
+        if (countLine == 6) LoadGame::gameRule = LoadGame::getInt(line);
+        if (countLine == 7) LoadGame::width = LoadGame::getInt(line);
+        if (countLine == 8) LoadGame::height = LoadGame::getInt(line);
+        if (countLine == 9) LoadGame::lastPlayer = LoadGame::getInt(line);
+        if (countLine == 10) LoadGame::str = line;
     }
 }
 int LoadGame::loadScore(int currentPlayer)
@@ -69,6 +91,10 @@ std::string LoadGame::loadName(int currentPlayer)
 {
     if (currentPlayer == 1) return LoadGame::namePlayer1;
     else return LoadGame::namePlayer2;
+}
+int LoadGame::loadGameRule()
+{
+    return LoadGame::gameRule;
 }
 int LoadGame::loadTypeBoard()
 {
@@ -165,7 +191,7 @@ int LoadGame::getInt(std::string str)
 {
     unsigned int i = 0;
     for (;; ++i) {
-        if (str[i] == '=') break;
+        if (str[i] == ':') break;
     }
     int num = 0;
     ++i;
@@ -175,9 +201,26 @@ int LoadGame::getInt(std::string str)
     }
     return num;
 }
+std::string LoadGame::getStr(std::string str)
+{
+    unsigned int i = 0;
+    for (;; ++i)
+        if (str[i] == ':') break;
+    ++i;
+    std::string tmp = "";
+    for (;i < str.length(); ++i)
+    {
+        tmp = tmp + str[i];
+    }
+    return tmp;
+}
 int LoadGame::loadLastPlayer()
 {
     return LoadGame::lastPlayer;
+}
+bool LoadGame::loadMode()
+{
+    return LoadGame::isAiMod;
 }
 std::vector<std::string> LoadGame::listGames()
 {
@@ -259,4 +302,101 @@ void LoadGame::removeLoadGame(std::string filename)
     std::string command = "rm -f " + filename;
 
     system(command.c_str());
+}
+void LoadGame::saveStatictis()
+{
+    std::ofstream fileout;
+    fileout.open(pathStats);
+    fileout << "\"rating\":" << LoadGame::rating<< "\n";
+    fileout << "\"played_game_mul\":" << LoadGame::playedGameMul<< "\n";
+    fileout << "\"played_game_camp\":" << LoadGame::playedGameCamp<< "\n";
+    fileout << "\"win_game\":" << LoadGame::winGame<< "\n";
+    if (LoadGame::playedGameCamp== 0)
+    fileout << "\"win_rate\":" << 0 <<"\n";
+    else
+    fileout << "\"win_rate\":" << std::fixed << std::setprecision(2) << 1.0 * LoadGame::winGame / LoadGame::playedGameCamp << "\n";
+    for (unsigned int i = 1; i <= 16; ++i)
+    {
+        fileout << "\"" << name[i] << "\":" << count[i] << "\n";
+    }
+    fileout.close();
+}
+void LoadGame::loadStatictis()
+{
+    std::ifstream file;
+    file.open(pathStats);
+    std::string line = "";
+    int countLine = 0;
+    int topMarvel = 0;
+    int topMoba = 0;
+    while (std::getline(file, line)) {
+        ++countLine;
+        if (countLine == 1) LoadGame::rating = LoadGame::getInt(line);
+        if (countLine == 2) LoadGame::playedGameMul = LoadGame::getInt(line);
+        if (countLine == 3) LoadGame::playedGameCamp = LoadGame::getInt(line);
+        if (countLine == 4) LoadGame::winGame = LoadGame::getInt(line);
+        if (countLine == 5) LoadGame::winRate = LoadGame::getStr(line);
+        if (countLine > 5 && countLine <= 13)
+        {
+            LoadGame::count[countLine - 5] = LoadGame::getInt(line);
+            LoadGame::name[countLine - 5] = LoadGame::getName(line);
+
+            int tmp = LoadGame::getInt(line);
+            if (LoadGame::count[countLine - 5] >= topMarvel)
+            {
+                topMarvel = LoadGame::count[countLine - 5];
+                LoadGame::topCharacterMarvel = LoadGame::name[countLine - 5];
+            }
+        }
+        if (countLine > 13 && countLine <= 21)
+        {
+            LoadGame::count[countLine - 5] = LoadGame::getInt(line);
+            LoadGame::name[countLine - 5] = LoadGame::getName(line);
+
+            if (LoadGame::count[countLine - 5] >= topMoba)
+            {
+                topMoba = LoadGame::count[countLine - 5];
+                LoadGame::topCharacterMoba = LoadGame::name[countLine - 5];
+            }
+        }
+    }
+}
+int LoadGame::loadRating()
+{
+    return LoadGame::rating;
+}
+int LoadGame::loadPlayedCamp()
+{
+    return LoadGame::playedGameCamp;
+}
+int LoadGame::loadPlayedMul()
+{
+    return LoadGame::playedGameMul;
+}
+
+int LoadGame::loadWin()
+{
+    return LoadGame::winGame;
+}
+std::string LoadGame::loadWinRate()
+{
+    return LoadGame::winRate;
+}
+std::string LoadGame::loadMarvel()
+{
+    return LoadGame::topCharacterMarvel;
+}
+std::string LoadGame::loadMoba()
+{
+    return LoadGame::topCharacterMoba;
+}
+std::string LoadGame::getName(std::string str)
+{
+    std::string tmp = "";
+    for (unsigned int i = 1; i < str.length(); ++i)
+    {
+        if (str[i] == '"') break;
+        tmp += str[i];
+    }
+    return tmp;
 }

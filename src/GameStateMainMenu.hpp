@@ -5,6 +5,7 @@
 #include <Display/Layouts/LayoutMainMenu.hpp>
 #include <Display/Menu.hpp>
 #include <Display/WindowAbout.hpp>
+#include <Display/WindowStatistic.hpp>
 
 // Trạng thái menu
 
@@ -25,6 +26,7 @@ public:
 	bool isActivatedLOAD;
 	bool isActivatedName1;
 	bool isActivatedName2;
+	bool isActivateSetting;
 
 private:
 	LayoutMainMenu* layout;
@@ -35,15 +37,18 @@ private:
 	Menu* marvelMenu;
 	Menu* mobaMenu;
 	Menu* loadMenu;
+	Menu* settingMenu;
 
 	// màn hình about và intro
 	WindowAbout* about;
+	WindowStatistic* statistic;
 
 	void createMainMenu();
 	void createBoardMenu();
 	void createMarvelMenu();
 	void createMobaMenu();
 	void createLoadMenu();
+	void createSettingMenu();
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

@@ -21,9 +21,12 @@ LayoutGame::~LayoutGame()
 void LayoutGame::windowsInit()
 {
 	Layout::windowsInit();
-	this->main->setTitle("Gomoku - PvP Mode");
-
-
+	this->main->setTitle("GOMOKU");
+	this->main->setTitle("Round " + toString(this->game->round), Window::TOP_RIGHT);
+	if (this->game->isAi)
+		this->main->setTitle("Campaign", Window::TOP_LEFT);
+	else
+		this->main->setTitle("Multiplayer", Window::TOP_LEFT);
 	this->pause = new Window(this->main, this->main->getW() / 4, this->main->getH() / 2 - 3, this->main->getW() / 2, 7);
 	this->pause->setTitle("Paused");
 
@@ -33,7 +36,7 @@ void LayoutGame::windowsInit()
 
 	this->infoTop = new Window(130, 6, 24, 8);
 	this->infoTop->borders(Window::BORDER_FANCY);
-	this->infoTop->setTitle("aa");
+	this->infoTop->setTitle("");
 
 	this->infoBot = new Window(130, 26, 24, 8);
 	this->infoBot->borders(Window::BORDER_FANCY);
@@ -288,4 +291,15 @@ void LayoutGame::drawNumberBot(int number, bool isVip)
 			x = 0;
 		}
 	}
+}
+std::string LayoutGame::toString(int num)
+{
+	if (num == 0) return "0";
+	std::string tmp = "";
+	while (num != 0)
+	{
+		tmp = (char)(num % 10 + '0') + tmp;
+		num /= 10;
+	}
+	return tmp;
 }

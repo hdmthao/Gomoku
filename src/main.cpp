@@ -4,6 +4,7 @@
 #include <GameStateMainMenu.hpp>
 #include <Input.hpp>
 #include <GameState.hpp>
+#include <LoadGame.hpp>
 
 #include <ncurses.h>
 #include <cstdlib>
@@ -14,7 +15,6 @@ int main() {
 		// Phần cài đặt
 
 		EngineGlobals::init();
-
 		// Phần khởi tạo
 
 		srand(static_cast<unsigned int>(time(0))); // random seed

@@ -10,7 +10,9 @@ Window::Window(int x, int y, int w, int h):
 	width(w),
 	height(h),
 	borderType(BORDER_NONE),
-	centerTitle()
+	centerTitle(""),
+	leftTitle(""),
+	rightTitle("")
 {
 	this->win = newwin(height, width, y, x);
 	this->setBorders();
@@ -107,7 +109,20 @@ void Window::clear()
 	{
 		this->print(this->centerTitle,
 		            this->width/2 - this->centerTitle.size() / 2, 0,
-		            Colors::pair("yellow", "default"));
+		            Colors::pair("yellow", "default", true));
+	}
+	if (!this->leftTitle.empty())
+	{
+		this->print(this->leftTitle,
+		            2, 0,
+		            Colors::pair("yellow", "default", true));
+	}
+	if (!this->rightTitle.empty())
+	{
+
+		this->print(this->rightTitle,
+		            this->getW() - 1 - this->rightTitle.size() - 1, 0,
+		            Colors::pair("yellow", "default", true));
 	}
 }
 int Window::getW() const
@@ -162,8 +177,8 @@ void Window::borders(BorderType type)
 		wattroff(this->win, A_BLINK);
 	} else if (type == Window::BORDER_INFO)
 	{
-		ColorPair red = Colors::pair("red", "default");
-		Colors::pairActivate(this->win, red);
+		ColorPair white = Colors::pair("white", "default");
+		Colors::pairActivate(this->win, white);
 		wborder(this->win, ACS_DIAMOND, ACS_DIAMOND, ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND,ACS_DIAMOND);
 	}
 }
@@ -175,7 +190,9 @@ void Window::setTitle(std::string title, WindowTitlePosition position)
 {
 	switch (position)
 	{
-	case CENTER:     this->centerTitle     = title; break;
+	case CENTER:	this->centerTitle     = title; break;
+	case TOP_LEFT:	this->leftTitle = title; break;
+	case TOP_RIGHT:	this->rightTitle = title; break;
 	default: return;
 	}
 }

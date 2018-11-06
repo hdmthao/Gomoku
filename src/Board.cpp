@@ -83,7 +83,6 @@ void Board::setBoard(bool willLoad)
             stone.x = st.first.first;
             stone.y = st.first.second;
             contains.push_back(stone);
-            std::cout << stone.x << " " << stone.y;
         }
     } else
     {
@@ -625,7 +624,6 @@ int Board::isCheckedForWin(int x, int y)
     int horizontalLine = 0;
     int stoneExpected = 0;
 
-    int count = 0;
     if (this->style == EngineGlobals::Board::TICTACTOE)
     {
         stoneExpected = 3;
@@ -722,10 +720,15 @@ vector< std::pair<int, int> > Board::getLastBoard()
         infoBoard tmp;
         tmp = contains[i];
         num = (tmp.x - 1) * (this->width) + tmp.y;
-        if (tmp.kind == Board::X)
+        if (board[tmp.x][tmp.y] == Board::X)
             curr = 1;
-        else
+        else if (board[tmp.x][tmp.y] == Board::O)
             curr = 2;
+        else if (board[tmp.x][tmp.y] == Board::XW)
+            curr = 3;
+        else if (board[tmp.x][tmp.y] == Board::OW)
+            curr = 4;
+        else curr = 5;
         lb.push_back(std::make_pair(num, curr));
     }
     return lb;

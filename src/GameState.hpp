@@ -1,8 +1,6 @@
 #ifndef GAMESTATE_H_DEFINED
 #define GAMESTATE_H_DEFINED
 
-/// Abstract definition of a game state.
-
 class GameState {
 public:
     virtual ~GameState() {};
@@ -13,7 +11,7 @@ public:
     // huỷ bỏ trạng thái hiện tại và khởi tạo cho trạng thái mới
     virtual void unload() = 0;
 
-    // update trạng thái hiện tại mỗi frame
+    // update trạng thái hiện tại
     virtual void update() = 0;
 
     // vẽ trạng thái hiện tại ra màn hình

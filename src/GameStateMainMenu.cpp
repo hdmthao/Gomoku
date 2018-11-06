@@ -4,11 +4,15 @@
 #include <LoadGame.hpp>
 #include <StateManager.hpp>
 #include <GameStateGame.hpp>
+#include <GameStateShow.hpp>
 #include <iostream>
 
 enum Label_Id {
 	// Main Menu
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
+
+	//Setting Menu
+	SIZE,
 
 	// Size Board Menu
 	RETURN, TICTACTOE, SMALL, NORMAL, BIG,
@@ -26,7 +30,9 @@ GameStateMainMenu::GameStateMainMenu():
 	marvelMenu(NULL),
 	mobaMenu(NULL),
 	loadMenu(NULL),
-	about(NULL)
+	settingMenu(NULL),
+	about(NULL),
+	statistic(NULL)
 { }
 
 void GameStateMainMenu::load() {
@@ -37,12 +43,16 @@ void GameStateMainMenu::load() {
 	createLoadMenu();
 	createMarvelMenu();
 	createMobaMenu();
+	createSettingMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
 	this->isActivatedName1 = false;
 	this->isActivatedName2 = false;
+	this->isActivateSetting = false;
+
 	this->about = new WindowAbout(100, 30);
+	this->statistic = new WindowStatistic(100, 30);
 }
 
 void GameStateMainMenu::unload() {
@@ -52,6 +62,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->loadMenu);
 	SAFE_DELETE(this->marvelMenu);
 	SAFE_DELETE(this->mobaMenu);
+	SAFE_DELETE(this->settingMenu);
 }
 
 void GameStateMainMenu::update()
@@ -90,7 +101,7 @@ void GameStateMainMenu::update()
 				default:
 					this->isActivatedName2 = false;
 					EngineGlobals::Game::setNamePlayer(this->mobaMenu->currentLabel(), 0);
-					StateManager::change(new GameStateGame());
+					StateManager::change(new GameStateGame(false));
 					break;
 			}
 		}
@@ -107,22 +118,18 @@ void GameStateMainMenu::update()
 				case TICTACTOE:
 					this->isActivatedPVP = false;
 					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::TICTACTOE);
-					StateManager::change(new GameStateGame());
 					break;
 				case SMALL:
 					this->isActivatedPVP = false;
 					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::SMALL);
-					StateManager::change(new GameStateGame());
 					break;
 				case NORMAL:
 					this->isActivatedPVP = false;
 					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::NORMAL);
-					StateManager::change(new GameStateGame());
 					break;
 				case BIG:
 					this->isActivatedPVP = false;
 					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::BIG);
-					StateManager::change(new GameStateGame());
 					break;
 				case RETURN:
 					this->isActivatedPVP = false;
@@ -143,7 +150,7 @@ void GameStateMainMenu::update()
 					break;
 				default:
 					EngineGlobals::Game::setLoadGame(this->loadMenu->currentLabel());
-					StateManager::change(new GameStateGame());
+					StateManager::change(new GameStateGame(false));
 					break;
 			}
 		}
@@ -153,6 +160,24 @@ void GameStateMainMenu::update()
 			createLoadMenu();
 		}
 		this->loadMenu->reset();
+	}
+	else
+	if (this->isActivateSetting)
+	{
+		this->settingMenu->handleInput();
+		if (this->settingMenu->willQuit())
+		{
+			switch(this->settingMenu->currentID())
+			{
+				case RETURN:
+					this->isActivateSetting = false;
+					break;
+				case SIZE:
+					this->isActivateSetting = false;
+					break;
+			}
+		}
+		this->settingMenu->reset();
 	}
 	else
 	{
@@ -167,6 +192,14 @@ void GameStateMainMenu::update()
 					break;
 				case LOAD:
 					this->isActivatedLOAD = true;
+					break;
+				case SETTINGS:
+					this->isActivateSetting = true;
+					break;
+				case STATISTICS:
+					this->statistic->load();
+					this->statistic->run();
+					if (this->statistic->getGameShow() != "") StateManager::change(new GameStateShow(this->statistic->getGameShow()));
 					break;
 				case ABOUT:
 					this->about->run();
@@ -197,6 +230,10 @@ void GameStateMainMenu::draw() {
 	else if (this->isActivatedLOAD)
 	{
 		this->layout->draw(this->loadMenu, 2);
+	}
+	else if (this->isActivateSetting)
+	{
+		this->layout->draw(this->settingMenu, 0);
 	}
 	else
 	{
@@ -327,6 +364,11 @@ void GameStateMainMenu::createBoardMenu()
 
 	MenuItem* item;
 
+	item = new MenuItem("Return Menu", RETURN);
+	boardMenu->add(item);
+
+	boardMenu->addBlank();
+
 	item = new MenuItem("Normal    (13x13)", NORMAL);
 	boardMenu->add(item);
 
@@ -338,8 +380,6 @@ void GameStateMainMenu::createBoardMenu()
 
 	item = new MenuItem("Big       (19x19)", BIG);
 	boardMenu->add(item);
-	item = new MenuItem("Return Menu", RETURN);
-	boardMenu->add(item);
 }
 void GameStateMainMenu::createLoadMenu()
 {
@@ -349,14 +389,35 @@ void GameStateMainMenu::createLoadMenu()
 
 	MenuItem* item;
 
+	item = new MenuItem("Return Menu", RETURN);
+	loadMenu->add(item);
+
+	loadMenu->addBlank();
+
 	std::vector<std::string> games = LoadGame::listGames();
 	std::vector<std::string> infos = LoadGame::listInfos();
+
 
 	for (unsigned int i = 0; i < games.size(); ++i) {
 		for (int j = games[i].length(); j < 11; ++j) games[i] += " ";
 		item = new MenuItem(games[i]+infos[i], i);
 		loadMenu->add(item);
 	}
-	item = new MenuItem("Return Menu", RETURN);
-	loadMenu->add(item);
+}
+void GameStateMainMenu::createSettingMenu()
+{
+	SAFE_DELETE(this->settingMenu);
+
+	this->settingMenu = new Menu(1, 1, this->layout->menu->getW() - 2, this->layout->menu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Return", RETURN);
+	settingMenu->add(item);
+
+	settingMenu->addBlank();
+
+	item = new MenuItem("Size Board", SIZE);
+	settingMenu->add(item);
+
 }
