@@ -6,6 +6,7 @@
 #include <Board.hpp>
 #include <Player.hpp>
 #include <Display/Menu.hpp>
+#include <SFML/Audio.hpp>
 
 using std::string;
 
@@ -42,6 +43,16 @@ public:
 	std::vector< std::pair<int, int> > getLastBoard();
 
 	int numberOfGame;
+
+	sf::SoundBuffer bufferX;
+	sf::SoundBuffer bufferO;
+	sf::SoundBuffer bufferErr;
+
+	sf::Sound* soundX;
+	sf::Sound* soundO;
+	sf::Sound* soundErr;
+
+	void turnOnSound(int cur);
 
 protected:
 	LayoutGame* layout;

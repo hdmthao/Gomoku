@@ -214,11 +214,11 @@ void Board::draw(Window *win, role currentPlayer)
                 {
                         if (x % 4 == 0)
                         {
-                            win->printChar(ACS_DEGREE, posX + x, posY + y, Colors::pair("white", "default", true));
+                            win->printChar(ACS_DEGREE, posX + x, posY + y, Colors::pair("white", "default"));
                         }
                         else
                         {
-                            win->printChar(ACS_HLINE, posX + x, posY + y, Colors::pair("white", "default", true));
+                            win->printChar(ACS_HLINE, posX + x, posY + y, Colors::pair("white", "default" ));
                         }
                 }
             }
@@ -229,7 +229,7 @@ void Board::draw(Window *win, role currentPlayer)
                 {
                     if (x % 4 == 0)
                     {
-                        win->printChar(ACS_VLINE, posX + x, posY + y, Colors::pair("white", "default", true));
+                        win->printChar(ACS_VLINE, posX + x, posY + y, Colors::pair("white", "default"));
                     } else
                     {
                         virtualY++;

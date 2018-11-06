@@ -26,7 +26,7 @@ public:
 	Window* boardMenu;
 	Window* nameMenu;
 	Window* loadMenu;
-	Window* loadHelpWin;
+	Window* helpWin;
 	Window* animationwin;
 
 	Animation* animation;

@@ -355,7 +355,6 @@ void GameStateShow::update()
     }
 
 }
-
 void GameStateShow::draw()
 {
     this->main->clear();

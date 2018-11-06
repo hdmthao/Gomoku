@@ -5,6 +5,7 @@
 #include <Game.hpp>
 #include <string>
 #include <vector>
+#include <SFML/Audio.hpp>
 
 using std::string;
 using std::vector;
@@ -27,6 +28,9 @@ public:
 
 	void saveHistory();
 
+	sf::Music* sound;
+	sf::Music* soundWin;
+
 private:
 	Game* game;
 
@@ -37,7 +41,7 @@ private:
 	bool willQuit;
 	bool isReady;
 	bool isAi;
-	
+
 	string filename;
 	int countGame;
 	vector<pair<int, int>> vecScore;

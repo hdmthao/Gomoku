@@ -5,7 +5,6 @@
 #include <Input.hpp>
 #include <GameState.hpp>
 #include <LoadGame.hpp>
-
 #include <ncurses.h>
 #include <cstdlib>
 #include <ctime>
@@ -13,7 +12,12 @@
 
 int main() {
 		// Phần cài đặt
+		// sf::SoundBuffer buffer;
+		// buffer.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/test.wav");
+		// //
 
+
+		// usleep(1000000);
 		EngineGlobals::init();
 		// Phần khởi tạo
 

@@ -6,6 +6,7 @@
 #include <Display/Menu.hpp>
 #include <Display/WindowAbout.hpp>
 #include <Display/WindowStatistic.hpp>
+#include <SFML/Audio.hpp>
 
 // Trạng thái menu
 
@@ -26,7 +27,10 @@ public:
 	bool isActivatedLOAD;
 	bool isActivatedName1;
 	bool isActivatedName2;
-	bool isActivateSetting;
+	bool isActivatedSetting;
+	bool isActivatedSize;
+	
+	sf::Music* music;
 
 private:
 	LayoutMainMenu* layout;

@@ -3,8 +3,8 @@ PACKAGE = gomoku
 # Build info
 EXE         = $(PACKAGE)
 CDEBUG      = -O2
-CXXFLAGS    = $(CDEBUG) -Wall -Wextra $(CFLAGS_PLATFORM)
-LDFLAGS     = -lncurses $(LDFLAGS_PLATFORM)
+CXXFLAGS    = $(CDEBUG) -Wall -Wextra -w $(CFLAGS_PLATFORM)
+LDFLAGS     = -lncurses -lsfml-audio $(LDFLAGS_PLATFORM)
 INCLUDESDIR = -I"src/"
 
 # Project source files

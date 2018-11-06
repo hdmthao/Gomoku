@@ -24,6 +24,15 @@ WindowStatistic::WindowStatistic(int screenWidth, int screenHeight) {
 	this->history = new Window(this->main, 0, 0, 0, 0);
 	this->history->borders(Window::BORDER_INFO);
 
+	this->helpWin = new Window(127, 20, 24, 5);
+
+}
+WindowStatistic::~WindowStatistic()
+{
+	SAFE_DELETE(this->main);
+	SAFE_DELETE(this->stats);
+	SAFE_DELETE(this->history);
+	SAFE_DELETE(this->helpWin);
 }
 void WindowStatistic::load()
 {
@@ -49,6 +58,9 @@ void WindowStatistic::run()
 		// Tải trang
 		this->main->clear();
 		if (activatedIndex == 0) this->stats->clear(); else this->history->clear();
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->clear();
 
 		this->main->print(((activatedIndex == 0) ?
 		                   "[Stats]" :
@@ -69,7 +81,11 @@ void WindowStatistic::run()
 		                   Colors::pair("red", "default", true)));
 
 		if (activatedIndex == 0) {
-            if (this->rating >= 3000)
+			this->helpWin->print("History", 2, 2, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Key-Right", 14, 2);
+			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Esc", 14, 3);
+			if (this->rating >= 3000)
             {
                 this->stats->print(" L", 16, 2, Colors::pair("white", "default"));
                 this->stats->print("e", 18, 2, Colors::pair("black", "default", true));
@@ -163,6 +179,11 @@ void WindowStatistic::run()
 		}
 		else if (activatedIndex == 1)
 		{
+			this->helpWin->print("Statistic", 2, 2, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Key-Left", 14, 2);
+			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Esc", 14, 3);
+
 			this->historyMenu->draw(this->history);
 		}
 
@@ -170,6 +191,8 @@ void WindowStatistic::run()
 		{
 			this->history->refresh();
 		}
+
+		this->helpWin->refresh();
 		this->main->refresh();
 		refresh();
 
@@ -200,7 +223,12 @@ void WindowStatistic::run()
 				activatedIndex = 1;
 		}
 		else if (Input::isPressed(27))
-		return;
+		{
+			this->helpWin->borders(Window::BORDER_NONE);
+			this->helpWin->clear();
+			this->helpWin->refresh();
+			return;
+		}
 	}
 }
 

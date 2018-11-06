@@ -19,8 +19,17 @@ WindowAbout::WindowAbout(int screenWidth, int screenHeight) {
 
 	this->credit = new Window(this->main, 0, 0, 0, 0);
 	this->credit->borders(Window::BORDER_NONE);
-}
 
+	this->helpWin = new Window(127, 20, 24, 5);
+
+}
+WindowAbout::~WindowAbout()
+{
+	SAFE_DELETE(this->main);
+	SAFE_DELETE(this->intro);
+	SAFE_DELETE(this->credit);
+	SAFE_DELETE(this->helpWin);
+}
 void WindowAbout::run() {
 	int activatedIndex = 0;
 
@@ -29,6 +38,11 @@ void WindowAbout::run() {
 		// Tải trang
 		this->main->clear();
 		if (activatedIndex == 0) this->intro->clear(); else this->credit->clear();
+
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->setBackground(' ', Colors::pair("black", "white", true));
+		this->helpWin->clear();
 
 		this->main->print(((activatedIndex == 0) ?
 		                   "[Intro]" :
@@ -49,6 +63,11 @@ void WindowAbout::run() {
 		                   Colors::pair("red", "default", true)));
 
 		if (activatedIndex == 0) {
+			this->helpWin->print("Credits", 2, 2, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Key-Right", 14, 2);
+			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Esc", 14, 3);
+
 			this->intro->print("\n",
 			                        0, 0,
 			                        EngineGlobals::Theme::hilite_text);
@@ -68,16 +87,17 @@ void WindowAbout::run() {
 			this->intro->print(Utils::String::split("More about GOMOKU:\n"
 													" https://en.wikipedia.org/wiki/Gomoku"
 													, '\n'),
-													1, 12, Colors::pair("white", "default"));
-			this->credit->print(Utils::String::split("Press KeyRight To Open Credits\n"
-													 "Press Enter To Return Main Menu\n", '\n'),
-													13, 14, Colors::pair("red", "default", true));
-
+													1, 13, Colors::pair("white", "default"));
 		}
 		//
 		// Credits
 		else if (activatedIndex == 1)
 		{
+			this->helpWin->print("Introdution", 2, 2, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Key-Left", 14, 2);
+			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Esc", 14, 3);
+
 			this->credit->print(Utils::String::split(" _______   _____    _     _    _____   _    _  _      _\n"
 											   		  "|  _ _  | / ___ \\  / \\   / \\  /     \\ | |  / || |    | |\n"
 											   		  "|_| /_| || |___| ||  _\\_/_  ||  ___  ||_|_/_/ | |    | |\n"
@@ -99,36 +119,37 @@ void WindowAbout::run() {
 			                                             "Source Code:\n"
 			                                             " https://github.com/himt-097/gomoku/", '\n'),
 			                        0, 6, Colors::pair("white", "default", true));
-			this->credit->print(Utils::String::split(   "Press KeyLeft To Open Intro\n"
-														"Press Enter To Return Main Menu\n"
-													 , '\n'),
-								13, 14, Colors::pair("red", "default", true));
 		}
 
 		if (activatedIndex == 0) this->intro->refresh(); else this->credit->refresh();
+
+		this->helpWin->refresh();
 		this->main->refresh();
+
 		refresh();
 
 		// xử lí input từ user
 		Input::update();
 
-		if (Input::isPressed("left") || // user-defined
-		    Input::isPressed(KEY_LEFT))
+		if (Input::isPressed(KEY_LEFT))
 		{
 			activatedIndex--;
 			if (activatedIndex < 0)
 				activatedIndex = 0;
 		}
-		else if (Input::isPressed("right") || // user-defined
-		         Input::isPressed(KEY_RIGHT))
+		else if (Input::isPressed(KEY_RIGHT))
 		{
 			activatedIndex++;
 			if (activatedIndex > 1)
 				activatedIndex = 1;
 		}
-		else if (Input::isPressed("quit") ||
-		         Input::isPressed(KEY_ENTER) ||
-		         Input::isPressed('\n'))
+		else if (Input::isPressed(27))
+		{
+			this->helpWin->borders(Window::BORDER_NONE);
+			this->helpWin->clear();
+			this->helpWin->refresh();
+
 			return;
+		}
 	}
 }

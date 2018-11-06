@@ -9,16 +9,17 @@
 class WindowAbout {
 public:
 	WindowAbout(int screenWidth, int screenHeight);
-	virtual ~WindowAbout() {};
+	~WindowAbout();
 
 	// update và in ra màn hình mọi thứ
 	void run();
 
 private:
 	Window* main;
-	std::vector<Window*> windows;
+
 	Window* intro;
 	Window* credit;
+	Window* helpWin;
 };
 
 #endif //WindowAbout_H_DEFINED

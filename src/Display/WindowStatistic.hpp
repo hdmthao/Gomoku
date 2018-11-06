@@ -10,7 +10,7 @@
 class WindowStatistic {
 public:
 	WindowStatistic(int screenWidth, int screenHeight);
-	virtual ~WindowStatistic() {};
+	~WindowStatistic();
 
     void load();
 
@@ -19,12 +19,13 @@ public:
 	void createHistory();
 
 	std::string getGameShow();
-	
+
 private:
 	Window* main;
 
 	Window* stats;
 	Window* history;
+	Window* helpWin;
 	Menu* historyMenu;
 
 	std::string show;

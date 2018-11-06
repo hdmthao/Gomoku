@@ -118,15 +118,17 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 		this->help->print("Movement", 2, 2, Colors::pair("cyan", "default", true));
 		this->help->print("Key-Arrow", 14, 2);
 		this->help->print("Undo", 2, 3, Colors::pair("cyan", "default", true));
-		this->help->print("z", 14, 3);
+		this->help->print("z", 17, 3);
 		this->help->print("Resign \"GG\"", 2, 4, Colors::pair("cyan", "default", true));
-		this->help->print("g", 14, 4);
+		this->help->print("g", 17, 4);
 		this->help->print("Rule", 2, 5, Colors::pair("cyan", "default", true));
-		this->help->print("r", 14, 5);
-		this->help->print("Pause", 2, 6, Colors::pair("cyan", "default", true));
-		this->help->print("Esc", 14, 6);
-		this->help->print("Quit", 2, 7, Colors::pair("cyan", "default", true));
-		this->help->print("q", 14, 7);
+		this->help->print("r", 17, 5);
+		this->help->print("ON/OFF Sound", 2, 6, Colors::pair("cyan", "default", true));
+		this->help->print("m", 17, 6);
+		this->help->print("Pause", 2, 7, Colors::pair("cyan", "default", true));
+		this->help->print("Esc", 17, 7);
+		this->help->print("Quit", 2, 8, Colors::pair("cyan", "default", true));
+		this->help->print("q", 17, 8);
 		this->help->refresh();
 	}
 	this->game->board->draw(this->main, this->game->currentPlayer);

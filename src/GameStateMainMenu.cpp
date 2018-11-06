@@ -12,7 +12,7 @@ enum Label_Id {
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
 
 	//Setting Menu
-	SIZE,
+	SIZE, SOUND,
 
 	// Size Board Menu
 	RETURN, TICTACTOE, SMALL, NORMAL, BIG,
@@ -32,7 +32,8 @@ GameStateMainMenu::GameStateMainMenu():
 	loadMenu(NULL),
 	settingMenu(NULL),
 	about(NULL),
-	statistic(NULL)
+	statistic(NULL),
+	music(NULL)
 { }
 
 void GameStateMainMenu::load() {
@@ -49,10 +50,18 @@ void GameStateMainMenu::load() {
 	this->isActivatedLOAD = false;
 	this->isActivatedName1 = false;
 	this->isActivatedName2 = false;
-	this->isActivateSetting = false;
+	this->isActivatedSetting = false;
 
 	this->about = new WindowAbout(100, 30);
 	this->statistic = new WindowStatistic(100, 30);
+
+	this->music = new sf::Music();
+
+	this->music->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/MainMenu.wav");
+	this->music->setLoop(true);
+	if (EngineGlobals::Game::turnOnSound)
+		this->music->play();
+
 }
 
 void GameStateMainMenu::unload() {
@@ -63,6 +72,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->marvelMenu);
 	SAFE_DELETE(this->mobaMenu);
 	SAFE_DELETE(this->settingMenu);
+	SAFE_DELETE(this->music);
 }
 
 void GameStateMainMenu::update()
@@ -162,7 +172,7 @@ void GameStateMainMenu::update()
 		this->loadMenu->reset();
 	}
 	else
-	if (this->isActivateSetting)
+	if (this->isActivatedSetting)
 	{
 		this->settingMenu->handleInput();
 		if (this->settingMenu->willQuit())
@@ -170,14 +180,51 @@ void GameStateMainMenu::update()
 			switch(this->settingMenu->currentID())
 			{
 				case RETURN:
-					this->isActivateSetting = false;
+					this->isActivatedSetting = false;
 					break;
 				case SIZE:
-					this->isActivateSetting = false;
+					this->isActivatedSetting = false;
+					this->isActivatedSize = true;
+					break;
+				case SOUND:
+					EngineGlobals::Game::setSound();
+					if (EngineGlobals::Game::turnOnSound)
+						this->music->play();
+					else this->music->stop();
+					createSettingMenu();
 					break;
 			}
 		}
 		this->settingMenu->reset();
+	}
+	else
+	if (this->isActivatedSize)
+	{
+		this->boardMenu->handleInput();
+		if (this->boardMenu->willQuit())
+		{
+			switch(this->boardMenu->currentID())
+			{
+				case SMALL:
+					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::SMALL);
+					this->isActivatedSize = false;
+					this->isActivatedSetting = true;
+					break;
+				case NORMAL:
+					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::NORMAL);
+					this->isActivatedSize = false;
+					this->isActivatedSetting = true;
+					break;
+				case BIG:
+					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::BIG);
+					this->isActivatedSize = false;
+					this->isActivatedSetting = true;
+					break;
+				default:
+					break;
+			}
+		}
+		this->boardMenu->reset();
 	}
 	else
 	{
@@ -194,7 +241,7 @@ void GameStateMainMenu::update()
 					this->isActivatedLOAD = true;
 					break;
 				case SETTINGS:
-					this->isActivateSetting = true;
+					this->isActivatedSetting = true;
 					break;
 				case STATISTICS:
 					this->statistic->load();
@@ -223,17 +270,17 @@ void GameStateMainMenu::draw() {
 	{
 		this->layout->draw(this->mobaMenu, 4);
 	}
-	else if (this->isActivatedPVP)
-	{
-		this->layout->draw(this->boardMenu, 1);
-	}
 	else if (this->isActivatedLOAD)
 	{
 		this->layout->draw(this->loadMenu, 2);
 	}
-	else if (this->isActivateSetting)
+	else if (this->isActivatedSetting)
 	{
 		this->layout->draw(this->settingMenu, 0);
+	}
+	else if (this->isActivatedSize)
+	{
+		this->layout->draw(this->boardMenu, 1);
 	}
 	else
 	{
@@ -364,18 +411,10 @@ void GameStateMainMenu::createBoardMenu()
 
 	MenuItem* item;
 
-	item = new MenuItem("Return Menu", RETURN);
+	item = new MenuItem("Small     (9x9)", SMALL);
 	boardMenu->add(item);
-
-	boardMenu->addBlank();
 
 	item = new MenuItem("Normal    (13x13)", NORMAL);
-	boardMenu->add(item);
-
-	item = new MenuItem("TicTacToe (3x3)", TICTACTOE);
-	boardMenu->add(item);
-
-	item = new MenuItem("Small     (9x9)", SMALL);
 	boardMenu->add(item);
 
 	item = new MenuItem("Big       (19x19)", BIG);
@@ -419,5 +458,14 @@ void GameStateMainMenu::createSettingMenu()
 
 	item = new MenuItem("Size Board", SIZE);
 	settingMenu->add(item);
+
+	if (EngineGlobals::Game::turnOnSound)
+		item = new MenuItem("Sound OFF", SOUND);
+	else
+		item = new MenuItem("Sound ON", SOUND);
+
+	settingMenu->add(item);
+
+
 
 }

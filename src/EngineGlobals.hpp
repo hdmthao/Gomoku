@@ -41,8 +41,10 @@ namespace EngineGlobals
 		extern std::string currentGame;
 		extern std::string namePlayer1;
 		extern std::string namePlayer2;
+		extern bool turnOnSound;
 		void setLoadGame(std::string filegame);
 		void setNamePlayer(std::string name, bool isPlayer1);
+		void setSound();
 	};
 
 	void init();

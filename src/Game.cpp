@@ -6,6 +6,7 @@
 #include <EngineGlobals.hpp>
 #include <LoadGame.hpp>
 #include <vector>
+#include <unistd.h>
 
 enum Label_Id
 {
@@ -19,8 +20,24 @@ Game::Game():
 	player1(NULL),
 	player2(NULL),
 	filename("GOMOKU_"),
+	soundX(NULL),
+	soundO(NULL),
+	soundErr(NULL),
 	round(0)
 {
+	bufferX.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/XSound.wav");
+	this->soundX = new sf::Sound();
+	this->soundX->setBuffer(bufferX);
+
+	bufferO.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/OSound.wav");
+	this->soundO = new sf::Sound();
+	this->soundO->setBuffer(bufferO);
+
+	bufferErr.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Error.wav");
+	this->soundErr = new sf::Sound();
+	this->soundErr->setBuffer(bufferErr);
+
+
 }
 Game::~Game()
 {
@@ -29,6 +46,9 @@ Game::~Game()
 	SAFE_DELETE(this->player1);
 	SAFE_DELETE(this->player2);
 	SAFE_DELETE(this->pauseMenu);
+	SAFE_DELETE(this->soundX);
+	SAFE_DELETE(this->soundO);
+	SAFE_DELETE(this->soundErr);
 }
 void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad, bool aiMod)
 {
@@ -138,6 +158,10 @@ void Game::handleInput()
 	{
 		if (this->board->update(currentPlayer))
 		{
+			if (this->currentPlayer == Board::PLAYER_1)
+				this->turnOnSound(1);
+			else
+				this->turnOnSound(2);
 			int directionWin = this->board->isCheckedForWin(this->board->currentX, this->board->currentY);
 			if (directionWin != 0)
 			{
@@ -147,6 +171,7 @@ void Game::handleInput()
 			}
 			this->swapRole();
 		}
+		else this->turnOnSound(0);
 	} else
 	if (Input::isPressed(90) || Input::isPressed(122))
 	{
@@ -160,6 +185,10 @@ void Game::handleInput()
 		this->swapRole();
 		this->gameOver = true;
 		return;
+	} else
+	if (Input::isPressed(77) || Input::isPressed(109))
+	{
+		EngineGlobals::Game::setSound();
 	}
 }
 void Game::update()
@@ -302,4 +331,18 @@ lastPlayer, this->board->getLastBoard());
 std::vector< std::pair<int, int> > Game::getLastBoard()
 {
 	return this->board->getLastBoard();
+}
+
+void Game::turnOnSound(int cur)
+{
+	if (!EngineGlobals::Game::turnOnSound) return;
+	if (cur == 1)
+		this->soundX->play();
+	else
+	if (cur == 2)
+		this->soundO->play();
+	else
+	if (cur == 0)
+		this->soundErr->play();
+	usleep(10);
 }

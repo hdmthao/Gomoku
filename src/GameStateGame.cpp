@@ -8,13 +8,16 @@
 #include <LoadGame.hpp>
 #include <LoadStat.hpp>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 GameStateGame::GameStateGame(bool aiMod):
 	game(NULL),
 	willQuit(false),
 	isReady(false),
 	filename("Gomoku_"),
-	countGame(0)
+	countGame(0),
+	sound(NULL),
+	soundWin(NULL)
 {
 	LoadGame::loadStatictis();
 	if (EngineGlobals::Game::currentGame == "")
@@ -41,6 +44,15 @@ GameStateGame::GameStateGame(bool aiMod):
 		this->namePlayer2 = LoadGame::loadName(2);
 		this->isAi = LoadGame::isAiMod;
 	}
+
+	this->sound = new sf::Music();
+
+	this->sound->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Game.wav");
+	this->sound->setLoop(true);
+
+	this->soundWin = new sf::Music();
+	this->soundWin->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Win.wav");
+
 }
 GameStateGame::~GameStateGame()
 {
@@ -48,7 +60,8 @@ GameStateGame::~GameStateGame()
 	if (this->countGame > 0 && EngineGlobals::Game::currentGame == "") saveHistory();
 	vecScore.clear();
 	vecBoard.clear();
-
+	SAFE_DELETE(this->sound);
+	SAFE_DELETE(this->soundWin);
 }
 void GameStateGame::load()
 {
@@ -95,7 +108,11 @@ void GameStateGame::update()
 		LoadGame::playedGameMul++;
 		this->countGame++;
 		this->vecBoard.push_back(this->game->getLastBoard());
-		Input::update(4000);
+		if (EngineGlobals::Game::turnOnSound)
+			this->soundWin->play();
+		Input::update(6000);
+		if (EngineGlobals::Game::turnOnSound)
+			this->soundWin->stop();
 		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
 		{
 			this->load();
@@ -125,11 +142,17 @@ void GameStateGame::showDialog(std::string message, int width, int height)
 	dialog.print("Press  <ESC>  To Quit", 2, 4, Colors::pair("blue", "default"));
 	dialog.refresh();
 	refresh();
+
+	if (EngineGlobals::Game::turnOnSound)
+		this->sound->play();
+
 	Input::update(-1);
 	dialog.clear();
 	if (Input::isPressed(27)) this->willQuit = true;
 	else
 	{
+		if (EngineGlobals::Game::turnOnSound)
+			this->sound->stop();
 		this->isReady = true;
 		this->game->isPlay = true;
 	}
@@ -151,6 +174,8 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 	dialog.print("Press  <ESC>  To Quit", 2, 4, Colors::pair("blue", "default"));
 	dialog.refresh();
 	refresh();
+	if (EngineGlobals::Game::turnOnSound)
+		this->sound->play();
 	Input::update(-1);
 	dialog.clear();
 	if (Input::isPressed(27)) {
@@ -159,6 +184,8 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 	}
 	else
 	{
+		if (EngineGlobals::Game::turnOnSound)
+			this->sound->stop();
 		this->isReady = true;
 		this->game->isPlay = true;
 		return true;
