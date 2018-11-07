@@ -30,6 +30,7 @@ public:
 
 	sf::Music* sound;
 	sf::Music* soundWin;
+	sf::Music* soundDraw;
 
 private:
 	Game* game;

@@ -29,7 +29,7 @@ namespace EngineGlobals
 	{
 		enum Style
 		{
-			TICTACTOE, SMALL, NORMAL, BIG
+			TICTACTOE, SMALL, NORMAL, BIG, BIGEST
 		};
 		extern Style style;
 		void setGameStyle(Style _style);

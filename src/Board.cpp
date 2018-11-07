@@ -9,7 +9,7 @@ int dy[8] = {0, 1, 0, -1, -1, 1, 1, -1};
 Board::Board():
     width(0),
     height(0),
-    style(EngineGlobals::Board::TICTACTOE)
+    style(EngineGlobals::Board::NORMAL)
 {
     board.clear();
     contains.clear();
@@ -46,6 +46,13 @@ void Board::setType(EngineGlobals::Board::Style _style)
             this->height = 19;
             this->currentX = 9;
             this->currentY = 9;
+            break;
+        case EngineGlobals::Board::BIGEST:
+            this->width = 25;
+            this->height = 25;
+            this->currentX = 12;
+            this->currentY = 12;
+            break;
         default:
             break;
     }
@@ -97,7 +104,7 @@ void Board::setBoard(bool willLoad)
 }
 void Board::draw(Window *win, role currentPlayer)
 {
-    if (this->style == EngineGlobals::Board::BIG)
+    if (this->style == EngineGlobals::Board::BIG || this->style == EngineGlobals::Board::BIGEST)
     {
         int posX = 40 - (this->width * 2 + 1) / 2;
         int posY = 15 - (this->height) / 2;

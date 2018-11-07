@@ -29,19 +29,22 @@ public:
 	bool willQuit();
 	bool isPlaying();
 	bool willOver();
+	bool willDraw();
 	void swapRole();
 	int checkPlayerWin();
 	void updateScore(int score1, int score2);
 	bool isPlay;
 	bool isPause;
 	int round;
+	int countTurn;
 	bool isAi;
 	void pause(bool option);
 
 	void saveGame();
 
 	std::vector< std::pair<int, int> > getLastBoard();
-
+	int getSize();
+	
 	int numberOfGame;
 
 	sf::SoundBuffer bufferX;
@@ -64,6 +67,7 @@ protected:
 
 	bool isQuit;
 	bool gameOver;
+	bool gameDraw;
 	bool userAskedToSaveGame;
 
 	Board::role currentPlayer;

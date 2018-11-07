@@ -28,7 +28,7 @@ public:
 	void drawNumberTop(int number);
 	void drawNumberBot(int number);
 	string toString(int num);
-	
+
 private:
 
     Window* main;
@@ -43,6 +43,7 @@ private:
     int round;
 	int size;
 	bool player1Win;
+	bool isDrawGame;
 	int score1;
 	int score2;
 	string namePlayer1;

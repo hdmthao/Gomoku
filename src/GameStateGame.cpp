@@ -17,7 +17,8 @@ GameStateGame::GameStateGame(bool aiMod):
 	filename("Gomoku_"),
 	countGame(0),
 	sound(NULL),
-	soundWin(NULL)
+	soundWin(NULL),
+	soundDraw(NULL)
 {
 	LoadGame::loadStatictis();
 	if (EngineGlobals::Game::currentGame == "")
@@ -51,7 +52,10 @@ GameStateGame::GameStateGame(bool aiMod):
 	this->sound->setLoop(true);
 
 	this->soundWin = new sf::Music();
-	this->soundWin->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Win.wav");
+	this->soundWin->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/GameWin.wav");
+
+	this->soundDraw = new sf::Music();
+	this->soundDraw->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/GameDraw.wav");
 
 }
 GameStateGame::~GameStateGame()
@@ -62,6 +66,7 @@ GameStateGame::~GameStateGame()
 	vecBoard.clear();
 	SAFE_DELETE(this->sound);
 	SAFE_DELETE(this->soundWin);
+	SAFE_DELETE(this->soundDraw);
 }
 void GameStateGame::load()
 {
@@ -113,6 +118,25 @@ void GameStateGame::update()
 		Input::update(6000);
 		if (EngineGlobals::Game::turnOnSound)
 			this->soundWin->stop();
+		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
+		{
+			this->load();
+		}
+	}
+	if (this->game->willDraw())
+	{
+		this->vecScore.push_back(std::make_pair(this->score1, this->score2));
+		this->vecScore.push_back(std::make_pair(this->score1, this->score2));
+		this->game->updateScore(this->score1, this->score2);
+		this->game->draw();
+		LoadGame::playedGameMul++;
+		this->countGame++;
+		this->vecBoard.push_back(this->game->getLastBoard());
+		if (EngineGlobals::Game::turnOnSound)
+			this->soundDraw->play();
+		Input::update(3500);
+		if (EngineGlobals::Game::turnOnSound)
+			this->soundDraw->stop();
 		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
 		{
 			this->load();
@@ -204,5 +228,5 @@ void GameStateGame::saveHistory()
 	{
 		this->filename = this->filename + (char)(siz / 10 + '0') + (char)(siz % 10 + '0');
 	}
-	LoadStat::saveStat(this->filename, this->namePlayer1, this->namePlayer2, this->isAi, 13, 1, this->score1, this->score2, this->countGame, this->vecScore, this->vecBoard);
+	LoadStat::saveStat(this->filename, this->namePlayer1, this->namePlayer2, this->isAi, this->game->getSize(), 1, this->score1, this->score2, this->countGame, this->vecScore, this->vecBoard);
 }

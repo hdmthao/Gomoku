@@ -104,17 +104,19 @@ void GameStateShow::initRound()
             board[i][j] = 0;
         }
     }
+    this->isDrawGame = true;
     for (unsigned int i = 0; i < vec.size(); ++i)
     {
         pair< pair<int, int>, int> tmp;
         tmp = vec[i];
         board[tmp.first.first][tmp.first.second] = tmp.second;
         if (tmp.second == 4) this->player1Win = false;
+        if (tmp.second == 4 || tmp.second == 3) this->isDrawGame = false;
     }
 }
 void GameStateShow::drawBoard()
 {
-    if (this->size == 19)
+    if (this->size == 19 || this->size == 25)
     {
         int posX = 40 - (this->size * 2 + 1) / 2;
         int posY = 15 - (this->size) / 2;
@@ -368,7 +370,7 @@ void GameStateShow::draw()
     this->scoreBoardTop->clear();
     this->scoreBoardBot->clear();
 
-    if (player1Win)
+    if (this->player1Win && !this->isDrawGame)
     {
         this->infoTop->print(Utils::String::split("#   #\n"
                                                   "  #  \n"
@@ -380,7 +382,7 @@ void GameStateShow::draw()
         this->infoTop->print(this->namePlayer1 + " WIN^^", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
         this->infoBot->print(this->namePlayer2 + " LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
     }
-    else
+    else if (!this->isDrawGame)
     {
         this->infoTop->print(Utils::String::split("#   #\n"
                                                   "  #  \n"
@@ -390,6 +392,17 @@ void GameStateShow::draw()
                                                   " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
         this->infoTop->print(this->namePlayer1 + " LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
         this->infoBot->print(this->namePlayer2 + " WIN^^", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
+    }
+    else
+    {
+        this->infoTop->print(Utils::String::split("#   #\n"
+                                                  "  #  \n"
+                                                  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+        this->infoBot->print(Utils::String::split(" o o \n"
+                                                  "o   o\n"
+                                                  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
+        this->infoTop->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
+        this->infoBot->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
     }
     drawNumberTop(this->score1);
     drawNumberBot(this->score2);

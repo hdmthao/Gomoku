@@ -191,6 +191,17 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 
 			}
 		}
+		else if (this->game->willDraw())
+		{
+			this->infoTop->print(Utils::String::split("#   #\n"
+													  "  #  \n"
+													  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+			this->infoBot->print(Utils::String::split(" o o \n"
+													  "o   o\n"
+													  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
+			this->infoTop->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
+			this->infoBot->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
+		}
 		else
 		{
 			LayoutGame::drawNumberTop(this->game->player1->getScore());

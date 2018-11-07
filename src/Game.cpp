@@ -36,8 +36,6 @@ Game::Game():
 	bufferErr.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Error.wav");
 	this->soundErr = new sf::Sound();
 	this->soundErr->setBuffer(bufferErr);
-
-
 }
 Game::~Game()
 {
@@ -66,8 +64,10 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 	this->isAi = aiMod;
 	this->isQuit = false;
 	this->gameOver = false;
+	this->gameDraw = false;
 	this->isPause = false;
 	this->userAskedToSaveGame = false;
+	this->countTurn = 0;
 	this->round = m_score1 + m_score2 + 1;
 	this->layout = new LayoutGame(this, 80, 30);
 	this->board = new Board();
@@ -158,6 +158,7 @@ void Game::handleInput()
 	{
 		if (this->board->update(currentPlayer))
 		{
+			this->countTurn++;
 			if (this->currentPlayer == Board::PLAYER_1)
 				this->turnOnSound(1);
 			else
@@ -168,6 +169,10 @@ void Game::handleInput()
 				this->board->animationWin(directionWin);
 				this->gameOver = true;
 				return;
+			}
+			if (this->countTurn == this->board->height * this->board->width)
+			{
+				this->gameDraw = true;
 			}
 			this->swapRole();
 		}
@@ -236,6 +241,10 @@ void Game::draw()
 bool Game::willQuit()
 {
 	return this->isQuit;
+}
+bool Game::willDraw()
+{
+	return this->gameDraw;
 }
 bool Game::isPlaying()
 {
@@ -327,12 +336,28 @@ void Game::saveGame()
 lastPlayer, this->board->getLastBoard());
 	this->isQuit = true;
 }
-
 std::vector< std::pair<int, int> > Game::getLastBoard()
 {
 	return this->board->getLastBoard();
 }
-
+int Game::getSize()
+{
+	switch (EngineGlobals::Board::style)
+	{
+		case EngineGlobals::Board::SMALL:
+			return 9;
+		case EngineGlobals::Board::NORMAL:
+			return 13;
+		case EngineGlobals::Board::BIG:
+			return 19;
+		case EngineGlobals::Board::BIGEST:
+			return 25;
+		case EngineGlobals::Board::TICTACTOE:
+			return 3;
+		default:
+			return 0;
+	}
+}
 void Game::turnOnSound(int cur)
 {
 	if (!EngineGlobals::Game::turnOnSound) return;

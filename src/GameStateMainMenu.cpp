@@ -15,7 +15,7 @@ enum Label_Id {
 	SIZE, SOUND,
 
 	// Size Board Menu
-	RETURN, TICTACTOE, SMALL, NORMAL, BIG,
+	RETURN, TICTACTOE, SMALL, NORMAL, BIG, BIGEST,
 
 	//Marvel Menu
 	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
@@ -51,6 +51,7 @@ void GameStateMainMenu::load() {
 	this->isActivatedName1 = false;
 	this->isActivatedName2 = false;
 	this->isActivatedSetting = false;
+	this->isActivatedSize = false;
 
 	this->about = new WindowAbout(100, 30);
 	this->statistic = new WindowStatistic(100, 30);
@@ -116,37 +117,6 @@ void GameStateMainMenu::update()
 			}
 		}
 		this->mobaMenu->reset();
-	}
-	else
-	if (this->isActivatedPVP)
-	{
-		this->boardMenu->handleInput();
-		if (this->boardMenu->willQuit())
-		{
-			switch(this->boardMenu->currentID())
-			{
-				case TICTACTOE:
-					this->isActivatedPVP = false;
-					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::TICTACTOE);
-					break;
-				case SMALL:
-					this->isActivatedPVP = false;
-					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::SMALL);
-					break;
-				case NORMAL:
-					this->isActivatedPVP = false;
-					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::NORMAL);
-					break;
-				case BIG:
-					this->isActivatedPVP = false;
-					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::BIG);
-					break;
-				case RETURN:
-					this->isActivatedPVP = false;
-					break;
-			}
-			this->boardMenu->reset();
-		}
 	}
 	else if (this->isActivatedLOAD)
 	{
@@ -216,6 +186,11 @@ void GameStateMainMenu::update()
 					this->isActivatedSetting = true;
 					break;
 				case BIG:
+					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::BIG);
+					this->isActivatedSize = false;
+					this->isActivatedSetting = true;
+					break;
+				case BIGEST:
 					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::BIG);
 					this->isActivatedSize = false;
 					this->isActivatedSetting = true;
@@ -418,6 +393,9 @@ void GameStateMainMenu::createBoardMenu()
 	boardMenu->add(item);
 
 	item = new MenuItem("Big       (19x19)", BIG);
+	boardMenu->add(item);
+
+	item = new MenuItem("Bigest    (25x25)", BIGEST);
 	boardMenu->add(item);
 }
 void GameStateMainMenu::createLoadMenu()
