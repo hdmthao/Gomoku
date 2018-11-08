@@ -1,4 +1,5 @@
 #include <Display/Window.hpp>
+#include <EAI.hpp>
 #include <EngineGlobals.hpp>
 
 #include <vector>
@@ -47,6 +48,8 @@ public:
     void moveDown();
     bool undo();
 
+    void makeMove();
+
     bool isOutOfBoard(int x, int y);
     void searchForStone(kindStone currentStone, int& count, int x, int y, int direction);
     void markStateWin(kindStone currentStone, int& count, int x, int y, int direction);
@@ -58,5 +61,7 @@ public:
     bool update(role currentPlayer);
     vector< vector<kindStone> > board;
     vector< infoBoard > contains;
+
+    EAI* lokiAi;
 }
 ;

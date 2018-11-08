@@ -37,23 +37,25 @@ public:
 	bool isPause;
 	int round;
 	int countTurn;
-	bool isAi;
+	int isAi;
 	void pause(bool option);
 
 	void saveGame();
 
 	std::vector< std::pair<int, int> > getLastBoard();
 	int getSize();
-	
+
 	int numberOfGame;
 
 	sf::SoundBuffer bufferX;
 	sf::SoundBuffer bufferO;
 	sf::SoundBuffer bufferErr;
-
+	sf::SoundBuffer bufferBot;
+	
 	sf::Sound* soundX;
 	sf::Sound* soundO;
 	sf::Sound* soundErr;
+	sf::Sound* soundBot;
 
 	void turnOnSound(int cur);
 

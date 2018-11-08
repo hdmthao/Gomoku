@@ -23,6 +23,7 @@ Game::Game():
 	soundX(NULL),
 	soundO(NULL),
 	soundErr(NULL),
+	soundBot(NULL),
 	round(0)
 {
 	bufferX.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/XSound.wav");
@@ -36,6 +37,11 @@ Game::Game():
 	bufferErr.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Error.wav");
 	this->soundErr = new sf::Sound();
 	this->soundErr->setBuffer(bufferErr);
+
+	bufferBot.loadFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/BotSound.wav");
+	this->soundBot = new sf::Sound();
+	this->soundBot->setBuffer(bufferBot);
+
 }
 Game::~Game()
 {
@@ -48,10 +54,12 @@ Game::~Game()
 	this->soundO->stop();
 	this->soundO->stop();
 	this->soundErr->stop();
-	
+	this->soundBot->stop();
+
 	SAFE_DELETE(this->soundX);
 	SAFE_DELETE(this->soundO);
 	SAFE_DELETE(this->soundErr);
+	SAFE_DELETE(this->soundBot);
 }
 void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, string namePlayer2, bool willLoad, bool aiMod)
 {
@@ -98,8 +106,13 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 		this->board->setType(EngineGlobals::Board::style);
 		this->board->setBoard(1);
 		if (LoadGame::loadLastPlayer() == 1) this->currentPlayer = Board::PLAYER_1;
-		else this->currentPlayer = Board::PLAYER_2;
-
+		else
+		if (this->isAi) this->currentPlayer = Board::BOT; else this->currentPlayer = Board::PLAYER_2;
+		if (this->isAi)
+		{
+			this->board->lokiAi->setSize(this->board->height);
+			this->board->lokiAi->setBoard(1);
+		}
 		EngineGlobals::Board::setXIcon(LoadGame::XIcon);
 		EngineGlobals::Board::setOIcon(LoadGame::OIcon);
 	}
@@ -108,7 +121,12 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 		this->board->setType(EngineGlobals::Board::style);
 		this->board->setBoard(0);
 		if (rand() % 2 == 1) this->currentPlayer = Board::PLAYER_1;
-		else this->currentPlayer = Board::PLAYER_2;
+		else if (this->isAi) this->currentPlayer = Board::BOT; else this->currentPlayer = Board::PLAYER_2;
+		if (this->isAi)
+		{
+			this->board->lokiAi->setSize(this->board->height);
+			this->board->lokiAi->setBoard(0);
+		}
 	}
 	this->player1 = new Player(m_score1, namePlayer1);
 	this->player2 = new Player(m_score2, namePlayer2);
@@ -241,6 +259,27 @@ void Game::update()
 		}
 		return;
 	}
+	if (this->currentPlayer == Board::BOT && this->isPlay)
+	{
+		this->layout->draw(this->pauseMenu, this->filename, false);
+		this->board->makeMove();
+
+		this->countTurn++;
+		this->turnOnSound(3);
+
+		int directionWin = this->board->isCheckedForWin(this->board->currentX, this->board->currentY);
+		if (directionWin != 0)
+		{
+			this->board->animationWin(directionWin);
+			this->gameOver = true;
+			return;
+		}
+		if (this->countTurn == this->board->height * this->board->width)
+		{
+			this->gameDraw = true;
+		}
+		this->swapRole();
+	}
 }
 void Game::draw()
 {
@@ -266,7 +305,10 @@ void Game::swapRole()
 {
 	if (this->currentPlayer == Board::PLAYER_1)
 	{
-		this->currentPlayer = Board::PLAYER_2;
+		if (this->isAi)
+			this->currentPlayer = Board::BOT;
+		else
+			this->currentPlayer = Board::PLAYER_2;
 	} else
 	{
 		this->currentPlayer = Board::PLAYER_1;
@@ -279,8 +321,13 @@ int Game::checkPlayerWin()
 		return 1;
 	}
 	else
+	if (this->currentPlayer == Board::PLAYER_2)
 	{
 		return 2;
+	}
+	else
+	{
+		return 3;
 	}
 }
 void Game::updateScore(int score1, int score2)
@@ -374,6 +421,9 @@ void Game::turnOnSound(int cur)
 	else
 	if (cur == 2)
 		this->soundO->play();
+	else
+	if (cur == 3)
+		this->soundBot->play();
 	else
 	if (cur == 0)
 		this->soundErr->play();

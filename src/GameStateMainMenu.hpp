@@ -30,6 +30,8 @@ public:
 	bool isActivatedSetting;
 	bool isActivatedSize;
 	bool isActivatedIcon;
+	bool isActivatedAi;
+
 	int XIcon;
 	int OIcon;
 	sf::Music* music;
@@ -45,6 +47,7 @@ private:
 	Menu* mobaMenu;
 	Menu* loadMenu;
 	Menu* settingMenu;
+	Menu* aiMenu;
 
 	// màn hình about và intro
 	WindowAbout* about;
@@ -57,6 +60,7 @@ private:
 	void createLoadMenu();
 	void createSettingMenu();
 	void createIconMenu();
+	void createAiMenu();
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

@@ -13,18 +13,7 @@ public:
 	/// If called multiple times, will restart.
 	void start();
 
-	/// Temporarily stops the timer.
-	void pause();
-
-	/// Restarts the timer if it was paused.
-	void unpause();
-
-	/// Tells if the timer's still running (hasn't called stop())
 	bool isRunning();
-
-	/// Tells if the timer's paused.
-	bool isPaused();
-
 	/// Returns the whole timer's difference in milisseconds.
 	//	@note If the timer's not started, will return 0.
 	suseconds_t delta_us();
@@ -37,12 +26,8 @@ public:
 
 protected:
 	suseconds_t startMark;
-	suseconds_t stopMark;
-	suseconds_t pausedMark;
 
 	bool running;
-	bool paused;
 };
 
 #endif /* TIMER_H_DEFINED */
-

@@ -15,6 +15,7 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	boardMenu(NULL),
 	loadMenu(NULL),
 	iconMenu(NULL),
+	aiMenu(NULL),
 	nameMenu(NULL),
 	helpWin(NULL),
 	animationwin(NULL),
@@ -70,6 +71,10 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->iconMenu->setTitle("Choose Icon");
 	this->iconMenu->borders(Window::BORDER_FANCY);
 
+	this->aiMenu = new Window(posX - 4, posY, 23, 6);
+	this->aiMenu->setTitle("Choose BOT");
+	this->aiMenu->borders(Window::BORDER_FANCY);
+
 	this->logo = new Window(this->main,
 	                        20, 0,
 	                        60, 7);
@@ -101,6 +106,7 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->nameMenu);
 	SAFE_DELETE(this->loadMenu);
 	SAFE_DELETE(this->helpWin);
+	SAFE_DELETE(this->aiMenu);
 }
 
 void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) {
@@ -112,6 +118,8 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 	// 3 -> nameMenu1
 	// 4 -> nameMenu2
 	// 5 -> iconMenu
+	// 6 -> iconMenu
+	// 7 -> aiMenu
 	this->animation->update();
 
 	this->main->clear();
@@ -238,6 +246,15 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 
 		this->iconMenu->refresh();
 		this->helpWin->refresh();
+	}
+	else if (isSubMenu == 7)
+	{
+		this->aiMenu->clear();
+
+		menu->draw(this->aiMenu);
+		this->aiMenu->printChar('*', 18, 1, Colors::pair("yellow", "default", true));
+		
+		this->aiMenu->refresh();
 	}
 	else
 	{

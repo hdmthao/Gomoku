@@ -11,20 +11,6 @@ class Board;
 namespace EngineGlobals
 {
 
-	namespace Screen
-	{
-		extern bool show_borders;
-		extern bool fancy_borders;
-		extern bool outer_border;
-	};
-
-	namespace Theme
-	{
-		extern ColorPair text;
-		extern ColorPair hilite_text;
-		extern ColorPair textbox;
-	};
-
 	namespace Board
 	{
 		enum Style
@@ -44,10 +30,13 @@ namespace EngineGlobals
 		extern std::string currentGame;
 		extern std::string namePlayer1;
 		extern std::string namePlayer2;
+		extern int AI;
 		extern bool turnOnSound;
+
 		void setLoadGame(std::string filegame);
 		void setNamePlayer(std::string name, bool isPlayer1);
 		void setSound();
+		void setAi(int kind);
 	};
 
 	void init();

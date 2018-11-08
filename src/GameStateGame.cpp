@@ -18,7 +18,8 @@ GameStateGame::GameStateGame(bool aiMod):
 	countGame(0),
 	sound(NULL),
 	soundWin(NULL),
-	soundDraw(NULL)
+	soundDraw(NULL),
+	soundLose(NULL)
 {
 	LoadGame::loadStatictis();
 	if (EngineGlobals::Game::currentGame == "")
@@ -34,7 +35,7 @@ GameStateGame::GameStateGame(bool aiMod):
 				if (LoadGame::name[i] == this->namePlayer2) LoadGame::count[i]++;
 			}
 		}
-		this->isAi = aiMod;
+		this->isAi = EngineGlobals::Game::AI;
 	}
 	else
 	{
@@ -49,6 +50,7 @@ GameStateGame::GameStateGame(bool aiMod):
 	this->tmpXIcon = EngineGlobals::Board::XIcon;
 	this->tmpOIcon = EngineGlobals::Board::OIcon;
 
+	this->currentWin = 0;
 	this->sound = new sf::Music();
 
 	this->sound->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/Game.wav");
@@ -60,6 +62,9 @@ GameStateGame::GameStateGame(bool aiMod):
 	this->soundDraw = new sf::Music();
 	this->soundDraw->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/GameDraw.wav");
 
+	this->soundLose = new sf::Music();
+	this->soundLose->openFromFile("/home/himt/cs/cs161/projects/Gomoku/src/Sound/GameLose.wav");
+
 }
 GameStateGame::~GameStateGame()
 {
@@ -70,6 +75,7 @@ GameStateGame::~GameStateGame()
 	SAFE_DELETE(this->sound);
 	SAFE_DELETE(this->soundWin);
 	SAFE_DELETE(this->soundDraw);
+	SAFE_DELETE(this->soundLose);
 }
 void GameStateGame::load()
 {
@@ -106,10 +112,12 @@ void GameStateGame::update()
 	}
 	if (this->game->willOver())
 	{
-		if (this->game->checkPlayerWin() == 1)
+		this->currentWin = this->game->checkPlayerWin();
+		if (this->currentWin == 1)
 		{
 			this->score1++;
 			this->vecScore.push_back(std::make_pair(this->score1, this->score2));
+			if (this->isAi) LoadGame::winGame++;
 		}
 		else
 		{
@@ -118,14 +126,24 @@ void GameStateGame::update()
 		}
 		this->game->updateScore(this->score1, this->score2);
 		this->game->draw();
-		LoadGame::playedGameMul++;
+		if (this->isAi) LoadGame::playedGameCamp++; else LoadGame::playedGameMul++;
 		this->countGame++;
 		this->vecBoard.push_back(this->game->getLastBoard());
 		if (EngineGlobals::Game::turnOnSound)
-			this->soundWin->play();
+		{
+			if (this->currentWin == 3)
+				this->soundLose->play();
+			else
+				this->soundWin->play();
+		}
 		Input::update(6000);
 		if (EngineGlobals::Game::turnOnSound)
-			this->soundWin->stop();
+		{
+			if (this->currentWin == 3)
+				this->soundLose->stop();
+			else
+				this->soundWin->stop();
+		}
 		if (GameStateGame::showRetryDialog("Play New Game???", 25, 6))
 		{
 			this->load();
@@ -137,7 +155,7 @@ void GameStateGame::update()
 		this->vecScore.push_back(std::make_pair(this->score1, this->score2));
 		this->game->updateScore(this->score1, this->score2);
 		this->game->draw();
-		LoadGame::playedGameMul++;
+		if (this->isAi) LoadGame::playedGameCamp++; else LoadGame::playedGameMul++;
 		this->countGame++;
 		this->vecBoard.push_back(this->game->getLastBoard());
 		if (EngineGlobals::Game::turnOnSound)

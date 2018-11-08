@@ -20,6 +20,8 @@ enum Label_Id {
 	// Icon Menu
 	CLASSIC, MIND, TIME, SOUL, POWER, REALITY, SPACE, MAKE,
 
+	// Ai Menu
+	LOKIAI,
 	//Marvel Menu
 	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
 
@@ -35,6 +37,7 @@ GameStateMainMenu::GameStateMainMenu():
 	mobaMenu(NULL),
 	loadMenu(NULL),
 	settingMenu(NULL),
+	aiMenu(NULL),
 	about(NULL),
 	statistic(NULL),
 	music(NULL)
@@ -50,6 +53,7 @@ void GameStateMainMenu::load() {
 	createMobaMenu();
 	createSettingMenu();
 	createIconMenu();
+	createAiMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
@@ -58,6 +62,8 @@ void GameStateMainMenu::load() {
 	this->isActivatedSetting = false;
 	this->isActivatedSize = false;
 	this->isActivatedIcon = false;
+	this->isActivatedAi = false;
+
 	this->XIcon = 88;
 	this->OIcon = 79;
 
@@ -82,6 +88,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->marvelMenu);
 	SAFE_DELETE(this->mobaMenu);
 	SAFE_DELETE(this->settingMenu);
+	SAFE_DELETE(this->aiMenu);
 
 	this->music->stop();
 	SAFE_DELETE(this->music);
@@ -219,6 +226,30 @@ void GameStateMainMenu::update()
 		this->boardMenu->reset();
 	}
 	else
+	if (this->isActivatedAi)
+	{
+		this->aiMenu->handleInput();
+		if (this->aiMenu->willQuit())
+		{
+			switch (this->aiMenu->currentID())
+			{
+				case LOKIAI:
+					EngineGlobals::Game::setAi(1);
+					EngineGlobals::Game::setNamePlayer(this->aiMenu->currentLabel(), 0);
+					EngineGlobals::Game::setNamePlayer("HUMAN", 1);
+					this->isActivatedAi = false;
+					StateManager::change(new GameStateGame(1));
+					break;
+				case RETURN:
+					this->isActivatedAi = false;
+					break;
+				default:
+					break;
+			}
+		}
+		this->aiMenu->reset();
+	}
+	else
 	if (this->isActivatedIcon)
 	{
 		this->iconMenu->handleInput();
@@ -327,7 +358,11 @@ void GameStateMainMenu::update()
 			{
 				case PVP:
 					EngineGlobals::Game::setLoadGame("");
+					EngineGlobals::Game::setAi(0);
 					this->isActivatedName1 = true;
+					break;
+				case PVC:
+					this->isActivatedAi = true;
 					break;
 				case LOAD:
 					this->isActivatedLOAD = true;
@@ -361,6 +396,10 @@ void GameStateMainMenu::draw() {
 	else if (this->isActivatedName2)
 	{
 		this->layout->draw(this->mobaMenu, 4);
+	}
+	else if (this->isActivatedAi)
+	{
+		this->layout->draw(this->aiMenu, 7);
 	}
 	else if (this->isActivatedLOAD)
 	{
@@ -527,7 +566,7 @@ void GameStateMainMenu::createLoadMenu()
 
 	MenuItem* item;
 
-	item = new MenuItem("Return Menu", RETURN);
+	item = new MenuItem("Back", RETURN);
 	loadMenu->add(item);
 
 	loadMenu->addBlank();
@@ -550,7 +589,7 @@ void GameStateMainMenu::createSettingMenu()
 
 	MenuItem* item;
 
-	item = new MenuItem("Return", RETURN);
+	item = new MenuItem("Back", RETURN);
 	settingMenu->add(item);
 
 	settingMenu->addBlank();
@@ -599,4 +638,20 @@ void GameStateMainMenu::createIconMenu()
 
 	item = new MenuItem("Make A Gem", MAKE);
 	iconMenu->add(item);
+}
+void GameStateMainMenu::createAiMenu()
+{
+	SAFE_DELETE(this->aiMenu);
+
+	this->aiMenu = new Menu(1, 1, this->layout->aiMenu->getW() - 2, this->layout->aiMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Loki", LOKIAI);
+	aiMenu->add(item);
+
+	aiMenu->addBlank();
+
+	item = new MenuItem("Back", RETURN);
+	aiMenu->add(item);
 }

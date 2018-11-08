@@ -68,8 +68,7 @@ void WindowAbout::run() {
 			this->helpWin->print("Esc", 14, 3);
 
 			this->intro->print("\n",
-			                        0, 0,
-			                        EngineGlobals::Theme::hilite_text);
+			                        0, 0);
 			this->intro->print(Utils::String::split("Are you looking for a AWESOME game???\n"
 													"\n"
 			                                        "You think you are SMART engouh???\n"

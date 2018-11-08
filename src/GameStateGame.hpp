@@ -31,7 +31,7 @@ public:
 	sf::Music* sound;
 	sf::Music* soundWin;
 	sf::Music* soundDraw;
-
+	sf::Music* soundLose;
 private:
 	Game* game;
 
@@ -43,8 +43,8 @@ private:
 	int tmpOIcon;
 	bool willQuit;
 	bool isReady;
-	bool isAi;
-
+	int isAi;
+	int currentWin;
 	string filename;
 	int countGame;
 	vector<pair<int, int>> vecScore;
