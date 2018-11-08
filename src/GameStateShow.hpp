@@ -48,6 +48,8 @@ private:
 	int score2;
 	string namePlayer1;
 	string namePlayer2;
+	int XIcon;
+	int OIcon;
 	string gameMode;
 
 	vector<vector<int>> board;

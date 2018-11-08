@@ -4,6 +4,9 @@ ColorPair EngineGlobals::Theme::text;
 ColorPair EngineGlobals::Theme::hilite_text;
 ColorPair EngineGlobals::Theme::textbox;
 EngineGlobals::Board::Style EngineGlobals::Board::style;
+int EngineGlobals::Board::XIcon;
+int EngineGlobals::Board::OIcon;
+
 std::string EngineGlobals::Game::currentGame;
 std::string EngineGlobals::Game::namePlayer1;
 std::string EngineGlobals::Game::namePlayer2;
@@ -16,11 +19,22 @@ void EngineGlobals::init()
 	EngineGlobals::Theme::textbox     = Colors::pair("default", "cyan");
 	EngineGlobals::Board::style = EngineGlobals::Board::NORMAL;
 	EngineGlobals::Game::turnOnSound = true;
+	EngineGlobals::Board::XIcon = 88;
+	EngineGlobals::Board::OIcon = 79;
 }
 
 void EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style _style)
 {
 	EngineGlobals::Board::style = _style;
+}
+
+void EngineGlobals::Board::setXIcon(int icon)
+{
+	EngineGlobals::Board::XIcon = icon;
+}
+void EngineGlobals::Board::setOIcon(int icon)
+{
+	EngineGlobals::Board::OIcon = icon;
 }
 
 void EngineGlobals::Game::setLoadGame(std::string filegame)

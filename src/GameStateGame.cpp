@@ -44,7 +44,10 @@ GameStateGame::GameStateGame(bool aiMod):
 		this->namePlayer1 = LoadGame::loadName(1);
 		this->namePlayer2 = LoadGame::loadName(2);
 		this->isAi = LoadGame::isAiMod;
+
 	}
+	this->tmpXIcon = EngineGlobals::Board::XIcon;
+	this->tmpOIcon = EngineGlobals::Board::OIcon;
 
 	this->sound = new sf::Music();
 
@@ -71,18 +74,23 @@ GameStateGame::~GameStateGame()
 void GameStateGame::load()
 {
 
-		this->game = new Game();
-		if (!this->isReady && EngineGlobals::Game::currentGame != "")
-		{
-			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 1, this->isAi);
-			this->isReady = true;
-		}
-		else
-			this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 0, this->isAi);
+	this->game = new Game();
+	if (!this->isReady && EngineGlobals::Game::currentGame != "")
+	{
+		this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 1, this->isAi);
+		this->isReady = true;
+	}
+	else
+		this->game->start(this->isReady, this->score1, this->score2, this->namePlayer1, this->namePlayer2, 0, this->isAi);
 }
 void GameStateGame::unload()
 {
 	SAFE_DELETE(this->game);
+	SAFE_DELETE(this->sound);
+	SAFE_DELETE(this->soundWin);
+	SAFE_DELETE(this->soundDraw);
+	EngineGlobals::Board::setXIcon(this->tmpXIcon);
+	EngineGlobals::Board::setOIcon(this->tmpOIcon);
 }
 void GameStateGame::update()
 {
@@ -172,11 +180,11 @@ void GameStateGame::showDialog(std::string message, int width, int height)
 
 	Input::update(-1);
 	dialog.clear();
+	if (EngineGlobals::Game::turnOnSound)
+		this->sound->stop();
 	if (Input::isPressed(27)) this->willQuit = true;
 	else
 	{
-		if (EngineGlobals::Game::turnOnSound)
-			this->sound->stop();
 		this->isReady = true;
 		this->game->isPlay = true;
 	}
@@ -201,6 +209,8 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 	if (EngineGlobals::Game::turnOnSound)
 		this->sound->play();
 	Input::update(-1);
+	if (EngineGlobals::Game::turnOnSound)
+		this->sound->stop();
 	dialog.clear();
 	if (Input::isPressed(27)) {
 		this->willQuit = true;
@@ -208,8 +218,6 @@ bool GameStateGame::showRetryDialog(std::string message, int width, int height)
 	}
 	else
 	{
-		if (EngineGlobals::Game::turnOnSound)
-			this->sound->stop();
 		this->isReady = true;
 		this->game->isPlay = true;
 		return true;

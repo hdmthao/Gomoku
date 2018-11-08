@@ -39,6 +39,8 @@ private:
 	int score2;
 	string namePlayer1;
 	string namePlayer2;
+	int tmpXIcon;
+	int tmpOIcon;
 	bool willQuit;
 	bool isReady;
 	bool isAi;

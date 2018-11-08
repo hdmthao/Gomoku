@@ -1,4 +1,5 @@
 #include <LoadStat.hpp>
+#include <EngineGlobals.hpp>
 #include <fstream>
 #include <sys/types.h>
 #include <dirent.h>
@@ -14,6 +15,8 @@ const string path = "/home/himt/cs/cs161/projects/Gomoku/src/History/";
 
 string LoadStat::namePlayer1 = "";
 string LoadStat::namePlayer2 = "";
+int LoadStat::XIcon = (int)'X';
+int LoadStat::OIcon = (int)'O';
 string LoadStat::gameMode = "";
 int LoadStat::size = 0;
 int LoadStat::gameRule = 0;
@@ -83,6 +86,8 @@ void LoadStat::saveStat(string filename, string namePlayer1, string namePlayer2,
     file.open(filename);
     file << namePlayer1 << "\n";
     file << namePlayer2 << "\n";
+    file << "\"player1_icon\":" << EngineGlobals::Board::XIcon << "\n";
+    file << "\"player2_icon\":" << EngineGlobals::Board::OIcon << "\n";
     if (aiMod) file << "Campaign" << "\n";
     else file << "Multiplayer" << "\n";
     file << "\"size\":" << size << "\n";
@@ -119,13 +124,15 @@ void LoadStat::load(string filename)
         countLine++;
         if (countLine == 1) LoadStat::namePlayer1 = line;
         if (countLine == 2) LoadStat::namePlayer2 = line;
-        if (countLine == 3) LoadStat::gameMode = line;
-        if (countLine == 4) LoadStat::size = LoadStat::getInt(line);
-        if (countLine == 5) LoadStat::gameRule = LoadStat::getInt(line);
-        if (countLine == 6) LoadStat::scorePlayer1 = LoadStat::getInt(line);
-        if (countLine == 7) LoadStat::scorePlayer2 = LoadStat::getInt(line);
-        if (countLine == 8) LoadStat::countGame = LoadStat::getInt(line);
-        if (countLine > 8) {
+        if (countLine == 3) LoadStat::XIcon = LoadStat::getInt(line);
+        if (countLine == 4) LoadStat::OIcon = LoadStat::getInt(line);
+        if (countLine == 5) LoadStat::gameMode = line;
+        if (countLine == 6) LoadStat::size = LoadStat::getInt(line);
+        if (countLine == 7) LoadStat::gameRule = LoadStat::getInt(line);
+        if (countLine == 8) LoadStat::scorePlayer1 = LoadStat::getInt(line);
+        if (countLine == 9) LoadStat::scorePlayer2 = LoadStat::getInt(line);
+        if (countLine == 10) LoadStat::countGame = LoadStat::getInt(line);
+        if (countLine > 10) {
             countLine2++;
             if (countLine2 % 3 == 1) score1 = LoadStat::getInt(line);
             if (countLine2 % 3 == 2) score2 = LoadStat::getInt(line);

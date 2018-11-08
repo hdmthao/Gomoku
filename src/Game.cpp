@@ -44,6 +44,11 @@ Game::~Game()
 	SAFE_DELETE(this->player1);
 	SAFE_DELETE(this->player2);
 	SAFE_DELETE(this->pauseMenu);
+
+	this->soundO->stop();
+	this->soundO->stop();
+	this->soundErr->stop();
+	
 	SAFE_DELETE(this->soundX);
 	SAFE_DELETE(this->soundO);
 	SAFE_DELETE(this->soundErr);
@@ -94,6 +99,9 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 		this->board->setBoard(1);
 		if (LoadGame::loadLastPlayer() == 1) this->currentPlayer = Board::PLAYER_1;
 		else this->currentPlayer = Board::PLAYER_2;
+
+		EngineGlobals::Board::setXIcon(LoadGame::XIcon);
+		EngineGlobals::Board::setOIcon(LoadGame::OIcon);
 	}
 	else
 	{

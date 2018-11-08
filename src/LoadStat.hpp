@@ -13,6 +13,8 @@ public:
 
     static string namePlayer1;
     static string namePlayer2;
+    static int XIcon;
+    static int OIcon;
     static string gameMode;
     static int size;
     static int gameRule;
@@ -21,7 +23,7 @@ public:
     static int countGame;
     static vector<pair<int, int>> score;
     static vector< vector<pair< pair<int, int>, int>> > board;
-    
+
     static void saveStat(string filename, string namePlayer1, string namePlayer2, bool aiMod, int size, int gameRule, int scorePlayer1, int scorePlayer2, int countGame, vector<pair<int, int>> score, vector< vector<pair<int, int> > > board);
 
     static vector<string> listGames();

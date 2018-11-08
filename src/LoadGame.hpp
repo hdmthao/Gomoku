@@ -14,6 +14,8 @@ public:
     static int lastPlayer;
     static std::string namePlayer1;
     static std::string namePlayer2;
+    static int XIcon;
+    static int OIcon;
     static bool isAiMod;
     static int gameRule;
     static std::string str;

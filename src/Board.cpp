@@ -134,24 +134,24 @@ void Board::draw(Window *win, role currentPlayer)
                             case EMPTY:
                                 if (currentPlayer == PLAYER_1)
                                 {
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                 }
                                 else
                                 {
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                 }
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "cyan", true));
                                 break;
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
                             default:
                                 break;
@@ -163,16 +163,16 @@ void Board::draw(Window *win, role currentPlayer)
                         switch(board[virtualX][virtualY])
                         {
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "blue", true));
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "blue", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
                             default:
                                 break;
@@ -186,16 +186,16 @@ void Board::draw(Window *win, role currentPlayer)
                                 win->printChar('_', posX + x, posY + y, Colors::pair("white", "default", true));
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                 break;
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
                             default:
                                 break;
@@ -247,24 +247,24 @@ void Board::draw(Window *win, role currentPlayer)
                                 case EMPTY:
                                     if (currentPlayer == PLAYER_1)
                                     {
-                                        win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                        win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                     }
                                     else
                                     {
-                                        win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                        win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                     }
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "cyan", true));
                                     break;
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
 
                                 default:
@@ -277,16 +277,16 @@ void Board::draw(Window *win, role currentPlayer)
                             switch(board[virtualX][virtualY])
                             {
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "blue", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "blue", true));
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "blue", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
                                 default:
                                     break;
@@ -299,16 +299,16 @@ void Board::draw(Window *win, role currentPlayer)
                                 case EMPTY:
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                     break;
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
 
                                 default:
@@ -361,24 +361,24 @@ void Board::draw(Window *win, role currentPlayer)
                                 case EMPTY:
                                     if (currentPlayer == PLAYER_1)
                                     {
-                                        win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                        win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                     }
                                     else
                                     {
-                                        win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                        win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                     }
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "cyan", true));
                                     break;
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "cyan", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                     break;
 
                                     break;
@@ -392,16 +392,16 @@ void Board::draw(Window *win, role currentPlayer)
                             switch(board[virtualX][virtualY])
                             {
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "blue", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "blue", true));
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "blue", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "blue", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                     break;
 
                                 default:
@@ -415,16 +415,16 @@ void Board::draw(Window *win, role currentPlayer)
                                 case EMPTY:
                                     break;
                                 case O:
-                                    win->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                     break;
                                 case X:
-                                    win->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                     break;
                                 case XW:
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                     break;
                                 case OW:
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                     break;
 
                                 default:
@@ -474,23 +474,23 @@ void Board::draw(Window *win, role currentPlayer)
                             case EMPTY:
                                 if (currentPlayer == PLAYER_1)
                                 {
-                                    win->printChar('X', posX + x, posY + y, true, Colors::pair("red", "cyan"));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("red", "cyan"));
                                 } else
                                 {
-                                    win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan"));
+                                    win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan"));
                                 }
                                 break;
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("black", "white", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "white", true));
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("white", "black", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "black", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                 break;
 
                         }
@@ -500,16 +500,16 @@ void Board::draw(Window *win, role currentPlayer)
                         switch(board[virtualX][virtualY])
                         {
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("black", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "blue", true));
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("white", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "blue", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                 break;
 
                             default:
@@ -521,16 +521,16 @@ void Board::draw(Window *win, role currentPlayer)
                         switch (board[virtualX][virtualY])
                         {
                             case X:
-                                win->printChar('X', posX + x, posY + y, Colors::pair("black", "default", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "default", true));
                                 break;
                             case O:
-                                win->printChar('O', posX + x, posY + y, Colors::pair("white", "default", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "default", true));
                                 break;
                             case XW:
-                                win->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                                 break;
                             case OW:
-                                win->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                                 break;
 
                             default:

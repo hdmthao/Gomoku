@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 int Input::pressedKey = ERR;
-std::map<std::string, int> Input::binds;
 
 void Input::update(int delay_ms) {
 	Input::pressedKey = Input::getInput(delay_ms);
@@ -17,13 +16,6 @@ bool Input::noKeyPressed() {
 
 bool Input::isPressed(int key) {
 	return (Input::pressedKey == key);
-}
-
-bool Input::isPressed(std::string key) {
-	if (Input::binds.find(key) == Input::binds.end())
-		return false;
-
-	return (Input::isPressed(Input::binds[key]));
 }
 
 char Input::getAlphabet() {
@@ -40,6 +32,13 @@ char Input::getAlphabet() {
 		if (Input::isPressed(i)) return (char)(i);
 	}
 	if (Input::isPressed(95)) return (char)(95);
+	return ' ';
+}
+char Input::getIcon() {
+	for (int i = 33; i <= 126; ++i)
+	{
+		if (Input::isPressed(i)) return (char)(i);
+	}
 	return ' ';
 }
 int Input::getInput(int delay_ms) {

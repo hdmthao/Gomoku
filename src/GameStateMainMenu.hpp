@@ -29,7 +29,9 @@ public:
 	bool isActivatedName2;
 	bool isActivatedSetting;
 	bool isActivatedSize;
-	
+	bool isActivatedIcon;
+	int XIcon;
+	int OIcon;
 	sf::Music* music;
 
 private:
@@ -38,6 +40,7 @@ private:
 	// Menu chính
 	Menu* menu;
 	Menu* boardMenu;
+	Menu* iconMenu;
 	Menu* marvelMenu;
 	Menu* mobaMenu;
 	Menu* loadMenu;
@@ -53,6 +56,7 @@ private:
 	void createMobaMenu();
 	void createLoadMenu();
 	void createSettingMenu();
+	void createIconMenu();
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

@@ -208,15 +208,13 @@ void WindowStatistic::run()
 
 		Input::update();
 
-		if (Input::isPressed("left") || // user-defined
-		    Input::isPressed(KEY_LEFT))
+		if (Input::isPressed(KEY_LEFT))
 		{
 			activatedIndex--;
 			if (activatedIndex < 0)
 				activatedIndex = 0;
 		}
-		else if (Input::isPressed("right") || // user-defined
-		         Input::isPressed(KEY_RIGHT))
+		else if (Input::isPressed(KEY_RIGHT))
 		{
 			activatedIndex++;
 			if (activatedIndex > 1)

@@ -12,10 +12,13 @@ enum Label_Id {
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
 
 	//Setting Menu
-	SIZE, SOUND,
+	SIZE, SOUND, ICON,
 
 	// Size Board Menu
 	RETURN, TICTACTOE, SMALL, NORMAL, BIG, BIGEST,
+
+	// Icon Menu
+	CLASSIC, MIND, TIME, SOUL, POWER, REALITY, SPACE, MAKE,
 
 	//Marvel Menu
 	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
@@ -27,6 +30,7 @@ GameStateMainMenu::GameStateMainMenu():
 	layout(NULL),
 	menu(NULL),
 	boardMenu(NULL),
+	iconMenu(NULL),
 	marvelMenu(NULL),
 	mobaMenu(NULL),
 	loadMenu(NULL),
@@ -45,6 +49,7 @@ void GameStateMainMenu::load() {
 	createMarvelMenu();
 	createMobaMenu();
 	createSettingMenu();
+	createIconMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
@@ -52,6 +57,9 @@ void GameStateMainMenu::load() {
 	this->isActivatedName2 = false;
 	this->isActivatedSetting = false;
 	this->isActivatedSize = false;
+	this->isActivatedIcon = false;
+	this->XIcon = 88;
+	this->OIcon = 79;
 
 	this->about = new WindowAbout(100, 30);
 	this->statistic = new WindowStatistic(100, 30);
@@ -69,10 +77,13 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->layout);
 	SAFE_DELETE(this->menu);
 	SAFE_DELETE(this->boardMenu);
+	SAFE_DELETE(this->iconMenu);
 	SAFE_DELETE(this->loadMenu);
 	SAFE_DELETE(this->marvelMenu);
 	SAFE_DELETE(this->mobaMenu);
 	SAFE_DELETE(this->settingMenu);
+
+	this->music->stop();
 	SAFE_DELETE(this->music);
 }
 
@@ -163,6 +174,12 @@ void GameStateMainMenu::update()
 					else this->music->stop();
 					createSettingMenu();
 					break;
+				case ICON:
+					this->isActivatedSetting = false;
+					this->isActivatedIcon = true;
+					break;
+				default:
+					break;
 			}
 		}
 		this->settingMenu->reset();
@@ -200,6 +217,106 @@ void GameStateMainMenu::update()
 			}
 		}
 		this->boardMenu->reset();
+	}
+	else
+	if (this->isActivatedIcon)
+	{
+		this->iconMenu->handleInput();
+		if (this->iconMenu->willQuit())
+		{
+			int cur = 1;
+			char c1 = '_';
+			char c2 = '_';
+			switch(this->iconMenu->currentID())
+			{
+				case CLASSIC:
+					EngineGlobals::Board::setXIcon(88);
+					EngineGlobals::Board::setOIcon(79);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case MIND:
+					EngineGlobals::Board::setXIcon(4194400);
+					EngineGlobals::Board::setOIcon(4194427);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case POWER:
+					EngineGlobals::Board::setXIcon(4194409);
+					EngineGlobals::Board::setOIcon(4194429);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case SPACE:
+					EngineGlobals::Board::setXIcon(4194407);
+					EngineGlobals::Board::setOIcon(64);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case REALITY:
+					EngineGlobals::Board::setXIcon(4194349);
+					EngineGlobals::Board::setOIcon(191);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case TIME:
+					EngineGlobals::Board::setXIcon(35);
+					EngineGlobals::Board::setOIcon(42);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case SOUL:
+					EngineGlobals::Board::setXIcon(61);
+					EngineGlobals::Board::setOIcon(36);
+					this->isActivatedIcon = false;
+					this->isActivatedSetting = true;
+					break;
+				case MAKE:
+					while (1)
+					{
+						this->layout->draw(this->iconMenu, 6, cur, c1, c2);
+						Input::update(-1);
+						if (Input::isPressed('\n')) break;
+						if (cur == 2 && Input::isPressed(KEY_LEFT))
+						{
+							c1 = '_';
+							cur = 1;
+							continue;
+						}
+						if (cur == 1)
+						{
+							c1 = Input::getIcon();
+							if (c1 == ' ') {
+								c1 = '_';
+								cur = 1;
+							} else
+							cur = 2;
+						} else
+						if (cur == 2)
+						{
+							c2 = Input::getIcon();
+							if (c2 == ' ')
+							{
+								c2 = '_';
+								cur = 2;
+							} else continue;
+						}
+					}
+					if (c1 != '_' && c2 != '_')
+					{
+						this->XIcon = (int)c1;
+						this->OIcon = (int)c2;
+						EngineGlobals::Board::setXIcon(this->XIcon);
+						EngineGlobals::Board::setOIcon(this->OIcon);
+						this->isActivatedIcon = false;
+						this->isActivatedSetting = true;
+						break;
+					} else break;
+				default:
+					break;
+			}
+		}
+		this->iconMenu->reset();
 	}
 	else
 	{
@@ -256,6 +373,10 @@ void GameStateMainMenu::draw() {
 	else if (this->isActivatedSize)
 	{
 		this->layout->draw(this->boardMenu, 1);
+	}
+	else if (this->isActivatedIcon)
+	{
+		this->layout->draw(this->iconMenu, 5);
 	}
 	else
 	{
@@ -441,9 +562,41 @@ void GameStateMainMenu::createSettingMenu()
 		item = new MenuItem("Sound OFF", SOUND);
 	else
 		item = new MenuItem("Sound ON", SOUND);
-
 	settingMenu->add(item);
 
+	item = new MenuItem("Icon", ICON);
+	settingMenu->add(item);
 
+}
+void GameStateMainMenu::createIconMenu()
+{
+	SAFE_DELETE(this->iconMenu);
 
+	this->iconMenu = new Menu(1, 1, this->layout->iconMenu->getW() - 2, this->layout->iconMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Classic Gem", CLASSIC);
+	iconMenu->add(item);
+
+	item = new MenuItem("Mind Gem", MIND);
+	iconMenu->add(item);
+
+	item = new MenuItem("Power Gem", POWER);
+	iconMenu->add(item);
+
+	item = new MenuItem("Space Gem", SPACE);
+	iconMenu->add(item);
+
+	item = new MenuItem("Time Gem", TIME);
+	iconMenu->add(item);
+
+	item = new MenuItem("Reality Gem", REALITY);
+	iconMenu->add(item);
+
+	item = new MenuItem("Soul Gem", SOUL);
+	iconMenu->add(item);
+
+	item = new MenuItem("Make A Gem", MAKE);
+	iconMenu->add(item);
 }

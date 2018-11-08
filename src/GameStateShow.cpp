@@ -5,7 +5,6 @@
 #include <StateManager.hpp>
 #include <GameStateMainMenu.hpp>
 #include <LoadStat.hpp>
-#include <iostream>
 
 GameStateShow::GameStateShow(string m_filename):
     filename(m_filename),
@@ -79,6 +78,8 @@ void GameStateShow::initRound()
 {
     this->namePlayer1 = LoadStat::namePlayer1;
     this->namePlayer2 = LoadStat::namePlayer2;
+    this->XIcon = LoadStat::XIcon;
+    this->OIcon = LoadStat::OIcon;
     this->score1 = LoadStat::score[round - 1].first;
     this->score2 = LoadStat::score[round - 1].second;
     this->size = LoadStat::size;
@@ -145,16 +146,16 @@ void GameStateShow::drawBoard()
                                 this->main->printChar('_', posX + x, posY + y, Colors::pair("white", "default", true));
                                 break;
                             case 2:
-                                this->main->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                 break;
                             case 1:
-                                this->main->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                 break;
                             case 3:
-                                this->main->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                 break;
                             case 4:
-                                this->main->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
                             default:
                                 break;
@@ -202,16 +203,16 @@ void GameStateShow::drawBoard()
                             case 0:
                                 break;
                             case 2:
-                                this->main->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                 break;
                             case 1:
-                                this->main->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                 break;
                             case 3:
-                                this->main->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, true, Colors::pair("yellow", "blue", true));
                                 break;
                             case 4:
-                                this->main->printChar('O', posX + x, posY + y, true, Colors::pair("red", "blue", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
 
                             default:
@@ -261,16 +262,16 @@ void GameStateShow::drawBoard()
                             case 0:
                                 break;
                             case 2:
-                                this->main->printChar('O', posX + x, posY + y, Colors::pair("red", "default", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                 break;
                             case 1:
-                                this->main->printChar('X', posX + x, posY + y, Colors::pair("yellow", "default", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                 break;
                             case 3:
-                                this->main->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "white", true));
+                                this->main->printChar(this->XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                 break;
                             case 4:
-                                this->main->printChar('O', posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                this->main->printChar(this->OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                 break;
 
                             default:
@@ -315,16 +316,16 @@ void GameStateShow::drawBoard()
                     switch (board[virtualX][virtualY])
                     {
                         case 1:
-                            this->main->printChar('X', posX + x, posY + y, Colors::pair("black", "default", true));
+                            this->main->printChar(this->XIcon, posX + x, posY + y, Colors::pair("black", "default", true));
                             break;
                         case 2:
-                            this->main->printChar('O', posX + x, posY + y, Colors::pair("white", "default", true));
+                            this->main->printChar(this->OIcon, posX + x, posY + y, Colors::pair("white", "default", true));
                             break;
                         case 3:
-                            this->main->printChar('X', posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                            this->main->printChar(this->XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
                             break;
                         case 4:
-                            this->main->printChar('O', posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                            this->main->printChar(this->OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
                             break;
 
                         default:

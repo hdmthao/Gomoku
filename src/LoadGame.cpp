@@ -1,4 +1,5 @@
 #include <LoadGame.hpp>
+#include <EngineGlobals.hpp>
 #include <fstream>
 #include <sys/types.h>
 #include <dirent.h>
@@ -20,6 +21,8 @@ int LoadGame::height = 0;
 int LoadGame::lastPlayer = 1;
 std::string LoadGame::namePlayer1 = "";
 std::string LoadGame::namePlayer2 = "";
+int LoadGame::XIcon = (int) 'X';
+int LoadGame::OIcon = (int) 'O';
 bool LoadGame::isAiMod = false;
 int LoadGame::gameRule = 0;
 std::string LoadGame::str = "";
@@ -42,6 +45,8 @@ void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::st
 
     file << namePlayer1 << "\n";
     file << namePlayer2 << "\n";
+    file << "\"player1_icon\":" << EngineGlobals::Board::XIcon << "\n";
+    file << "\"player2_icon\":" << EngineGlobals::Board::OIcon << "\n";
     file << "\"player1_score\":" << m_score1 << "\n";
     file << "\"player2_score\":" << m_score2 << "\n";
     if (m_aimod)
@@ -72,14 +77,16 @@ void LoadGame::load(std::string filename)
         ++countLine;
         if (countLine == 1) LoadGame::namePlayer1 = line;
         if (countLine == 2) LoadGame::namePlayer2 = line;
-        if (countLine == 3) LoadGame::score1 = LoadGame::getInt(line);
-        if (countLine == 4) LoadGame::score2 = LoadGame::getInt(line);
-        if (countLine == 5) LoadGame::isAiMod = LoadGame::getInt(line);
-        if (countLine == 6) LoadGame::gameRule = LoadGame::getInt(line);
-        if (countLine == 7) LoadGame::width = LoadGame::getInt(line);
-        if (countLine == 8) LoadGame::height = LoadGame::getInt(line);
-        if (countLine == 9) LoadGame::lastPlayer = LoadGame::getInt(line);
-        if (countLine == 10) LoadGame::str = line;
+        if (countLine == 3) LoadGame::XIcon = LoadGame::getInt(line);
+        if (countLine == 4) LoadGame::OIcon = LoadGame::getInt(line);
+        if (countLine == 5) LoadGame::score1 = LoadGame::getInt(line);
+        if (countLine == 6) LoadGame::score2 = LoadGame::getInt(line);
+        if (countLine == 7) LoadGame::isAiMod = LoadGame::getInt(line);
+        if (countLine == 8) LoadGame::gameRule = LoadGame::getInt(line);
+        if (countLine == 9) LoadGame::width = LoadGame::getInt(line);
+        if (countLine == 10) LoadGame::height = LoadGame::getInt(line);
+        if (countLine == 11) LoadGame::lastPlayer = LoadGame::getInt(line);
+        if (countLine == 12) LoadGame::str = line;
     }
 }
 int LoadGame::loadScore(int currentPlayer)

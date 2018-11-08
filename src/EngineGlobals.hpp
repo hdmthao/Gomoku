@@ -31,9 +31,12 @@ namespace EngineGlobals
 		{
 			TICTACTOE, SMALL, NORMAL, BIG, BIGEST
 		};
+		extern int XIcon;
+		extern int OIcon;
 		extern Style style;
 		void setGameStyle(Style _style);
-
+		void setXIcon(int icon);
+		void setOIcon(int icon);
 	};
 
 	namespace Game
