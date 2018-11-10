@@ -1,6 +1,5 @@
 #include <Board.hpp>
 #include <LoadGame.hpp>
-#include <iostream>
 
 
 int dx[8] = {-1, 0, 1, 0, -1, -1, 1, 1};
@@ -8,6 +7,7 @@ int dy[8] = {0, 1, 0, -1, -1, 1, 1, -1};
 
 Board::Board():
     lokiAi(NULL),
+    heuristic(NULL),
     width(0),
     height(0),
     style(EngineGlobals::Board::NORMAL)
@@ -16,12 +16,14 @@ Board::Board():
     contains.clear();
 
     this->lokiAi = new EAI();
+    this->heuristic = new Heuristic();
 }
 Board::~Board()
 {
     board.clear();
     contains.clear();
     SAFE_DELETE(this->lokiAi);
+    SAFE_DELETE(this->heuristic);
 }
 void Board::setType(EngineGlobals::Board::Style _style)
 {
@@ -578,7 +580,17 @@ bool Board::update(role currentPlayer)
         stone.y = this->currentY;
         stone.kind = X;
         contains.push_back(stone);
-        if (EngineGlobals::Game::AI) this->lokiAi->parse(this->currentX, this->currentY);
+        switch (EngineGlobals::Game::AI)
+        {
+            case 1:
+                this->lokiAi->parse(this->currentX, this->currentY);
+                break;
+            case 2:
+                this->heuristic->parse(this->currentX, this->currentY);
+                break;
+            default:
+                break;
+        }
     }
     else if (currentPlayer == PLAYER_2)
     {
@@ -757,7 +769,18 @@ vector< std::pair<int, int> > Board::getLastBoard()
 void Board::makeMove()
 {
     pair<int, int> coor;
-    coor = this->lokiAi->decideMove();
+    switch (EngineGlobals::Game::AI)
+    {
+        case 1:
+            coor = this->lokiAi->makeMove();
+            break;
+        case 2:
+            coor = this->heuristic->makeMove();
+            break;
+        default:
+            break;
+    }
+
     this->currentX = coor.first;
     this->currentY = coor.second;
     update(BOT);

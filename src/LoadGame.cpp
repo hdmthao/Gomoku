@@ -23,7 +23,7 @@ std::string LoadGame::namePlayer1 = "";
 std::string LoadGame::namePlayer2 = "";
 int LoadGame::XIcon = (int) 'X';
 int LoadGame::OIcon = (int) 'O';
-bool LoadGame::isAiMod = false;
+int LoadGame::isAiMod = 0;
 int LoadGame::gameRule = 0;
 std::string LoadGame::str = "";
 
@@ -37,7 +37,7 @@ std::string LoadGame::topCharacterMarvel = "";
 int LoadGame::count[20] = {0};
 std::string LoadGame::name[20] = {""};
 
-void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::string namePlayer2, bool m_aimod, int m_gameRule, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
+void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::string namePlayer2, int m_aimod, int m_gameRule, int m_score1, int m_score2, int size, int currentPlayer, std::vector<std::pair<int, int> > board)
 {
     std::string filename = path + m_filename + ".txt";
     std::ofstream file;
@@ -49,10 +49,7 @@ void LoadGame::saveGame(std::string m_filename, std::string namePlayer1, std::st
     file << "\"player2_icon\":" << EngineGlobals::Board::OIcon << "\n";
     file << "\"player1_score\":" << m_score1 << "\n";
     file << "\"player2_score\":" << m_score2 << "\n";
-    if (m_aimod)
-        file << "\"game_mod\":" << 1 << "\n";
-    else
-        file << "\"game_mod\":" << 0 << "\n";
+    file << "\"game_mod\":" << m_aimod << "\n";
     file << "\"game_rule\":" << m_gameRule << "\n";
     file << "\"height\":" << size << "\n";
     file << "\"width\":" << size << "\n";

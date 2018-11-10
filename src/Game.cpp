@@ -108,10 +108,18 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 		if (LoadGame::loadLastPlayer() == 1) this->currentPlayer = Board::PLAYER_1;
 		else
 		if (this->isAi) this->currentPlayer = Board::BOT; else this->currentPlayer = Board::PLAYER_2;
-		if (this->isAi)
+		switch (LoadGame::isAiMod)
 		{
-			this->board->lokiAi->setSize(this->board->height);
-			this->board->lokiAi->setBoard(1);
+			case 1:
+				this->board->lokiAi->setSize(this->board->height);
+				this->board->lokiAi->setBoard(1);
+				break;
+			case 2:
+				this->board->heuristic->setSize(this->board->height);
+				this->board->heuristic->setBoard(0);
+				break;
+			default:
+				break;
 		}
 		EngineGlobals::Board::setXIcon(LoadGame::XIcon);
 		EngineGlobals::Board::setOIcon(LoadGame::OIcon);
@@ -122,10 +130,18 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 		this->board->setBoard(0);
 		if (rand() % 2 == 1) this->currentPlayer = Board::PLAYER_1;
 		else if (this->isAi) this->currentPlayer = Board::BOT; else this->currentPlayer = Board::PLAYER_2;
-		if (this->isAi)
+		switch (EngineGlobals::Game::AI)
 		{
-			this->board->lokiAi->setSize(this->board->height);
-			this->board->lokiAi->setBoard(0);
+			case 1:
+				this->board->lokiAi->setSize(this->board->height);
+				this->board->lokiAi->setBoard(0);
+				break;
+			case 2:
+				this->board->heuristic->setSize(this->board->height);
+				this->board->heuristic->setBoard(0);
+				break;
+			default:
+				break;
 		}
 	}
 	this->player1 = new Player(m_score1, namePlayer1);
@@ -387,7 +403,7 @@ void Game::saveGame()
 		tempFileName = tempFileName + c;
 	}
 	if (tempFileName != "") this->filename = tempFileName;
-	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), this->isAi, 4, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
+	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), EngineGlobals::Game::AI, 4, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
 lastPlayer, this->board->getLastBoard());
 	this->isQuit = true;
 }

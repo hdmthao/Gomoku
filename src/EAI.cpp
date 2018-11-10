@@ -94,7 +94,7 @@ void EAI::setBoard(bool willLoad)
         }
     }
 }
-pair<int, int> EAI::decideMove()
+pair<int, int> EAI::makeMove()
 {
     pair<int, int> coor;
 
@@ -112,7 +112,7 @@ pair<int, int> EAI::decideMove()
                     }
                     board[x][y] = 2;
                     coor = make_pair(x, y);
-                    usleep(200000);
+                    usleep(100000);
                     return coor;
                 }
             }

@@ -18,7 +18,7 @@ public:
 
     void setSize(int size);
     void setBoard(bool willLoad);
-    pair<int, int> decideMove();
+    pair<int, int> makeMove();
     void parse(int x, int y);
 
     int direction;

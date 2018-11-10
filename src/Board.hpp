@@ -1,5 +1,6 @@
 #include <Display/Window.hpp>
 #include <EAI.hpp>
+#include <Heuristic.hpp>
 #include <EngineGlobals.hpp>
 
 #include <vector>
@@ -63,5 +64,6 @@ public:
     vector< infoBoard > contains;
 
     EAI* lokiAi;
+    Heuristic* heuristic;
 }
 ;

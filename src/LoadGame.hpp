@@ -16,7 +16,7 @@ public:
     static std::string namePlayer2;
     static int XIcon;
     static int OIcon;
-    static bool isAiMod;
+    static int isAiMod;
     static int gameRule;
     static std::string str;
 
@@ -41,7 +41,7 @@ public:
     static void removeLoadGame(std::string filename);
     static std::vector< std::vector<char> > loadBoard();
     static std::vector< std::pair<std::pair<int, int>, char> > loadContainBoard();
-    static void saveGame(std::string filename, std::string namePlayer1, std::string namePlayer2, bool m_aimod, int m_gameRule, int m_score1, int m_score2, int size, int currentPlayer, std::vector< std::pair<int, int> > board);
+    static void saveGame(std::string filename, std::string namePlayer1, std::string namePlayer2, int m_aimod, int m_gameRule, int m_score1, int m_score2, int size, int currentPlayer, std::vector< std::pair<int, int> > board);
 
     static void saveStatictis();
     static void loadStatictis();
