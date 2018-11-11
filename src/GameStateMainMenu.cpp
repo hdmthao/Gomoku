@@ -21,7 +21,7 @@ enum Label_Id {
 	CLASSIC, MIND, TIME, SOUL, POWER, REALITY, SPACE, MAKE,
 
 	// Ai Menu
-	LOKIAI, HEURISTIC,
+	LOKIAI, HEURISTIC, MINIMAX,
 	//Marvel Menu
 	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
 
@@ -246,6 +246,13 @@ void GameStateMainMenu::update()
 					EngineGlobals::Game::setNamePlayer("HUMAN", 1);
 					this->isActivatedAi = false;
 					StateManager::change(new GameStateGame(2));
+					break;
+				case MINIMAX:
+					EngineGlobals::Game::setAi(3);
+					EngineGlobals::Game::setNamePlayer(this->aiMenu->currentLabel(), 0);
+					EngineGlobals::Game::setNamePlayer("HUMAN:", 1);
+					this->isActivatedAi = false;
+					StateManager::change(new GameStateGame(3));
 					break;
 				case RETURN:
 					this->isActivatedAi = false;
@@ -658,6 +665,9 @@ void GameStateMainMenu::createAiMenu()
 	aiMenu->add(item);
 
 	item = new MenuItem("Red Skull", HEURISTIC);
+	aiMenu->add(item);
+
+	item = new MenuItem("Thanos", MINIMAX);
 	aiMenu->add(item);
 
 	aiMenu->addBlank();

@@ -1,6 +1,8 @@
 #include <Heuristic.hpp>
 #include <LoadGame.hpp>
 #include <unistd.h>
+#include <algorithm>
+#include <iostream>
 
 Heuristic::Heuristic()
 {
@@ -85,6 +87,10 @@ vector<PositionAndScore> Heuristic::getMovesWithScores()
     {
         // scoredMoves.sort((PositionAndScore a, PositionAndScore b) -> Double.compare(b.getScore(), a.getScore()));
         // scoreMove.sort(scoredMove.begin(), scoredMove.end(), {})
+        std::sort(scoredMoves.begin(), scoredMoves.end(), [&]
+        (PositionAndScore x, PositionAndScore y) {
+            return x.COL > y.COL;
+        });
     }
 
 
@@ -236,12 +242,12 @@ void Heuristic::scoreMoves(vector< Position > moves, int score, bool isPlayer)
 Position Heuristic::getBest()
 {
     int score;
-    int max = -1000000;
+    int max = -1000000009;
     Position bestMove;
 
     for(unsigned int i = 0; i < scoredMoves.size(); ++i)
     {
-
+        std::cerr << " " << scoredMoves[i].ROW.ROW -1 << " " << scoredMoves[i].ROW.COL - 1 << " " << scoredMoves[i].COL << " ";
         score = scoredMoves[i].COL;
         if (score < 0) score = -score;
         if(max < score) {

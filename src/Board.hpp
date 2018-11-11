@@ -1,6 +1,7 @@
 #include <Display/Window.hpp>
 #include <EAI.hpp>
 #include <Heuristic.hpp>
+#include <Minimax.hpp>
 #include <EngineGlobals.hpp>
 
 #include <vector>
@@ -65,5 +66,6 @@ public:
 
     EAI* lokiAi;
     Heuristic* heuristic;
+    Minimax* minimax;
 }
 ;

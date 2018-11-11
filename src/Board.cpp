@@ -8,6 +8,7 @@ int dy[8] = {0, 1, 0, -1, -1, 1, 1, -1};
 Board::Board():
     lokiAi(NULL),
     heuristic(NULL),
+    minimax(NULL),
     width(0),
     height(0),
     style(EngineGlobals::Board::NORMAL)
@@ -17,6 +18,7 @@ Board::Board():
 
     this->lokiAi = new EAI();
     this->heuristic = new Heuristic();
+    this->minimax = new Minimax();
 }
 Board::~Board()
 {
@@ -24,6 +26,7 @@ Board::~Board()
     contains.clear();
     SAFE_DELETE(this->lokiAi);
     SAFE_DELETE(this->heuristic);
+    SAFE_DELETE(this->minimax);
 }
 void Board::setType(EngineGlobals::Board::Style _style)
 {
@@ -588,6 +591,9 @@ bool Board::update(role currentPlayer)
             case 2:
                 this->heuristic->parse(this->currentX, this->currentY);
                 break;
+            case 3:
+                this->minimax->parse(this->currentX, this->currentY);
+                break;
             default:
                 break;
         }
@@ -776,6 +782,9 @@ void Board::makeMove()
             break;
         case 2:
             coor = this->heuristic->makeMove();
+            break;
+        case 3:
+            coor = this->minimax->makeMove();
             break;
         default:
             break;

@@ -116,8 +116,12 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 				break;
 			case 2:
 				this->board->heuristic->setSize(this->board->height);
-				this->board->heuristic->setBoard(0);
+				this->board->heuristic->setBoard(1);
 				break;
+			case 3:
+				this->board->minimax->setSize(this->board->height);
+				this->board->minimax->setBoard(1);
+				this->board->minimax->setDepth(4);
 			default:
 				break;
 		}
@@ -139,6 +143,11 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 			case 2:
 				this->board->heuristic->setSize(this->board->height);
 				this->board->heuristic->setBoard(0);
+				break;
+			case 3:
+				this->board->minimax->setSize(this->board->height);
+				this->board->minimax->setBoard(0);
+				this->board->minimax->setDepth(3);
 				break;
 			default:
 				break;
