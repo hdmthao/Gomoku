@@ -225,20 +225,28 @@ void Game::handleInput()
 				this->gameOver = true;
 				return;
 			}
-			if (this->countTurn == this->board->height * this->board->width)
-			{
-				this->gameDraw = true;
-			}
 			if (EngineGlobals::Game::rule == 5)
 			{
 				int count = this->board->isCheckCapture(this->board->currentX, this->board->currentY);
-				if (this->currentPlayer == Board::PLAYER_1) this->captured1 += count; else this->captured2 += count;
+				if (this->currentPlayer == Board::PLAYER_1) {
+					this->captured1 += count;
+					this->countTurn -= 2 * count;
+				} else
+				{
+					this->captured2 += count;
+					this->countTurn -= 2 * count;
+				}
 				if (this->captured1 >= 5 || this->captured2 >= 5)
 				{
 					this->gameOver = true;
 					return;
 				}
 			}
+			if (this->countTurn == this->board->height * this->board->width)
+			{
+				this->gameDraw = true;
+			}
+
 			this->swapRole();
 		}
 		else this->turnOnSound(0);

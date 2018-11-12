@@ -675,7 +675,7 @@ int Board::isCheckCapture(int x, int y)
         {
             int newX = x + dx[i];
             int newY = y + dy[i];
-            if (isOutOfBoard(x, y)) break;
+            if (isOutOfBoard(newX, newY)) break;
             if (board[newX][newY] != board[tmpX][tmpY] && board[newX][newY] != EMPTY) {
                 counter++;
                 x = newX;
@@ -702,6 +702,7 @@ int Board::isCheckCapture(int x, int y)
                 count++;
             }
         }
+
     }
     return count;
 }
