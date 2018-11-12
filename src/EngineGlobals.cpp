@@ -22,7 +22,7 @@ void EngineGlobals::init()
 	EngineGlobals::Game::namePlayer1 = "";
 	EngineGlobals::Game::namePlayer2 = "";
 	EngineGlobals::Game::AI = 0;
-	EngineGlobals::Game::rule = 5;
+	EngineGlobals::Game::rule = 1;
 	EngineGlobals::Game::turnOnSound = true;
 }
 void EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style _style)

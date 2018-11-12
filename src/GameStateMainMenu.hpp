@@ -30,6 +30,7 @@ public:
 	bool isActivatedSetting;
 	bool isActivatedSize;
 	bool isActivatedIcon;
+	bool isActivatedBg;
 	bool isActivatedAi;
 	bool isActivatedRule;
 
@@ -44,6 +45,7 @@ private:
 	Menu* menu;
 	Menu* boardMenu;
 	Menu* iconMenu;
+	Menu* bgMenu;
 	Menu* marvelMenu;
 	Menu* mobaMenu;
 	Menu* loadMenu;
@@ -64,7 +66,8 @@ private:
 	void createIconMenu();
 	void createAiMenu();
 	void createRuleMenu();
-	
+	void createBgMenu();
+
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

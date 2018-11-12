@@ -142,6 +142,7 @@ void WindowAbout::run() {
 		}
 		else if (Input::isPressed(27))
 		{
+			this->helpWin->setTitle("");
 			this->helpWin->borders(Window::BORDER_NONE);
 			this->helpWin->clear();
 			this->helpWin->refresh();

@@ -12,13 +12,16 @@ enum Label_Id {
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
 
 	//Setting Menu
-	SIZE, SOUND, ICON, RULE,
+	SIZE, SOUND, ICON, RULE, BACKGROUND,
 
 	// Size Board Menu
 	RETURN, TICTACTOE, SMALL, NORMAL, BIG, BIGEST,
 
 	// Icon Menu
 	CLASSIC, MIND, TIME, SOUL, POWER, REALITY, SPACE, MAKE,
+
+	// Background Menu
+	EARTH, KNOWHERE, VORMIR, ZENWHOBERI, TITAN, NIDAVELLIR,
 
 	// Ai Menu
 	LOKIAI, HEURISTIC, MINIMAX,
@@ -35,6 +38,7 @@ GameStateMainMenu::GameStateMainMenu():
 	menu(NULL),
 	boardMenu(NULL),
 	iconMenu(NULL),
+	bgMenu(NULL),
 	ruleMenu(NULL),
 	marvelMenu(NULL),
 	mobaMenu(NULL),
@@ -58,6 +62,7 @@ void GameStateMainMenu::load() {
 	createIconMenu();
 	createAiMenu();
 	createRuleMenu();
+	createBgMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
@@ -68,6 +73,7 @@ void GameStateMainMenu::load() {
 	this->isActivatedIcon = false;
 	this->isActivatedAi = false;
 	this->isActivatedRule = false;
+	this->isActivatedBg = false;
 
 	this->XIcon = 88;
 	this->OIcon = 79;
@@ -95,6 +101,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->settingMenu);
 	SAFE_DELETE(this->aiMenu);
 	SAFE_DELETE(this->ruleMenu);
+	SAFE_DELETE(this->bgMenu);
 
 	this->music->stop();
 	SAFE_DELETE(this->music);
@@ -193,6 +200,10 @@ void GameStateMainMenu::update()
 				case ICON:
 					this->isActivatedSetting = false;
 					this->isActivatedIcon = true;
+					break;
+				case BACKGROUND:
+					this->isActivatedSetting = false;
+					this->isActivatedBg = true;
 					break;
 				case RULE:
 					this->isActivatedSetting = false;
@@ -377,6 +388,51 @@ void GameStateMainMenu::update()
 		this->iconMenu->reset();
 	}
 	else
+	if (this->isActivatedBg)
+	{
+		this->bgMenu->handleInput();
+		if (this->bgMenu->willQuit())
+		{
+			switch(this->bgMenu->currentID())
+			{
+				case EARTH:
+					system("xdotool key Alt+t p 1");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+				case  KNOWHERE:
+					system("xdotool key Alt+t p 2");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+				case VORMIR:
+					system("xdotool key Alt+t p 3");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+				case ZENWHOBERI:
+					system("xdotool key Alt+t p 4");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+				case TITAN:
+					system("xdotool key Alt+t p 5");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+				case NIDAVELLIR:
+					system("xdotool key Alt+t p 6");
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+				default:
+					this->isActivatedBg = false;
+					this->isActivatedSetting = true;
+					break;
+			}
+		}
+		this->bgMenu->reset();
+	}
+	else
 	if (this->isActivatedRule)
 	{
 		this->ruleMenu->handleInput();
@@ -487,6 +543,10 @@ void GameStateMainMenu::draw() {
 	{
 		this->layout->draw(this->boardMenu, 1);
 	}
+	else if (this->isActivatedBg)
+	{
+		this->layout->draw(this->bgMenu, 5);
+	}
 	else if (this->isActivatedIcon)
 	{
 		this->layout->draw(this->iconMenu, 6, 0);
@@ -514,11 +574,11 @@ void GameStateMainMenu::createMainMenu() {
 	MenuItem* item;
 
 	// Chế độ PvP
-	item = new MenuItem("PvP", PVP);
+	item = new MenuItem("Multiplayer", PVP);
 	menu->add(item);
 
 	// Chế độ PvC
-	item = new MenuItem("PvC", PVC);
+	item = new MenuItem("Campaign", PVC);
 	menu->add(item);
 
 	// Tải game đã lưu
@@ -664,6 +724,9 @@ void GameStateMainMenu::createSettingMenu()
 	item = new MenuItem("Icon", ICON);
 	settingMenu->add(item);
 
+	item = new MenuItem("Background", BACKGROUND);
+	settingMenu->add(item);
+
 	item = new MenuItem("Rule", RULE);
 	settingMenu->add(item);
 
@@ -759,4 +822,30 @@ void GameStateMainMenu::createRuleMenu()
 
 	item = new MenuItem("Rule 8", RULE8);
 	ruleMenu->add(item);
+}
+void GameStateMainMenu::createBgMenu()
+{
+	SAFE_DELETE(this->bgMenu);
+
+	this->bgMenu = new Menu(1, 1, this->layout->bgMenu->getW() - 2, this->layout->bgMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Earth", EARTH);
+	bgMenu->add(item);
+
+	item = new MenuItem("Knowhere", KNOWHERE);
+	bgMenu->add(item);
+
+	item = new MenuItem("Vormir", VORMIR);
+	bgMenu->add(item);
+
+	item = new MenuItem("Zen-Whoberi", ZENWHOBERI);
+	bgMenu->add(item);
+
+	item = new MenuItem("Titan", TITAN);
+	bgMenu->add(item);
+
+	item = new MenuItem("Nidavellir", NIDAVELLIR);
+	bgMenu->add(item);
 }

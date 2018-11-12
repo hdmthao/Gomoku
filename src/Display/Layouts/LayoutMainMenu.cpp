@@ -18,6 +18,7 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	aiMenu(NULL),
 	ruleMenu(NULL),
 	nameMenu(NULL),
+	bgMenu(NULL),
 	helpWin(NULL),
 	animationwin(NULL),
 	animation(NULL)
@@ -47,7 +48,7 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->main->refresh();
 
 	// menu chính
-	this->menu = new Window(posX + width + 1, posY, 15, 9);
+	this->menu = new Window(posX + width + 1, posY, 17, 9);
 	this->menu->borders(Window::BORDER_FANCY);
 	this->menu->setTitle("Main Menu");
 	this->menu->refresh();
@@ -79,6 +80,10 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->ruleMenu = new Window(posX - 4, posY, 23, 10);
 	this->ruleMenu->setTitle("Choose Rule");
 	this->ruleMenu->borders(Window::BORDER_FANCY);
+
+	this->bgMenu = new Window(posX - 4, posY, 23, 8);
+	this->bgMenu->setTitle("Choose Background");
+	this->bgMenu->borders(Window::BORDER_FANCY);
 
 	this->logo = new Window(this->main,
 	                        20, 0,
@@ -113,6 +118,7 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->helpWin);
 	SAFE_DELETE(this->aiMenu);
 	SAFE_DELETE(this->ruleMenu);
+	SAFE_DELETE(this->bgMenu);
 }
 
 void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) {
@@ -123,7 +129,7 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 	// 2 -> loadMenu
 	// 3 -> nameMenu1
 	// 4 -> nameMenu2
-	// 5 -> iconMenu
+	// 5 -> bgMenu
 	// 6 -> iconMenu
 	// 7 -> aiMenu
 	// 8 -> ruleMenu
@@ -215,30 +221,14 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 		this->helpWin->setTitle("Help");
 		this->helpWin->borders(Window::BORDER_FANCY);
 		this->helpWin->clear();
-		this->iconMenu->clear();
+		this->bgMenu->clear();
 
-		menu->draw(this->iconMenu);
+		menu->draw(this->bgMenu);
 
-		this->iconMenu->printChar('O', 18, 1, Colors::pair("red", "default", true));
-		this->iconMenu->printChar('X', 20, 1, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(ACS_PI, 18, 2, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(ACS_DIAMOND, 20, 2, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(ACS_STERLING, 18, 3, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(ACS_LANTERN, 20, 3, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(64, 18, 4, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(ACS_PLMINUS, 20, 4, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(42, 18, 5, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(35, 20, 5, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(191, 18, 6, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(ACS_UARROW, 20, 6, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar(36, 18, 7, Colors::pair("red", "default", true));
-		this->iconMenu->printChar(61, 20, 7, Colors::pair("yellow", "default", true));
-		this->iconMenu->printChar('_', 18, 8, Colors::pair("red", "default", true));
-		this->iconMenu->printChar('_', 20, 8, Colors::pair("yellow", "default", true));
-		this->helpWin->print("Choose Icon", 2, 2, Colors::pair("cyan", "default", true));
+		this->helpWin->print("Choose", 2, 2, Colors::pair("cyan", "default", true));
 		this->helpWin->print("Enter", 16, 2);
 
-		this->iconMenu->refresh();
+		this->bgMenu->refresh();
 		this->helpWin->refresh();
 	}
 	else if (isSubMenu == 6)

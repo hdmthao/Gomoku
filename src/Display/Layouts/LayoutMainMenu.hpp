@@ -28,6 +28,7 @@ public:
 	Window* iconMenu;
 	Window* loadMenu;
 	Window* ruleMenu;
+	Window* bgMenu;
 	Window* aiMenu;
 	Window* helpWin;
 	Window* animationwin;
