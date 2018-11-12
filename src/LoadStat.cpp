@@ -72,7 +72,7 @@ vector<string> LoadStat::listGames()
                 break;
             }
         }
-        s = s + " ";
+        s = s + "        ";
 
         infos.push_back(s + timestring);
     }

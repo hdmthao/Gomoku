@@ -371,6 +371,9 @@ void GameStateShow::draw()
     this->scoreBoardTop->clear();
     this->scoreBoardBot->clear();
 
+    string player1 = this->namePlayer1;
+    string player2 = this->namePlayer2;
+
     if (this->player1Win && !this->isDrawGame)
     {
         this->infoTop->print(Utils::String::split("#   #\n"
@@ -380,8 +383,8 @@ void GameStateShow::draw()
                                                   "o   o\n"
                                                   " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-        this->infoTop->print(this->namePlayer1 + " WIN^^", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
-        this->infoBot->print(this->namePlayer2 + " LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
+        this->infoTop->print(player1 + " WIN^^", this->infoTop->getW() / 2 - (player1.size() + 6) / 2, 6, Colors::pair("magenta", "default", true));
+        this->infoBot->print(player2 + " LOSE:\(", this->infoTop->getW() / 2 - (player2.size() + 7) / 2, 6, Colors::pair("black", "default"));
     }
     else if (!this->isDrawGame)
     {
@@ -391,8 +394,8 @@ void GameStateShow::draw()
         this->infoBot->print(Utils::String::split(" o o \n"
                                                   "o   o\n"
                                                   " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
-        this->infoTop->print(this->namePlayer1 + " LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
-        this->infoBot->print(this->namePlayer2 + " WIN^^", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
+        this->infoTop->print(player1 + " LOSE:\(", this->infoTop->getW() / 2 - (player1.size() + 7) / 2, 6, Colors::pair("black", "default"));
+        this->infoBot->print(player2 + " WIN^^", this->infoTop->getW() / 2 - (player2.size() + 6)/2, 6, Colors::pair("magenta", "default", true));
     }
     else
     {

@@ -5,7 +5,8 @@
 #include <Helpers/Utils.hpp>
 #include <LoadGame.hpp>
 #include <LoadStat.hpp>
-#include <iostream>
+
+const string path = "/home/himt/cs/cs161/projects/Gomoku/src/History/";
 
 WindowStatistic::WindowStatistic(int screenWidth, int screenHeight) {
 	int width  = 60;
@@ -46,6 +47,22 @@ void WindowStatistic::load()
     this->winRate = LoadGame::loadWinRate();
 
 	listInfos = LoadStat::listGames();
+	std::ifstream fi;
+	for(int i = 0; i <listInfos.size(); ++i)
+	{
+		fi.open(path + getName(listInfos[i]) + ".txt");
+		string line;
+		int count = 0;
+		while (getline(fi, line))
+		{
+			count++;
+			if (count == 5) {
+				listInfos[i] += "     " + line;
+				break;
+			}
+		}
+		fi.close();
+	}
 	createHistory();
 
 }

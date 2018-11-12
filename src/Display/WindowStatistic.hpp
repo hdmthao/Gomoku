@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 
 class WindowStatistic {
 public:
