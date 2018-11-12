@@ -35,6 +35,7 @@ private:
     Window* help;
     Window* infoTop;
     Window* infoBot;
+		Window* infoGame;
     Window* scoreBoardTop;
     Window* scoreBoardBot;
 

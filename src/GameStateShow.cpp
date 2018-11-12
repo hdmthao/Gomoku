@@ -29,7 +29,7 @@ GameStateShow::~GameStateShow()
     SAFE_DELETE(this->infoBot);
     SAFE_DELETE(this->scoreBoardTop);
     SAFE_DELETE(this->scoreBoardBot);
-
+    SAFE_DELETE(this->infoGame);
     board.clear();
 }
 void GameStateShow::init()
@@ -48,9 +48,13 @@ void GameStateShow::init()
     this->main = new Window(main_x, main_y, 80, 30);
     this->main->refresh();
 
-    this->help = new Window(130, 15, 24, 10);
+    this->help = new Window(130, 15, 24, 6);
     this->help->borders(Window::BORDER_FANCY);
     this->help->setTitle("Help");
+
+    this->infoGame = new Window(5, 7, 37, 20);
+  	this->infoGame->borders(Window::BORDER_FANCY);
+  	this->infoGame->setTitle("Info Game");
 
     this->infoTop = new Window(130, 6, 24, 8);
     this->infoTop->borders(Window::BORDER_FANCY);
@@ -73,6 +77,14 @@ void GameStateShow::load()
 }
 void GameStateShow::unload()
 {
+  SAFE_DELETE(this->main);
+  SAFE_DELETE(this->help);
+  SAFE_DELETE(this->infoTop);
+  SAFE_DELETE(this->infoBot);
+  SAFE_DELETE(this->scoreBoardTop);
+  SAFE_DELETE(this->scoreBoardBot);
+  SAFE_DELETE(this->infoGame);
+  board.clear();
 }
 void GameStateShow::initRound()
 {
@@ -413,6 +425,115 @@ void GameStateShow::draw()
 
     this->infoTop->refresh();
     this->infoBot->refresh();
+
+    this->help->clear();
+
+    this->help->print("Next Round", 2, 2, Colors::pair("cyan", "default", true));
+		this->help->print("Key-Right", 14, 2);
+		this->help->print("Pre Round", 2, 3, Colors::pair("cyan", "default", true));
+		this->help->print("Key-Left", 14, 3);
+    this->help->print("Back", 2, 4, Colors::pair("cyan", "default", true));
+    this->help->print("Esc", 14, 4);
+
+    this->help->refresh();
+
+    this->infoGame->clear();
+
+    this->infoGame->print("Board Size", 2, 2, Colors::pair("cyan", "default", true));
+    switch (LoadStat::size) {
+      case 3:
+        this->infoGame->print("3 x 3", 22, 2);
+        break;
+      case 9:
+        this->infoGame->print("9 x 9", 22, 2);
+        break;
+      case 13:
+        this->infoGame->print("13 x 13", 22, 2);
+        break;
+      case 19:
+        this->infoGame->print("19 x 19", 22, 2);
+        break;
+      case 25:
+        this->infoGame->print("25 x 25", 22, 2);
+        break;
+      default:
+        this->infoGame->print("NULL", 22, 2);
+        break;
+    }
+
+    this->infoGame->print(LoadStat::namePlayer1, 2, 4, Colors::pair("cyan", "default", true));
+    this->infoGame->printChar(LoadStat::XIcon, 25, 4, Colors::pair("yellow", "default", true));
+
+    this->infoGame->print(LoadStat::namePlayer2, 2, 5, Colors::pair("cyan", "default", true));
+    this->infoGame->printChar(LoadStat::OIcon, 25, 5, Colors::pair("red", "default", true));
+
+    this->infoGame->print("Game Score", 2, 6, Colors::pair("cyan", "default", true));
+    this->infoGame->print(toString(LoadStat::scorePlayer1), 23, 6, Colors::pair("yellow", "default", true));
+    this->infoGame->printChar(':', 25, 6);
+    this->infoGame->print(toString(LoadStat::scorePlayer2), 27, 6, Colors::pair("red", "default", true));
+
+    this->infoGame->print("Game Rule", 2, 8, Colors::pair("cyan", "default", true));
+    this->infoGame->print("Winning Score", 2, 9, Colors::pair("cyan", "default", true));
+    this->infoGame->print("Description Rule", 2, 11, Colors::pair("cyan", "default", true));
+    switch (LoadStat::gameRule) {
+      case 1:
+        this->infoGame->print("Free-Style", 22, 8);
+        this->infoGame->print("5 or More", 22, 9);
+        this->infoGame->print(Utils::String::split("Requires a row of 5\n"
+                               "or more stones for a win.\n", '\n'), 3, 12);
+        break;
+      case 2:
+        this->infoGame->print("Caro", 22, 8);
+        this->infoGame->print("5 or More", 22, 9);
+        this->infoGame->print(Utils::String::split("Requires unbroken row of 5\n"
+                              "stones and this row must not\n"
+                              "be blocked at either end.\n", '\n'), 3, 12);
+        break;
+      case 3:
+        this->infoGame->print("Standard", 22, 8);
+        this->infoGame->print("5", 25, 9);
+        this->infoGame->print(Utils::String::split("Requires a row of exactly 5\n"
+                               "stones for a win (rows of six\n"
+                               "or more, called overlines\n"
+                               "do not count.", '\n'), 3, 12);
+        break;
+      case 4:
+        this->infoGame->print("Tic-Tac-Toe", 22, 8);
+        this->infoGame->print("3", 25, 9);
+        this->infoGame->print(Utils::String::split("Requires a row of 3\n"
+                               "stones for a win.\n", '\n'), 3, 12);
+        break;
+      case 5:
+        this->infoGame->print("Pente", 22, 8);
+        this->infoGame->print(Utils::String::split("5 or More\n"
+                               "Or 5 Capture\n", '\n'), 22, 9);
+        this->infoGame->print(Utils::String::split("Requires a row of 5 or more\n"
+                               "stones or capture 10 enemy stones\n"
+                               "You can capture 2 connected enemy\n"
+                               "stones by flanking them with your\n"
+                               "own stones.\n", '\n'), 2, 12);
+        this->infoGame->print("More About Rule", 2, 17, Colors::pair("cyan", "default", true));
+        this->infoGame->print("yourturnmyturn.com/rules/pente.php", 2, 18);
+        break;
+      case 6:
+        this->infoGame->print("Connect6", 22, 8);
+        this->infoGame->print("6 Or More", 22 , 9);
+        this->infoGame->print(Utils::String::split("Requires a row of 6 or more stones\n"
+                                                   "The first player putting one stone\n"
+                                                   "on board. Subsequently, two player\n"
+                                                   "take turn, placing two stones on\n"
+                                                   "two different unoccupied spaces\n"
+                                                   "each turn.\n",
+                                                    '\n'), 2, 12);
+        break;
+      case 7:
+      case 8:
+      default:
+        this->infoGame->print("NULL", 22, 8);
+        this->infoGame->print("NULL", 22, 9);
+        this->infoGame->print("NULL", 3, 12);
+    }
+    this->infoGame->refresh();
     refresh();
 }
 void GameStateShow::drawNumberTop(int number)

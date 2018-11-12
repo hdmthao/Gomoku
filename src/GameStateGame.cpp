@@ -256,5 +256,5 @@ void GameStateGame::saveHistory()
 	{
 		this->filename = this->filename + (char)(siz / 10 + '0') + (char)(siz % 10 + '0');
 	}
-	LoadStat::saveStat(this->filename, this->namePlayer1, this->namePlayer2, this->isAi, this->game->getSize(), 1, this->score1, this->score2, this->countGame, this->vecScore, this->vecBoard);
+	LoadStat::saveStat(this->filename, this->namePlayer1, this->namePlayer2, this->isAi, this->game->getSize(), EngineGlobals::Game::rule, this->score1, this->score2, this->countGame, this->vecScore, this->vecBoard);
 }
