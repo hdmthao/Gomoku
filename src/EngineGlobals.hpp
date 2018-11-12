@@ -21,6 +21,7 @@ namespace EngineGlobals
 		extern int OIcon;
 		extern Style style;
 		void setGameStyle(Style _style);
+		int getSize();
 		void setXIcon(int icon);
 		void setOIcon(int icon);
 	};
@@ -31,12 +32,14 @@ namespace EngineGlobals
 		extern std::string namePlayer1;
 		extern std::string namePlayer2;
 		extern int AI;
+		extern int rule;
 		extern bool turnOnSound;
 
 		void setLoadGame(std::string filegame);
 		void setNamePlayer(std::string name, bool isPlayer1);
 		void setSound();
 		void setAi(int kind);
+		void setGameRule(int rule);
 	};
 
 	void init();

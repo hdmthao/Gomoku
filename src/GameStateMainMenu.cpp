@@ -12,7 +12,7 @@ enum Label_Id {
 	PVP=1337, PVC, LEVELS, LOAD, SETTINGS, CONTROL, STATISTICS, ABOUT, QUIT,
 
 	//Setting Menu
-	SIZE, SOUND, ICON,
+	SIZE, SOUND, ICON, RULE,
 
 	// Size Board Menu
 	RETURN, TICTACTOE, SMALL, NORMAL, BIG, BIGEST,
@@ -22,10 +22,12 @@ enum Label_Id {
 
 	// Ai Menu
 	LOKIAI, HEURISTIC, MINIMAX,
-	//Marvel Menu
-	IRON, SPIDER, THANOS, CAPTAIN, HULK, PANTHER, THOR, DEADPOOL,
 
-	XERATH, ELISE, YASUO, PANTHEON, RENEKTON, ANNIE, ORNN, IRELIA
+	RULE1, RULE2, RULE3, RULE4, RULE5, RULE6, RULE7, RULE8,
+	//Marvel Menu
+	CAPTAIN, HAWKEYE, FALCON, SCARLETWITCH, ANTMAN, WINTERSOLDIER,
+
+	IRONMAN, VISION, SPIDERMAN, BLACKWIDOW, WARMACHINE
 };
 
 GameStateMainMenu::GameStateMainMenu():
@@ -33,6 +35,7 @@ GameStateMainMenu::GameStateMainMenu():
 	menu(NULL),
 	boardMenu(NULL),
 	iconMenu(NULL),
+	ruleMenu(NULL),
 	marvelMenu(NULL),
 	mobaMenu(NULL),
 	loadMenu(NULL),
@@ -54,6 +57,7 @@ void GameStateMainMenu::load() {
 	createSettingMenu();
 	createIconMenu();
 	createAiMenu();
+	createRuleMenu();
 
 	this->isActivatedPVP = false;
 	this->isActivatedLOAD = false;
@@ -63,6 +67,7 @@ void GameStateMainMenu::load() {
 	this->isActivatedSize = false;
 	this->isActivatedIcon = false;
 	this->isActivatedAi = false;
+	this->isActivatedRule = false;
 
 	this->XIcon = 88;
 	this->OIcon = 79;
@@ -89,6 +94,7 @@ void GameStateMainMenu::unload() {
 	SAFE_DELETE(this->mobaMenu);
 	SAFE_DELETE(this->settingMenu);
 	SAFE_DELETE(this->aiMenu);
+	SAFE_DELETE(this->ruleMenu);
 
 	this->music->stop();
 	SAFE_DELETE(this->music);
@@ -130,6 +136,9 @@ void GameStateMainMenu::update()
 				default:
 					this->isActivatedName2 = false;
 					EngineGlobals::Game::setNamePlayer(this->mobaMenu->currentLabel(), 0);
+					if (EngineGlobals::Game::rule == 4)
+						EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::TICTACTOE);
+					else if (EngineGlobals::Board::getSize() == 3) EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::NORMAL);
 					StateManager::change(new GameStateGame(false));
 					break;
 			}
@@ -184,6 +193,10 @@ void GameStateMainMenu::update()
 				case ICON:
 					this->isActivatedSetting = false;
 					this->isActivatedIcon = true;
+					break;
+				case RULE:
+					this->isActivatedSetting = false;
+					this->isActivatedRule = true;
 					break;
 				default:
 					break;
@@ -340,7 +353,7 @@ void GameStateMainMenu::update()
 						if (cur == 2)
 						{
 							c2 = Input::getIcon();
-							if (c2 == ' ')
+							if (c2 == ' ' || c2 == c1)
 							{
 								c2 = '_';
 								cur = 2;
@@ -362,6 +375,53 @@ void GameStateMainMenu::update()
 			}
 		}
 		this->iconMenu->reset();
+	}
+	else
+	if (this->isActivatedRule)
+	{
+		this->ruleMenu->handleInput();
+		if (this->ruleMenu->willQuit())
+		{
+			switch (this->ruleMenu->currentID())
+			{
+				case RULE1:
+					EngineGlobals::Game::setGameRule(1);
+					this->isActivatedRule = false;
+					break;
+				case RULE2:
+					EngineGlobals::Game::setGameRule(2);
+					this->isActivatedRule = false;
+					break;
+				case RULE3:
+					EngineGlobals::Game::setGameRule(3);
+					this->isActivatedRule = false;
+					break;
+				case RULE4:
+					EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style::TICTACTOE);
+					EngineGlobals::Game::setGameRule(4);
+					this->isActivatedRule = false;
+					break;
+				case RULE5:
+					EngineGlobals::Game::setGameRule(5);
+					this->isActivatedRule = false;
+					break;
+				case RULE6:
+					EngineGlobals::Game::setGameRule(6);
+					this->isActivatedRule = false;
+					break;
+				case RULE7:
+					EngineGlobals::Game::setGameRule(7);
+					this->isActivatedRule = false;
+					break;
+				case RULE8:
+					EngineGlobals::Game::setGameRule(8);
+					this->isActivatedRule = false;
+					break;
+				default:
+					break;
+			}
+		}
+		this->ruleMenu->reset();
 	}
 	else
 	{
@@ -429,7 +489,11 @@ void GameStateMainMenu::draw() {
 	}
 	else if (this->isActivatedIcon)
 	{
-		this->layout->draw(this->iconMenu, 5);
+		this->layout->draw(this->iconMenu, 6, 0);
+	}
+	else if (this->isActivatedRule)
+	{
+		this->layout->draw(this->ruleMenu, 8);
 	}
 	else
 	{
@@ -485,28 +549,22 @@ void GameStateMainMenu::createMarvelMenu()
 
 	MenuItem* item;
 
-	item = new MenuItem("Iron Man", IRON);
+	item = new MenuItem("Captain Amecira", CAPTAIN);
 	marvelMenu->add(item);
 
-	item = new MenuItem("Spider Man", SPIDER);
+	item = new MenuItem("Hawkeye", HAWKEYE);
 	marvelMenu->add(item);
 
-	item = new MenuItem("Thanos", THANOS);
+	item = new MenuItem("FALCON", FALCON);
 	marvelMenu->add(item);
 
-	item = new MenuItem("Captain America", CAPTAIN);
+	item = new MenuItem("Scarlet Witch", SCARLETWITCH);
 	marvelMenu->add(item);
 
-	item = new MenuItem("Hulk", HULK);
+	item = new MenuItem("Ant-Man", ANTMAN);
 	marvelMenu->add(item);
 
-	item = new MenuItem("Black Panther", PANTHER);
-	marvelMenu->add(item);
-
-	item = new MenuItem("Thor", THOR);
-	marvelMenu->add(item);
-
-	item = new MenuItem("Deadpool", DEADPOOL);
+	item = new MenuItem("Winter Soldier", WINTERSOLDIER);
 	marvelMenu->add(item);
 
 	marvelMenu->addBlank();
@@ -522,28 +580,19 @@ void GameStateMainMenu::createMobaMenu()
 
 	MenuItem* item;
 
-	item = new MenuItem("Xerath", XERATH);
+	item = new MenuItem("Iron-Man", IRONMAN);
 	mobaMenu->add(item);
 
-	item = new MenuItem("Elise", ELISE);
+	item = new MenuItem("Vision", VISION);
 	mobaMenu->add(item);
 
-	item = new MenuItem("Yasuo", YASUO);
+	item = new MenuItem("Spider-Man", SPIDERMAN);
 	mobaMenu->add(item);
 
-	item = new MenuItem("Pantheon", PANTHEON);
+	item = new MenuItem("Black Widow", BLACKWIDOW);
 	mobaMenu->add(item);
 
-	item = new MenuItem("Renekton", RENEKTON);
-	mobaMenu->add(item);
-
-	item = new MenuItem("Annie", ANNIE);
-	mobaMenu->add(item);
-
-	item = new MenuItem("Ornn", ORNN);
-	mobaMenu->add(item);
-
-	item = new MenuItem("Irelia", IRELIA);
+	item = new MenuItem("War Machine", WARMACHINE);
 	mobaMenu->add(item);
 
 	mobaMenu->addBlank();
@@ -611,13 +660,17 @@ void GameStateMainMenu::createSettingMenu()
 	item = new MenuItem("Size Board", SIZE);
 	settingMenu->add(item);
 
+
+	item = new MenuItem("Icon", ICON);
+	settingMenu->add(item);
+
+	item = new MenuItem("Rule", RULE);
+	settingMenu->add(item);
+
 	if (EngineGlobals::Game::turnOnSound)
 		item = new MenuItem("Sound OFF", SOUND);
 	else
 		item = new MenuItem("Sound ON", SOUND);
-	settingMenu->add(item);
-
-	item = new MenuItem("Icon", ICON);
 	settingMenu->add(item);
 
 }
@@ -674,4 +727,36 @@ void GameStateMainMenu::createAiMenu()
 
 	item = new MenuItem("Back", RETURN);
 	aiMenu->add(item);
+}
+void GameStateMainMenu::createRuleMenu()
+{
+	SAFE_DELETE(this->ruleMenu);
+
+	this->ruleMenu = new Menu(1, 1, this->layout->ruleMenu->getW() - 2, this->layout->ruleMenu->getH() - 2);
+
+	MenuItem* item;
+
+	item = new MenuItem("Free-Style", RULE1);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Caro", RULE2);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Standard", RULE3);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Tic Tac Toe", RULE4);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Pente", RULE5);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Rule 6", RULE6);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Rule 7", RULE7);
+	ruleMenu->add(item);
+
+	item = new MenuItem("Rule 8", RULE8);
+	ruleMenu->add(item);
 }

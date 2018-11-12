@@ -82,6 +82,8 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 	this->userAskedToSaveGame = false;
 	this->countTurn = 0;
 	this->round = m_score1 + m_score2 + 1;
+	this->captured1 = 0;
+	this->captured2 = 0;
 	this->layout = new LayoutGame(this, 80, 30);
 	this->board = new Board();
 	if (willLoad)
@@ -125,6 +127,7 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 			default:
 				break;
 		}
+		EngineGlobals::Game::setGameRule(LoadGame::gameRule);
 		EngineGlobals::Board::setXIcon(LoadGame::XIcon);
 		EngineGlobals::Board::setOIcon(LoadGame::OIcon);
 	}
@@ -152,6 +155,7 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 			default:
 				break;
 		}
+		if (this->isAi) EngineGlobals::Game::setGameRule(1);
 	}
 	this->player1 = new Player(m_score1, namePlayer1);
 	this->player2 = new Player(m_score2, namePlayer2);
@@ -189,19 +193,19 @@ void Game::handleInput()
 	{
 		if (this->isPause) this->pause(false); else this->pause(true);
 	}else
-	if (Input::isPressed(KEY_LEFT))
+	if (Input::isPressed(KEY_LEFT) || Input::isPressed(65) || Input::isPressed(97))
 	{
 		this->board->moveLeft();
 	}else
-	if (Input::isPressed(KEY_RIGHT))
+	if (Input::isPressed(KEY_RIGHT) || Input::isPressed(68) || Input::isPressed(100))
 	{
 		this->board->moveRight();
 	}else
-	if (Input::isPressed(KEY_UP))
+	if (Input::isPressed(KEY_UP) || Input::isPressed(87) || Input::isPressed(119))
 	{
 		this->board->moveUp();
 	}else
-	if (Input::isPressed(KEY_DOWN))
+	if (Input::isPressed(KEY_DOWN) || Input::isPressed(83) || Input::isPressed(115))
 	{
 		this->board->moveDown();
 	} else
@@ -224,6 +228,16 @@ void Game::handleInput()
 			if (this->countTurn == this->board->height * this->board->width)
 			{
 				this->gameDraw = true;
+			}
+			if (EngineGlobals::Game::rule == 5)
+			{
+				int count = this->board->isCheckCapture(this->board->currentX, this->board->currentY);
+				if (this->currentPlayer == Board::PLAYER_1) this->captured1 += count; else this->captured2 += count;
+				if (this->captured1 >= 5 || this->captured2 >= 5)
+				{
+					this->gameOver = true;
+					return;
+				}
 			}
 			this->swapRole();
 		}
@@ -412,7 +426,7 @@ void Game::saveGame()
 		tempFileName = tempFileName + c;
 	}
 	if (tempFileName != "") this->filename = tempFileName;
-	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), EngineGlobals::Game::AI, 4, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
+	LoadGame::saveGame(this->filename, this->player1->getName(), this->player2->getName(), EngineGlobals::Game::AI, EngineGlobals::Game::rule, this->player1->getScore(), this->player2->getScore(), this->board->getSize(),
 lastPlayer, this->board->getLastBoard());
 	this->isQuit = true;
 }

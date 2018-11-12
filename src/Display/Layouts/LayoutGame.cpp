@@ -7,6 +7,7 @@ LayoutGame::LayoutGame(Game* game, int width, int height):
 	game(game),
 	pause(NULL),
 	help(NULL),
+	infoGame(NULL),
 	infoTop(NULL),
 	infoBot(NULL),
 	scoreBoardTop(NULL),
@@ -50,6 +51,9 @@ void LayoutGame::windowsInit()
 	this->scoreBoardBot->borders(Window::BORDER_NONE);
 	this->scoreBoardBot->setTitle("SCORE");
 
+	this->infoGame = new Window(5, 7, 37, 20);
+	this->infoGame->borders(Window::BORDER_FANCY);
+	this->infoGame->setTitle("Info Game");
 }
 void LayoutGame::windowsExit()
 {
@@ -59,6 +63,7 @@ void LayoutGame::windowsExit()
 	SAFE_DELETE(this->scoreBoardBot);
 	SAFE_DELETE(this->pause);
 	SAFE_DELETE(this->help);
+	SAFE_DELETE(this->infoGame);
 
 	this->main->clear(); // clear() as in Window
 	this->main->refresh(); // clear() as in Window
@@ -117,13 +122,16 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 	{
 		this->help->print("Movement", 2, 2, Colors::pair("cyan", "default", true));
 		this->help->print("Key-Arrow", 14, 2);
-		this->help->print("Undo", 2, 3, Colors::pair("cyan", "default", true));
-		this->help->print("z", 17, 3);
-		this->help->print("Resign \"GG\"", 2, 4, Colors::pair("cyan", "default", true));
-		this->help->print("g", 17, 4);
-		this->help->print("Rule", 2, 5, Colors::pair("cyan", "default", true));
-		this->help->print("r", 17, 5);
-		this->help->print("ON/OFF Sound", 2, 6, Colors::pair("cyan", "default", true));
+		this->help->print("Movement", 2, 3, Colors::pair("cyan", "default", true));
+		this->help->print("AWSD", 14, 3);
+		this->help->print("Undo", 2, 4, Colors::pair("cyan", "default", true));
+		this->help->print("z", 17, 4);
+		this->help->print("Resign \"GG\"", 2, 5, Colors::pair("cyan", "default", true));
+		this->help->print("g", 17, 5);
+		if (EngineGlobals::Game::turnOnSound)
+			this->help->print("OFF Sound", 2, 6, Colors::pair("cyan", "default", true));
+		else
+			this->help->print("ON Sound", 2, 6, Colors::pair("cyan", "default", true));
 		this->help->print("m", 17, 6);
 		this->help->print("Pause", 2, 7, Colors::pair("cyan", "default", true));
 		this->help->print("Esc", 17, 7);
@@ -135,8 +143,10 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 
 	this->main->refresh();
 
-	this->infoTop->setTitle(this->game->player1->getName());
-	this->infoBot->setTitle(this->game->player2->getName());
+	string player1 = this->game->player1->getName();
+	string player2 = this->game->player2->getName();
+	this->infoTop->setTitle(player1);
+	this->infoBot->setTitle(player2);
 
 	if (this->game->isPlaying())
 	{
@@ -158,34 +168,51 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 
 
 
+
 		if (this->game->willOver())
 		{
 			if (this->game->currentPlayer == Board::PLAYER_1)
 			{
-				this->infoTop->print(Utils::String::split("#   #\n"
-														  "  #  \n"
-														  "#   #\n", '\n'), 2, 2, true, Colors::pair("cyan", "default", true));
+				this->infoTop->print(Utils::String::split("X   X\n"
+														  "  X  \n"
+														  "X   X\n", '\n'), 2, 2, true, Colors::pair("cyan", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 														  "o   o\n"
 														  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-				this->infoTop->print(this->game->player1->getName() + " WIN^^", this->infoTop->getW() / 2 - 6, 6, true, Colors::pair("magenta", "default", true));
-				this->infoBot->print(this->game->player2->getName() + " LOSE:\(", this->infoTop->getW() / 2 - 7, 6, Colors::pair("black", "default"));
+				this->infoTop->print(player1 + " WIN^^", this->infoTop->getW() / 2 - (player1.size() + 6) / 2, 6, true, Colors::pair("magenta", "default", true));
+				this->infoBot->print(player2 + " LOSE:\(", this->infoTop->getW() / 2 - (player2.size() + 7) / 2, 6, Colors::pair("black", "default"));
 
+				if (EngineGlobals::Game::rule == 5)
+				{
+					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawCapture1(this->game->captured1, true);
+					this->drawCapture2(this->game->captured2);
+
+				}
 				LayoutGame::drawNumberTop(this->game->player1->getScore(), true);
 				LayoutGame::drawNumberBot(this->game->player2->getScore());
 
 			}
 			else
 			{
-				this->infoTop->print(Utils::String::split("#   #\n"
-													  	  "  #  \n"
-													  	  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+				this->infoTop->print(Utils::String::split("X   X\n"
+													  	  "  X  \n"
+													  	  "X   X\n", '\n'), 2, 2, Colors::pair("black", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 												  		  "o   o\n"
 												  		  " o o \n", '\n'), 2, 2, true, Colors::pair("cyan", "default", true));
-				this->infoTop->print(this->game->player1->getName() + " LOSE:\(", this->infoTop->getW() / 2 - 6, 6, Colors::pair("black", "default"));
-				this->infoBot->print(this->game->player2->getName() + " WIN^^", this->infoTop->getW() / 2 - 7, 6, true, Colors::pair("magenta", "default", true));
+				this->infoTop->print(player1 + " LOSE:\(", this->infoTop->getW() / 2 - (player1.size() + 7) / 2, 6, Colors::pair("black", "default"));
+				this->infoBot->print(player2 + " WIN^^", this->infoTop->getW() / 2 - (player2.size() + 7) / 2, 6, true, Colors::pair("magenta", "default", true));
+				if (EngineGlobals::Game::rule == 5)
+				{
+					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawCapture1(this->game->captured1);
+					this->drawCapture2(this->game->captured2, true);
+
+				}
 				LayoutGame::drawNumberTop(this->game->player1->getScore());
 				LayoutGame::drawNumberBot(this->game->player2->getScore(), true);
 
@@ -193,12 +220,19 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 		}
 		else if (this->game->willDraw())
 		{
-			this->infoTop->print(Utils::String::split("#   #\n"
-													  "  #  \n"
-													  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+			this->infoTop->print(Utils::String::split("X   X\n"
+													  "  X  \n"
+													  "X   X\n", '\n'), 2, 2, Colors::pair("black", "default", true));
 			this->infoBot->print(Utils::String::split(" o o \n"
 													  "o   o\n"
 													  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
+			if (EngineGlobals::Game::rule == 5)
+			{
+				this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+				this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+				this->drawCapture1(this->game->captured1);
+				this->drawCapture2(this->game->captured2);
+			}
 			this->infoTop->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
 			this->infoBot->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
 		}
@@ -209,26 +243,42 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 
 			if (this->game->currentPlayer == Board::PLAYER_1)
 			{
-				this->infoTop->print(Utils::String::split("#   #\n"
-													  	  "  #  \n"
-													  	  "#   #\n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
+				this->infoTop->print(Utils::String::split("X   X\n"
+													  	  "  X  \n"
+													  	  "X   X\n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 														  "o   o\n"
 														  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 
-				this->infoTop->print(this->game->player1->getName() + "'s TURN", this->infoTop->getW() / 2 - 6, 6, Colors::pair("white", "default", true));
+				this->infoTop->print(player1 + "'s TURN", this->infoTop->getW() / 2 - (player1.size() + 7) / 2, 6, Colors::pair("white", "default", true));
 
+				if (EngineGlobals::Game::rule == 5)
+				{
+					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawCapture1(this->game->captured1);
+					this->drawCapture2(this->game->captured2);
+
+				}
 			}
 			else
 			{
-				this->infoTop->print(Utils::String::split("#   #\n"
-													  	  "  #  \n"
-													  	  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+				this->infoTop->print(Utils::String::split("X   X\n"
+													  	  "  X  \n"
+													  	  "X   X\n", '\n'), 2, 2, Colors::pair("black", "default", true));
 				this->infoBot->print(Utils::String::split(" o o \n"
 												  		  "o   o\n"
 												  		  " o o \n", '\n'), 2, 2, Colors::pair("cyan", "default", true));
 
-				this->infoBot->print(this->game->player2->getName() + "'s TURN", this->infoBot->getW() / 2 - 7, 6, Colors::pair("white", "default", true));
+				this->infoBot->print(player2 + "'s TURN", this->infoBot->getW() / 2 - (player2.size() + 7) / 2, 6, Colors::pair("white", "default", true));
+				if (EngineGlobals::Game::rule == 5)
+				{
+					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawCapture1(this->game->captured1);
+					this->drawCapture2(this->game->captured2);
+
+				}
 			}
 		}
 	}
@@ -242,9 +292,9 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 		this->scoreBoardBot->clear();
 
 
-		this->infoTop->print(Utils::String::split("#   #\n"
-												  "  #  \n"
-											  	  "#   #\n", '\n'), 2, 2, Colors::pair("black", "default", true));
+		this->infoTop->print(Utils::String::split("X   X\n"
+												  "  X  \n"
+											  	  "X   X\n", '\n'), 2, 2, Colors::pair("black", "default", true));
 		LayoutGame::drawNumberTop(this->game->player1->getScore());
 
 
@@ -253,12 +303,106 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 											  	  " o o \n", '\n'), 2, 2, Colors::pair("black", "default", true));
 		LayoutGame::drawNumberBot(this->game->player2->getScore());
 
+		if (EngineGlobals::Game::rule == 5)
+		{
+			this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+			this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
+			this->drawCapture1(this->game->captured1);
+			this->drawCapture2(this->game->captured2);
+
+		}
+
 	}
 
 	this->scoreBoardTop->refresh();
 	this->scoreBoardBot->refresh();
 	this->infoTop->refresh();
 	this->infoBot->refresh();
+
+	this->infoGame->clear();
+
+	this->infoGame->print("Board Size", 2, 2, Colors::pair("cyan", "default", true));
+	switch (EngineGlobals::Board::getSize()) {
+		case 3:
+			this->infoGame->print("3 x 3", 22, 2);
+			break;
+		case 9:
+			this->infoGame->print("9 x 9", 22, 2);
+			break;
+		case 13:
+			this->infoGame->print("13 x 13", 22, 2);
+			break;
+		case 19:
+			this->infoGame->print("19 x 19", 22, 2);
+			break;
+		case 25:
+			this->infoGame->print("25 x 25", 22, 2);
+			break;
+		default:
+			this->infoGame->print("NULL", 22, 2);
+			break;
+	}
+
+	this->infoGame->print(player1, 2, 4, Colors::pair("cyan", "default", true));
+	this->infoGame->printChar(EngineGlobals::Board::XIcon, 25, 4, Colors::pair("yellow", "default", true));
+
+	this->infoGame->print(player2, 2, 5, Colors::pair("cyan", "default", true));
+	this->infoGame->printChar(EngineGlobals::Board::OIcon, 25, 5, Colors::pair("red", "default", true));
+
+	this->infoGame->print("Game Rule", 2, 8, Colors::pair("cyan", "default", true));
+	this->infoGame->print("Winning Score", 2, 9, Colors::pair("cyan", "default", true));
+	this->infoGame->print("Description Rule", 2, 11, Colors::pair("cyan", "default", true));
+	switch (EngineGlobals::Game::rule) {
+		case 1:
+			this->infoGame->print("Free-Style", 22, 8);
+			this->infoGame->print("5 or More", 22, 9);
+			this->infoGame->print(Utils::String::split("Requires a row of 5\n"
+													   "or more stones for a win.\n", '\n'), 3, 12);
+			break;
+		case 2:
+			this->infoGame->print("Caro", 22, 8);
+			this->infoGame->print("5 or More", 22, 9);
+			this->infoGame->print(Utils::String::split("Requires unbroken row of 5\n"
+														"stones and this row must not\n"
+														"be blocked at either end.\n", '\n'), 3, 12);
+			break;
+		case 3:
+			this->infoGame->print("Standard", 22, 8);
+			this->infoGame->print("5", 25, 9);
+			this->infoGame->print(Utils::String::split("Requires a row of exactly 5\n"
+													   "stones for a win (rows of six\n"
+													   "or more, called overlines\n"
+													   "do not count.", '\n'), 3, 12);
+			break;
+		case 4:
+			this->infoGame->print("Tic-Tac-Toe", 22, 8);
+			this->infoGame->print("3", 25, 9);
+			this->infoGame->print(Utils::String::split("Requires a row of 3\n"
+													   "stones for a win.\n", '\n'), 3, 12);
+			break;
+		case 5:
+			this->infoGame->print("Pente", 22, 8);
+			this->infoGame->print(Utils::String::split("5 or More\n"
+													   "Or 5 Capture\n", '\n'), 22, 9);
+			this->infoGame->print(Utils::String::split("Requires a row of 5 or more\n"
+													   "stones or capture 10 enemy stones\n"
+													   "You can capture 2 connected enemy\n"
+													   "stones by flanking them with your\n"
+													   "own stones.\n", '\n'), 2, 12);
+			this->infoGame->print("More About Rule", 2, 17, Colors::pair("cyan", "default", true));
+			this->infoGame->print("yourturnmyturn.com/rules/pente.php", 2, 18);
+			break;
+		case 6:
+		case 7:
+		case 8:
+		default:
+			this->infoGame->print("NULL", 22, 8);
+			this->infoGame->print("NULL", 22, 9);
+			this->infoGame->print("NULL", 3, 12);
+	}
+	this->infoGame->refresh();
+
+
 	refresh();
 }
 void LayoutGame::drawNumberTop(int number, bool isVip)
@@ -302,6 +446,52 @@ void LayoutGame::drawNumberBot(int number, bool isVip)
 		{
 			y++;
 			x = 0;
+		}
+	}
+}
+void LayoutGame::drawCapture1(int number, bool isVip)
+{
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < number; ++i)
+	{
+		if (isVip)
+		{
+			this->infoTop->printChar(ACS_DIAMOND, 11 + x*2, 5 + y, true, Colors::pair("white", "default", true));
+		}
+		else
+		{
+			this->infoTop->printChar(ACS_DIAMOND, 11 + x*2, 5 + y, Colors::pair("white", "default", true));
+		}
+		x++;
+		if (i == 4)
+		{
+			y++;
+			x = 0;
+			return;
+		}
+	}
+}
+void LayoutGame::drawCapture2(int number, bool isVip)
+{
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < number; ++i)
+	{
+		if (isVip)
+		{
+			this->infoBot->printChar(ACS_DIAMOND, 11 + x*2, 5 + y, true, Colors::pair("white", "default", true));
+		}
+		else
+		{
+			this->infoBot->printChar(ACS_DIAMOND, 11 + x*2, 5 + y, Colors::pair("white", "default", true));
+		}
+		x++;
+		if (i == 4)
+		{
+			y++;
+			x = 0;
+			return;
 		}
 	}
 }

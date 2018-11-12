@@ -1,5 +1,6 @@
 #include <Board.hpp>
 #include <LoadGame.hpp>
+#include <iostream>
 
 
 int dx[8] = {-1, 0, 1, 0, -1, -1, 1, 1};
@@ -467,7 +468,7 @@ void Board::draw(Window *win, role currentPlayer)
                 }
                 else if (x % 2 == 0 && (x / 2) % 2 == 0)
                 {
-                    win->printChar('[', posX + x, posY + y, Colors::pair("yellow", "default"));
+                    win->printChar('[', posX + x, posY + y, Colors::pair("blue", "default"));
                 }
                 else if (x % 2 == 0 && (x / 2) % 2 == 1)
                 {
@@ -483,23 +484,23 @@ void Board::draw(Window *win, role currentPlayer)
                             case EMPTY:
                                 if (currentPlayer == PLAYER_1)
                                 {
-                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("red", "cyan"));
+                                    win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan"));
                                 } else
                                 {
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan"));
                                 }
                                 break;
                             case X:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "white", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                 break;
                             case O:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "black", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "cyan", true));
                                 break;
                             case XW:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                 break;
                             case OW:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                 break;
 
                         }
@@ -509,16 +510,16 @@ void Board::draw(Window *win, role currentPlayer)
                         switch(board[virtualX][virtualY])
                         {
                             case X:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "blue", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "cyan", true));
                                 break;
                             case O:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "blue", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "cyan", true));
                                 break;
                             case XW:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                 break;
                             case OW:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                 break;
 
                             default:
@@ -530,16 +531,16 @@ void Board::draw(Window *win, role currentPlayer)
                         switch (board[virtualX][virtualY])
                         {
                             case X:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("black", "default", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, Colors::pair("yellow", "default", true));
                                 break;
                             case O:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("white", "default", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, Colors::pair("red", "default", true));
                                 break;
                             case XW:
-                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "cyan", true));
+                                win->printChar(EngineGlobals::Board::XIcon, posX + x, posY + y, true, Colors::pair("yellow", "white", true));
                                 break;
                             case OW:
-                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "cyan", true));
+                                win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                 break;
 
                             default:
@@ -632,13 +633,19 @@ bool Board::isOutOfBoard(int x, int y)
     if (y < 1 || y > this->width) return true;
     return false;
 }
-void Board::searchForStone(Board::kindStone currentStone, int& count, int x, int y, int direction)
+void Board::searchForStone(Board::kindStone currentStone, int& count, int& toHead, int x, int y, int direction)
 {
     if (isOutOfBoard(x, y)) return;
     if (board[x][y] == currentStone)
     {
         count++;
-        Board::searchForStone(currentStone, count, x + dx[direction], y + dy[direction], direction);
+        Board::searchForStone(currentStone, count, toHead, x + dx[direction], y + dy[direction], direction);
+    } else
+    {
+        if (board[x][y] != EMPTY)
+        {
+            toHead++;
+        }
     }
     return;
 }
@@ -654,6 +661,50 @@ void Board::markStateWin(Board::kindStone currentStone, int& count, int x, int y
     }
     return;
 }
+int Board::isCheckCapture(int x, int y)
+{
+    int count = 0;
+    int counter;
+    int tmpX = x;
+    int tmpY = y;
+    for (int i = 0; i < 8; ++i)
+    {
+        counter = 0;
+        x = tmpX; y = tmpY;
+        while (counter < 2)
+        {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
+            if (isOutOfBoard(x, y)) break;
+            if (board[newX][newY] != board[tmpX][tmpY] && board[newX][newY] != EMPTY) {
+                counter++;
+                x = newX;
+                y = newY;
+            } else break;
+        }
+        if (counter == 2)
+        {
+            x += dx[i];
+            y += dy[i];
+            if (isOutOfBoard(x, y)) continue;
+            if (board[x][y] == board[tmpX][tmpY])
+            {
+                counter = 0;
+                x = tmpX;
+                y = tmpY;
+                while (counter < 2)
+                {
+                    x += dx[i];
+                    y += dy[i];
+                    board[x][y] = EMPTY;
+                    counter++;
+                }
+                count++;
+            }
+        }
+    }
+    return count;
+}
 int Board::isCheckedForWin(int x, int y)
 {
     int principalDiagonal = 0;
@@ -661,44 +712,60 @@ int Board::isCheckedForWin(int x, int y)
     int verticalLine = 0;
     int horizontalLine = 0;
     int stoneExpected = 0;
+    int toHead = 0;
 
-    if (this->style == EngineGlobals::Board::TICTACTOE)
-    {
-        stoneExpected = 3;
+    switch (EngineGlobals::Game::rule) {
+        case 1:
+        case 2:
+        case 3:
+        case 5:
+            stoneExpected = 5;
+            break;
+        case 4:
+            stoneExpected = 3;
+            break;
     }
-    else
-    {
-        stoneExpected = 5;
-    }
-    Board::searchForStone(board[x][y], principalDiagonal, x, y, 4);
-    Board::searchForStone(board[x][y], principalDiagonal, x, y, 6);
+
+    Board::searchForStone(board[x][y], principalDiagonal, toHead, x, y, 4);
+    Board::searchForStone(board[x][y], principalDiagonal, toHead, x, y, 6);
 
     if (principalDiagonal - 1 >= stoneExpected)
     {
+        if (EngineGlobals::Game::rule == 3 && principalDiagonal - 1 > stoneExpected) return 0;
+        if (EngineGlobals::Game::rule == 2 && toHead == 2) return 0;
         return 1;
     }
 
-    Board::searchForStone(board[x][y], verticalLine, x, y, 0);
-    Board::searchForStone(board[x][y], verticalLine, x, y, 2);
+    toHead = 0;
+    Board::searchForStone(board[x][y], verticalLine, toHead, x, y, 0);
+    Board::searchForStone(board[x][y], verticalLine, toHead, x, y, 2);
 
     if (verticalLine - 1 >= stoneExpected)
     {
+        if (EngineGlobals::Game::rule == 3 && verticalLine - 1 > stoneExpected) return 0;
+        if (EngineGlobals::Game::rule == 2 && toHead == 2) return 0;
         return 2;
     }
 
-    Board::searchForStone(board[x][y], horizontalLine, x, y, 1);
-    Board::searchForStone(board[x][y], horizontalLine, x, y, 3);
+    toHead = 0;
+    Board::searchForStone(board[x][y], horizontalLine, toHead, x, y, 1);
+    Board::searchForStone(board[x][y], horizontalLine, toHead, x, y, 3);
 
     if (horizontalLine - 1 >= stoneExpected)
     {
+        if (EngineGlobals::Game::rule == 3 && horizontalLine - 1 > stoneExpected) return 0;
+        if (EngineGlobals::Game::rule == 2 && toHead == 2) return 0;
         return 3;
     }
 
-    Board::searchForStone(board[x][y], secondaryDiagonal, x, y, 5);
-    Board::searchForStone(board[x][y], secondaryDiagonal, x, y, 7);
+    toHead = 0;
+    Board::searchForStone(board[x][y], secondaryDiagonal, toHead, x, y, 5);
+    Board::searchForStone(board[x][y], secondaryDiagonal, toHead, x, y, 7);
 
     if (secondaryDiagonal - 1 >= stoneExpected)
     {
+        if (EngineGlobals::Game::rule == 3 && secondaryDiagonal - 1 > stoneExpected) return 0;
+        if (EngineGlobals::Game::rule == 2 && toHead == 2) return 0;
         return 4;
     }
 

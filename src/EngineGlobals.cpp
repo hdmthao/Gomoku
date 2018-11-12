@@ -9,6 +9,7 @@ std::string EngineGlobals::Game::currentGame;
 std::string EngineGlobals::Game::namePlayer1;
 std::string EngineGlobals::Game::namePlayer2;
 int EngineGlobals::Game::AI;
+int EngineGlobals::Game::rule;
 bool EngineGlobals::Game::turnOnSound;
 
 void EngineGlobals::init()
@@ -21,11 +22,29 @@ void EngineGlobals::init()
 	EngineGlobals::Game::namePlayer1 = "";
 	EngineGlobals::Game::namePlayer2 = "";
 	EngineGlobals::Game::AI = 0;
+	EngineGlobals::Game::rule = 5;
 	EngineGlobals::Game::turnOnSound = true;
 }
 void EngineGlobals::Board::setGameStyle(EngineGlobals::Board::Style _style)
 {
 	EngineGlobals::Board::style = _style;
+}
+int EngineGlobals::Board::getSize()
+{
+	switch (EngineGlobals::Board::style) {
+		case TICTACTOE:
+			return 3;
+		case SMALL:
+			return 9;
+		case NORMAL:
+			return 13;
+		case BIG:
+			return 19;
+		case BIGEST:
+			return 25;
+		default:
+			return 0;
+	}
 }
 void EngineGlobals::Board::setXIcon(int icon)
 {
@@ -47,6 +66,10 @@ void EngineGlobals::Game::setLoadGame(std::string filegame)
 void EngineGlobals::Game::setAi(int kind)
 {
 	EngineGlobals::Game::AI = kind;
+}
+void EngineGlobals::Game::setGameRule(int rule)
+{
+	EngineGlobals::Game::rule = rule;
 }
 void EngineGlobals::Game::setNamePlayer(std::string name, bool isPlayer1)
 {

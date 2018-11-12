@@ -49,6 +49,7 @@ GameStateGame::GameStateGame(bool aiMod):
 	}
 	this->tmpXIcon = EngineGlobals::Board::XIcon;
 	this->tmpOIcon = EngineGlobals::Board::OIcon;
+	this->tmpRule = EngineGlobals::Game::rule;
 
 	this->currentWin = 0;
 	this->sound = new sf::Music();
@@ -97,6 +98,7 @@ void GameStateGame::unload()
 	SAFE_DELETE(this->soundDraw);
 	EngineGlobals::Board::setXIcon(this->tmpXIcon);
 	EngineGlobals::Board::setOIcon(this->tmpOIcon);
+	EngineGlobals::Game::setGameRule(this->tmpRule);
 }
 void GameStateGame::update()
 {

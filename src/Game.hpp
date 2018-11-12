@@ -37,7 +37,10 @@ public:
 	bool isPause;
 	int round;
 	int countTurn;
+	int captured1;
+	int captured2;
 	int isAi;
+	int rule;
 	void pause(bool option);
 
 	void saveGame();
@@ -51,7 +54,7 @@ public:
 	sf::SoundBuffer bufferO;
 	sf::SoundBuffer bufferErr;
 	sf::SoundBuffer bufferBot;
-	
+
 	sf::Sound* soundX;
 	sf::Sound* soundO;
 	sf::Sound* soundErr;

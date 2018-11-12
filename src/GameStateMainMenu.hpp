@@ -31,6 +31,7 @@ public:
 	bool isActivatedSize;
 	bool isActivatedIcon;
 	bool isActivatedAi;
+	bool isActivatedRule;
 
 	int XIcon;
 	int OIcon;
@@ -48,6 +49,7 @@ private:
 	Menu* loadMenu;
 	Menu* settingMenu;
 	Menu* aiMenu;
+	Menu* ruleMenu;
 
 	// màn hình about và intro
 	WindowAbout* about;
@@ -61,6 +63,8 @@ private:
 	void createSettingMenu();
 	void createIconMenu();
 	void createAiMenu();
+	void createRuleMenu();
+	
 };
 
 #endif //GAMESTATEMAINMENU_H_DEFINED

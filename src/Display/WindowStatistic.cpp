@@ -83,7 +83,7 @@ void WindowStatistic::run()
 		if (activatedIndex == 0) {
 			this->helpWin->print("History", 2, 2, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Key-Right", 14, 2);
-			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Back", 2, 3, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Esc", 14, 3);
 			if (this->rating >= 3000)
             {
@@ -181,7 +181,7 @@ void WindowStatistic::run()
 		{
 			this->helpWin->print("Statistic", 2, 2, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Key-Left", 14, 2);
-			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Back", 2, 3, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Esc", 14, 3);
 
 			this->historyMenu->draw(this->history);

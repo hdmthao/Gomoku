@@ -41,6 +41,7 @@ private:
 	string namePlayer2;
 	int tmpXIcon;
 	int tmpOIcon;
+	int tmpRule;
 	bool willQuit;
 	bool isReady;
 	int isAi;

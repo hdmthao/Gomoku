@@ -64,7 +64,7 @@ void WindowAbout::run() {
 		if (activatedIndex == 0) {
 			this->helpWin->print("Credits", 2, 2, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Key-Right", 14, 2);
-			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Back", 2, 3, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Esc", 14, 3);
 
 			this->intro->print("\n",
@@ -93,7 +93,7 @@ void WindowAbout::run() {
 		{
 			this->helpWin->print("Introdution", 2, 2, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Key-Left", 14, 2);
-			this->helpWin->print("Return", 2, 3, Colors::pair("cyan", "default", true));
+			this->helpWin->print("Back", 2, 3, Colors::pair("cyan", "default", true));
 			this->helpWin->print("Esc", 14, 3);
 
 			this->credit->print(Utils::String::split(" _______   _____    _     _    _____   _    _  _      _\n"
@@ -111,7 +111,6 @@ void WindowAbout::run() {
 			                                             "\n"
 			                                             "This is a project game made by HiMT :D,\n"
 			                                             "contact us at <mthaohd.itk4@gmail.com>\n"
-														 "Thanks <eu@alexdantas.net> for support ^^\n"
 			                                             "Thank you for playing this game :)\n"
 			                                             "\n"
 			                                             "Source Code:\n"

@@ -85,6 +85,7 @@ void LoadGame::load(std::string filename)
         if (countLine == 11) LoadGame::lastPlayer = LoadGame::getInt(line);
         if (countLine == 12) LoadGame::str = line;
     }
+    file.close();
 }
 int LoadGame::loadScore(int currentPlayer)
 {

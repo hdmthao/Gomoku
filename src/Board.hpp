@@ -53,9 +53,10 @@ public:
     void makeMove();
 
     bool isOutOfBoard(int x, int y);
-    void searchForStone(kindStone currentStone, int& count, int x, int y, int direction);
+    void searchForStone(kindStone currentStone, int& count, int& toHead, int x, int y, int direction);
     void markStateWin(kindStone currentStone, int& count, int x, int y, int direction);
     int isCheckedForWin(int x, int y);
+    int isCheckCapture(int x, int y);
     void animationWin(int directionWin);
 
     int getSize();

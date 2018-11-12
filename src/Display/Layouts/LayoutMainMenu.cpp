@@ -16,6 +16,7 @@ LayoutMainMenu::LayoutMainMenu(int width, int height):
 	loadMenu(NULL),
 	iconMenu(NULL),
 	aiMenu(NULL),
+	ruleMenu(NULL),
 	nameMenu(NULL),
 	helpWin(NULL),
 	animationwin(NULL),
@@ -60,7 +61,7 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->boardMenu->borders(Window::BORDER_FANCY);
 
 
-	this->nameMenu = new Window(posX, posY, 30	, 12);
+	this->nameMenu = new Window(posX, posY, 30	, 10);
 	this->nameMenu->borders(Window::BORDER_FANCY);
 
 	this->loadMenu = new Window(posX - 4, posY, 30, 13);
@@ -74,6 +75,10 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->aiMenu = new Window(posX - 4, posY, 23, 9);
 	this->aiMenu->setTitle("Choose BOT");
 	this->aiMenu->borders(Window::BORDER_FANCY);
+
+	this->ruleMenu = new Window(posX - 4, posY, 23, 10);
+	this->ruleMenu->setTitle("Choose Rule");
+	this->ruleMenu->borders(Window::BORDER_FANCY);
 
 	this->logo = new Window(this->main,
 	                        20, 0,
@@ -107,6 +112,7 @@ void LayoutMainMenu::windowsExit() {
 	SAFE_DELETE(this->loadMenu);
 	SAFE_DELETE(this->helpWin);
 	SAFE_DELETE(this->aiMenu);
+	SAFE_DELETE(this->ruleMenu);
 }
 
 void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) {
@@ -120,6 +126,7 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 	// 5 -> iconMenu
 	// 6 -> iconMenu
 	// 7 -> aiMenu
+	// 8 -> ruleMenu
 	this->animation->update();
 
 	this->main->clear();
@@ -174,17 +181,34 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 	}
 	else if (isSubMenu == 3)
 	{
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->clear();
+
 		this->nameMenu->setTitle("Choose Player1 Character");
 		this->nameMenu->clear();
 		menu->draw(this->nameMenu);
+		this->helpWin->print("Choose", 2, 2, Colors::pair("cyan", "default", true));
+		this->helpWin->print("Enter", 16, 2);
+
 		this->nameMenu->refresh();
+		this->helpWin->refresh();
 	}
 	else if (isSubMenu == 4)
 	{
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->clear();
+
 		this->nameMenu->setTitle("Choose Player2 Character");
+
 		this->nameMenu->clear();
 		menu->draw(this->nameMenu);
+		this->helpWin->print("Choose", 2, 2, Colors::pair("cyan", "default", true));
+		this->helpWin->print("Enter", 16, 2);
+
 		this->nameMenu->refresh();
+		this->helpWin->refresh();
 	}
 	else if (isSubMenu == 5)
 	{
@@ -249,12 +273,36 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 	}
 	else if (isSubMenu == 7)
 	{
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->clear();
+
 		this->aiMenu->clear();
 
 		menu->draw(this->aiMenu);
 		this->aiMenu->printChar('*', 18, 1, Colors::pair("yellow", "default", true));
 
+		this->helpWin->print("Choose Level", 2, 2, Colors::pair("cyan", "default", true));
+		this->helpWin->print("Enter", 16, 2);
+
 		this->aiMenu->refresh();
+		this->helpWin->refresh();
+	}
+	else if (isSubMenu == 8)
+	{
+		this->helpWin->setTitle("Help");
+		this->helpWin->borders(Window::BORDER_FANCY);
+		this->helpWin->clear();
+		this->ruleMenu->clear();
+
+		menu->draw(this->ruleMenu);
+
+		this->helpWin->print("Choose Rule", 2, 2, Colors::pair("cyan", "default", true));
+		this->helpWin->print("Enter", 16, 2);
+
+
+		this->ruleMenu->refresh();
+		this->helpWin->refresh();
 	}
 	else
 	{
