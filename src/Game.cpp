@@ -242,20 +242,28 @@ void Game::handleInput()
 					return;
 				}
 			}
+			if (EngineGlobals::Game::rule == 6)
+			{
+				if (this->countTurn % 2 == 1) this->swapRole();
+			}
+			else this->swapRole();
 			if (this->countTurn == this->board->height * this->board->width)
 			{
 				this->gameDraw = true;
 			}
-
-			this->swapRole();
 		}
 		else this->turnOnSound(0);
 	} else
 	if (Input::isPressed(90) || Input::isPressed(122))
 	{
-		if (this->board->undo())
+		if (EngineGlobals::Game::rule != 5 && this->board->undo())
 		{
-			this->swapRole();
+			this->countTurn--;
+			if (EngineGlobals::Game::rule == 6)
+			{
+				if (this->countTurn % 2 == 0) this->swapRole();
+			}
+			else this->swapRole();
 		}
 	} else
 	if (Input::isPressed(103) || Input::isPressed(71))

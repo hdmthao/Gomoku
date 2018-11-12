@@ -716,15 +716,18 @@ int Board::isCheckedForWin(int x, int y)
     int toHead = 0;
 
     switch (EngineGlobals::Game::rule) {
-        case 1:
-        case 2:
-        case 3:
-        case 5:
-            stoneExpected = 5;
-            break;
-        case 4:
-            stoneExpected = 3;
-            break;
+      case 1:
+      case 2:
+      case 3:
+      case 5:
+        stoneExpected = 5;
+        break;
+      case 4:
+        stoneExpected = 3;
+        break;
+      case 6:
+        stoneExpected = 6;
+        break;
     }
 
     Board::searchForStone(board[x][y], principalDiagonal, toHead, x, y, 4);

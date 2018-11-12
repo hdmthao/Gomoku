@@ -393,6 +393,16 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 			this->infoGame->print("yourturnmyturn.com/rules/pente.php", 2, 18);
 			break;
 		case 6:
+			this->infoGame->print("Connect6", 22, 8);
+			this->infoGame->print("6 Or More", 22 , 9);
+			this->infoGame->print(Utils::String::split("Requires a row of 6 or more stones\n"
+																								 "The first player putting one stone\n"
+																								 "on board. Subsequently, two player\n"
+																								 "take turn, placing two stones on\n"
+																								 "two different unoccupied spaces\n"
+																								 "each turn.\n",
+																							 		'\n'), 2, 12);
+			break;
 		case 7:
 		case 8:
 		default:
