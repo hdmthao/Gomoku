@@ -3,9 +3,9 @@ GOMOKU game is based on a simple game named Caro/ Gomoku.The program is programe
 
 ## Student Infomation
 
-Student Name: Ha Duc Minh Thao
-Student Id  : 18125139
-Project     : GOMOKU (Individual)
+- Student Name: Ha Duc Minh Thao
+- Student Id  : 18125139
+- Project     : GOMOKU (Individual)
 
 ## About Project
 This is my first game project in CS161, the program is included a lot of my skills and knowledge about programming.
