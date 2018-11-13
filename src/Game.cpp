@@ -124,6 +124,11 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 				this->board->minimax->setSize(this->board->height);
 				this->board->minimax->setBoard(1);
 				this->board->minimax->setDepth(4);
+				break;
+			case 4:
+				this->board->mcts->setSize(this->board->height);
+				this->board->mcts->setBoard(1);
+				break;
 			default:
 				break;
 		}
@@ -151,6 +156,10 @@ void Game::start(bool isReady, int m_score1, int m_score2, string namePlayer1, s
 				this->board->minimax->setSize(this->board->height);
 				this->board->minimax->setBoard(0);
 				this->board->minimax->setDepth(3);
+				break;
+			case 4:
+				this->board->mcts->setSize(this->board->height);
+				this->board->mcts->setBoard(0);
 				break;
 			default:
 				break;

@@ -10,6 +10,7 @@ Board::Board():
     lokiAi(NULL),
     heuristic(NULL),
     minimax(NULL),
+    mcts(NULL),
     width(0),
     height(0),
     style(EngineGlobals::Board::NORMAL)
@@ -20,6 +21,7 @@ Board::Board():
     this->lokiAi = new EAI();
     this->heuristic = new Heuristic();
     this->minimax = new Minimax();
+    this->mcts = new Mcts();
 }
 Board::~Board()
 {
@@ -28,6 +30,7 @@ Board::~Board()
     SAFE_DELETE(this->lokiAi);
     SAFE_DELETE(this->heuristic);
     SAFE_DELETE(this->minimax);
+    SAFE_DELETE(this->mcts);
 }
 void Board::setType(EngineGlobals::Board::Style _style)
 {
@@ -595,6 +598,9 @@ bool Board::update(role currentPlayer)
             case 3:
                 this->minimax->parse(this->currentX, this->currentY);
                 break;
+            case 4:
+                this->mcts->parse(this->currentX, this->currentY);
+                break;
             default:
                 break;
         }
@@ -856,6 +862,9 @@ void Board::makeMove()
             break;
         case 3:
             coor = this->minimax->makeMove();
+            break;
+          case 4:
+            coor = this->mcts->makeMove();
             break;
         default:
             break;

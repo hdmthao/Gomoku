@@ -24,7 +24,7 @@ enum Label_Id {
 	EARTH, KNOWHERE, VORMIR, ZENWHOBERI, TITAN, NIDAVELLIR,
 
 	// Ai Menu
-	LOKIAI, HEURISTIC, MINIMAX,
+	LOKIAI, HEURISTIC, MINIMAX, MCTS,
 
 	RULE1, RULE2, RULE3, RULE4, RULE5, RULE6, RULE7, RULE8,
 	//Marvel Menu
@@ -277,6 +277,13 @@ void GameStateMainMenu::update()
 					EngineGlobals::Game::setNamePlayer("HUMAN", 1);
 					this->isActivatedAi = false;
 					StateManager::change(new GameStateGame(3));
+					break;
+				case MCTS:
+					EngineGlobals::Game::setAi(4);
+					EngineGlobals::Game::setNamePlayer(this->aiMenu->currentLabel(), 0);
+					EngineGlobals::Game::setNamePlayer("HUMAN", 1);
+					this->isActivatedAi = false;
+					StateManager::change(new GameStateGame(4));
 					break;
 				case RETURN:
 					this->isActivatedAi = false;
@@ -783,8 +790,12 @@ void GameStateMainMenu::createAiMenu()
 	item = new MenuItem("Red Skull", HEURISTIC);
 	aiMenu->add(item);
 
+	item = new MenuItem("Ultron", MCTS);
+	aiMenu->add(item);
+
 	item = new MenuItem("Thanos", MINIMAX);
 	aiMenu->add(item);
+
 
 	aiMenu->addBlank();
 

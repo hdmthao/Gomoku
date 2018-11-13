@@ -247,7 +247,6 @@ Position Heuristic::getBest()
 
     for(unsigned int i = 0; i < scoredMoves.size(); ++i)
     {
-        std::cerr << " " << scoredMoves[i].ROW.ROW -1 << " " << scoredMoves[i].ROW.COL - 1 << " " << scoredMoves[i].COL << " ";
         score = scoredMoves[i].COL;
         if (score < 0) score = -score;
         if(max < score) {

@@ -73,7 +73,7 @@ void LayoutMainMenu::windowsInit(int width, int height) {
 	this->iconMenu->setTitle("Choose Icon");
 	this->iconMenu->borders(Window::BORDER_FANCY);
 
-	this->aiMenu = new Window(posX - 4, posY, 23, 9);
+	this->aiMenu = new Window(posX - 4, posY, 23, 8);
 	this->aiMenu->setTitle("Choose BOT");
 	this->aiMenu->borders(Window::BORDER_FANCY);
 
@@ -271,6 +271,9 @@ void LayoutMainMenu::draw(Menu* menu, int isSubMenu, int cur, char c1, char c2) 
 
 		menu->draw(this->aiMenu);
 		this->aiMenu->printChar('*', 18, 1, Colors::pair("yellow", "default", true));
+		this->aiMenu->print("**", 18, 2, Colors::pair("yellow", "default", true));
+		this->aiMenu->print("**", 18, 3, Colors::pair("yellow", "default", true));
+		this->aiMenu->print("***", 18, 4, Colors::pair("yellow", "default", true));
 
 		this->helpWin->print("Choose Level", 2, 2, Colors::pair("cyan", "default", true));
 		this->helpWin->print("Enter", 16, 2);

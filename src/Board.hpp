@@ -2,6 +2,7 @@
 #include <EAI.hpp>
 #include <Heuristic.hpp>
 #include <Minimax.hpp>
+#include <Mcts.hpp>
 #include <EngineGlobals.hpp>
 
 #include <vector>
@@ -68,5 +69,6 @@ public:
     EAI* lokiAi;
     Heuristic* heuristic;
     Minimax* minimax;
+    Mcts* mcts;
 }
 ;
