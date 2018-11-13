@@ -274,7 +274,7 @@ void GameStateMainMenu::update()
 				case MINIMAX:
 					EngineGlobals::Game::setAi(3);
 					EngineGlobals::Game::setNamePlayer(this->aiMenu->currentLabel(), 0);
-					EngineGlobals::Game::setNamePlayer("HUMAN:", 1);
+					EngineGlobals::Game::setNamePlayer("HUMAN", 1);
 					this->isActivatedAi = false;
 					StateManager::change(new GameStateGame(3));
 					break;

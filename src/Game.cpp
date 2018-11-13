@@ -193,7 +193,7 @@ void Game::handleInput()
 	{
 		if (this->isPause) this->pause(false); else this->pause(true);
 	}else
-	if (Input::isPressed(KEY_LEFT) || Input::isPressed(65) || Input::isPressed(97))
+	if (this->currentPlayer != Board::BOT && (Input::isPressed(KEY_LEFT) || Input::isPressed(65) || Input::isPressed(97)))
 	{
 		this->board->moveLeft();
 	}else
@@ -256,7 +256,7 @@ void Game::handleInput()
 	} else
 	if (Input::isPressed(90) || Input::isPressed(122))
 	{
-		if (EngineGlobals::Game::rule != 5 && this->board->undo())
+		if (EngineGlobals::Game::rule != 5 && !this->isAi && this->board->undo())
 		{
 			this->countTurn--;
 			if (EngineGlobals::Game::rule == 6)
@@ -334,6 +334,7 @@ void Game::update()
 			this->gameDraw = true;
 		}
 		this->swapRole();
+		flushinp();
 	}
 }
 void Game::draw()

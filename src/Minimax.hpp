@@ -8,7 +8,7 @@ using std::pair;
 using std::make_pair;
 
 #define Position pair<int, int>
-#define PositionAndScore pair< pair<int, int>, int>
+#define PositionAndScore pair< pair<int, int>, long long>
 #define ROW first
 #define COL second
 
@@ -36,12 +36,11 @@ public:
     Position makeMove();
     vector<PositionAndScore> getMoves(int currentPlayer);
     PositionAndScore decideMove(int depth);
-    int minimiseMove(int depth, int alpha, int beta, PositionAndScore takenMove );
-    int maximiseMove(int depth, int alpha, int beta, PositionAndScore takenMove);
-    int scoreState(int winner, int depth, PositionAndScore takenMove);
+    long long minimiseMove(int depth, long long alpha, long long beta, PositionAndScore takenMove );
+    long long maximiseMove(int depth, long long alpha, long long beta, PositionAndScore takenMove);
+    long long scoreState(int winner, int depth, PositionAndScore takenMove);
     PositionAndScore getBestSoFar();
     void setFinished();
-
 
     int checkWinner();
     bool checkLeftDiagonals();
@@ -59,8 +58,9 @@ private:
     int currentPlayer;
     int counters;
     int maxCounters;
-    int oo;
+    long long oo;
     bool finished;
+
     vector< vector<int> > board;
     vector< PositionAndScore > scoredMoves;
     vector< Position > possibleMoves;

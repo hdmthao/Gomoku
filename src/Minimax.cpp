@@ -1,14 +1,14 @@
 #include <Minimax.hpp>
 #include <LoadGame.hpp>
 #include <algorithm>
-#include <iostream>
+#include <unistd.h>
 
 Minimax::Minimax()
 {
     board.clear();
     scoredMoves.clear();
     possibleMoves.clear();
-    oo = 10000000;
+    oo = 100000000000000;
     counters = 0;
     finished = false;
 }
@@ -66,6 +66,7 @@ void Minimax::setBoard(bool willLoad)
 void Minimax::parse(int x, int y)
 {
     board[x][y] = 1;
+    counters++;
 }
 
 Position Minimax::makeMove() {
@@ -73,12 +74,11 @@ Position Minimax::makeMove() {
     PositionAndScore bestMove = decideMove(this->depth);
     Position position = make_pair(bestMove.ROW.ROW, bestMove.ROW.COL);
     board[position.ROW][position.COL] = 2;
+    counters++;
     return position;
-
 }
 
 vector<PositionAndScore> Minimax::getMoves(int currentPlayer) {
-    // return new Heuristic(state, currentPlayer).getMovesWithScores();
     this->currentPlayer = currentPlayer;
 
     scoredMoves.clear();
@@ -107,13 +107,11 @@ vector<PositionAndScore> Minimax::getMoves(int currentPlayer) {
         scoredMoves.push_back(make_pair(make_pair(rand() % this->size + 1, rand() % this->size + 1), 2000));
     } else
     {
-        // scoredMoves.sort((PositionAndScore a, PositionAndScore b) -> int.compare(b.getScore(), a.getScore()));
         std::sort(scoredMoves.begin(), scoredMoves.end(), [&]
         (PositionAndScore x, PositionAndScore y) {
             return x.COL > y.COL;
         });
     }
-
 
     return scoredMoves;
 }
@@ -124,7 +122,7 @@ PositionAndScore Minimax::decideMove(int depth) {
     depthCompare = depth;
     vector<PositionAndScore> moves = getMoves(2);
 
-    int currentScore;
+    long long currentScore;
     Position currentPosition;
 
     best = make_pair(make_pair(-1, -1), 0);
@@ -155,7 +153,7 @@ PositionAndScore Minimax::decideMove(int depth) {
 
         // Reset the move as we're done with it.
         board[moves[i].ROW.ROW][moves[i].ROW.COL] = 0;
-        lastMove = make_pair(-1, -1);
+        // lastMove = make_pair(-1, -1);
         counters--;
         if ( finished ) break;
 
@@ -165,9 +163,9 @@ PositionAndScore Minimax::decideMove(int depth) {
 
 }
 
-int Minimax::minimiseMove(int depth, int alpha, int beta, PositionAndScore takenMove ) {
+long long Minimax::minimiseMove(int depth, long long alpha, long long beta, PositionAndScore takenMove ) {
 
-    int result;
+    long long result;
     // std::cerr << takenMove.ROW.ROW - 1<< " " << takenMove.ROW.COL - 1 << " ";
 
     // Check the current score
@@ -189,17 +187,17 @@ int Minimax::minimiseMove(int depth, int alpha, int beta, PositionAndScore taken
 
             // std::cerr << moves[i].ROW.ROW - 1<< " " << moves[i].ROW.COL - 1 << " ";
 
-
             board[moves[i].ROW.ROW][moves[i].ROW.COL] = 1;
             lastMove = make_pair(moves[i].ROW.ROW, moves[i].ROW.COL);
             counters++;
 
             // Score the move!
-            int score = maximiseMove( depth - 1, alpha, beta, moves[i] );
+            long long score = maximiseMove( depth - 1, alpha, beta, moves[i] );
+
 
             // We're done with it, remove it from the board.
             board[moves[i].ROW.ROW][moves[i].ROW.COL] = 0;
-            lastMove = make_pair(-1, -1);
+            // lastMove = make_pair(-1, -1);
             counters--;
             // Minimise the move score
             result = std::min(result, score);
@@ -219,10 +217,10 @@ int Minimax::minimiseMove(int depth, int alpha, int beta, PositionAndScore taken
 }
 
 
-int Minimax::maximiseMove(int depth, int alpha, int beta, PositionAndScore takenMove)
+long long Minimax::maximiseMove(int depth, long long alpha, long long beta, PositionAndScore takenMove)
 {
 
-    int result;
+    long long result;
 
     // Check the current score
     int winner = checkWinner();
@@ -245,11 +243,11 @@ int Minimax::maximiseMove(int depth, int alpha, int beta, PositionAndScore taken
             lastMove = make_pair(moves[i].ROW.ROW, moves[i].ROW.COL);
             counters++;
             // Score the move
-            int score = minimiseMove( depth - 1, alpha, beta, moves[i]);
+            long long score = minimiseMove( depth - 1, alpha, beta, moves[i]);
 
             // Remove the move, we're done with it.
             board[moves[i].ROW.ROW][moves[i].ROW.COL] = 0;
-            lastMove = make_pair(-1, -1);
+            // lastMove = make_pair(-1, -1);
             counters--;
             // Maximise the move score
             result = std::max(result, score);
@@ -267,9 +265,9 @@ int Minimax::maximiseMove(int depth, int alpha, int beta, PositionAndScore taken
     return result;
 }
 
-int Minimax::scoreState(int winner, int depth, PositionAndScore takenMove) {
+long long Minimax::scoreState(int winner, int depth, PositionAndScore takenMove) {
 
-    int result;
+    long long result;
 
     // If draw, score is 0. Else get the heuristic value of the move
     result = (winner == 0) ? 0 : takenMove.COL;
@@ -281,10 +279,7 @@ int Minimax::scoreState(int winner, int depth, PositionAndScore takenMove) {
     if ( winner > 0) {
         result = (winner == 2) ? (result + 100) - depth : (result + depth) - 100;
     }
-    if (takenMove.ROW.ROW == 6 && takenMove.ROW.COL == 8)
-    {
-        // std::cerr << result << " ";
-    }
+    // if (result == 99) std::cerr << takenMove.ROW.ROW << " " << takenMove.ROW.COL << " " <<  board[takenMove.ROW.ROW][takenMove.ROW.COL] << " ";
     return result;
 
 }
@@ -464,14 +459,14 @@ bool Minimax::findWinner(bool checkRow, bool checkCol, bool checkDiag) {
             newRow = notFinished ? pointer.ROW - 1 : pointer.ROW + 1;
         } else {
             newCol = notFinished ? pointer.COL + 1 : pointer.COL - 1;
-            newRow = notFinished ? pointer.COL - 1 : pointer.COL + 1;
+            newRow = notFinished ? pointer.ROW - 1 : pointer.ROW + 1;
         }
 
         // If there is a player in the position, and they are the current player, increase counter
         if ( !isOutOfBoard(pointer) &&
                 board[pointer.ROW][pointer.COL] == board[lastMove.ROW][lastMove.COL] ) {
 
-            pointer = make_pair(newCol, newRow);
+            pointer = make_pair(newRow, newCol);
             currentScore++;
 
         } else if ( notFinished ) {
@@ -493,7 +488,7 @@ bool Minimax::findWinner(bool checkRow, bool checkCol, bool checkDiag) {
                 resetRow = resetRow + 1;
             }
 
-            pointer = make_pair(resetCol, resetRow);
+            pointer = make_pair(resetRow, resetCol);
 
         } else {
 
