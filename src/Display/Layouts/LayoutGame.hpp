@@ -22,6 +22,7 @@ public:
 	void drawNumberBot(int number, bool isVip=false);
 	void drawCapture1(int number, bool isVip=false);
 	void drawCapture2(int number, bool isVip=false);
+	void drawRating(int number, bool isVip=false);
 	std::string toString(int num);
 
 private:

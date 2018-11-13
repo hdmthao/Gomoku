@@ -320,7 +320,7 @@ void LoadGame::saveStatictis()
     fileout << "\"win_rate\":" << 0 <<"\n";
     else
     fileout << "\"win_rate\":" << std::fixed << std::setprecision(2) << 1.0 * LoadGame::winGame / LoadGame::playedGameCamp << "\n";
-    for (unsigned int i = 1; i <= 16; ++i)
+    for (unsigned int i = 1; i <= 11; ++i)
     {
         fileout << "\"" << name[i] << "\":" << count[i] << "\n";
     }
@@ -341,7 +341,7 @@ void LoadGame::loadStatictis()
         if (countLine == 3) LoadGame::playedGameCamp = LoadGame::getInt(line);
         if (countLine == 4) LoadGame::winGame = LoadGame::getInt(line);
         if (countLine == 5) LoadGame::winRate = LoadGame::getStr(line);
-        if (countLine > 5 && countLine <= 13)
+        if (countLine > 5 && countLine <= 11)
         {
             LoadGame::count[countLine - 5] = LoadGame::getInt(line);
             LoadGame::name[countLine - 5] = LoadGame::getName(line);
@@ -353,7 +353,7 @@ void LoadGame::loadStatictis()
                 LoadGame::topCharacterMarvel = LoadGame::name[countLine - 5];
             }
         }
-        if (countLine > 13 && countLine <= 21)
+        if (countLine > 11 && countLine <= 16)
         {
             LoadGame::count[countLine - 5] = LoadGame::getInt(line);
             LoadGame::name[countLine - 5] = LoadGame::getName(line);

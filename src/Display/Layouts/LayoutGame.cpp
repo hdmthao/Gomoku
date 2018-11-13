@@ -1,6 +1,7 @@
 #include <Display/Layouts/LayoutGame.hpp>
 #include <EngineGlobals.hpp>
 #include <Helpers/Utils.hpp>
+#include <LoadGame.hpp>
 
 LayoutGame::LayoutGame(Game* game, int width, int height):
 	Layout(width, height),
@@ -187,9 +188,14 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 				{
 					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
-					this->drawCapture1(this->game->captured1, true);
+					this->drawCapture1(this->game->captured1);
 					this->drawCapture2(this->game->captured2);
+				}
 
+				if (EngineGlobals::Game::AI != 0)
+				{
+					this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawRating(LoadGame::rating, true);
 				}
 				LayoutGame::drawNumberTop(this->game->player1->getScore(), true);
 				LayoutGame::drawNumberBot(this->game->player2->getScore());
@@ -210,8 +216,12 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 					this->infoTop->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 					this->drawCapture1(this->game->captured1);
-					this->drawCapture2(this->game->captured2, true);
-
+					this->drawCapture2(this->game->captured2);
+				}
+				if (EngineGlobals::Game::AI != 0)
+				{
+					this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawRating(LoadGame::rating);
 				}
 				LayoutGame::drawNumberTop(this->game->player1->getScore());
 				LayoutGame::drawNumberBot(this->game->player2->getScore(), true);
@@ -232,6 +242,12 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 				this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 				this->drawCapture1(this->game->captured1);
 				this->drawCapture2(this->game->captured2);
+			}
+
+			if (EngineGlobals::Game::AI != 0)
+			{
+				this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+				this->drawRating(LoadGame::rating);
 			}
 			this->infoTop->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 6, 6, Colors::pair("magenta", "default", true));
 			this->infoBot->print("!!! D R A W !!!", this->infoTop->getW() / 2 - 7, 6, Colors::pair("magenta", "default", true));
@@ -258,7 +274,11 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 					this->drawCapture1(this->game->captured1);
 					this->drawCapture2(this->game->captured2);
-
+				}
+				if (EngineGlobals::Game::AI != 0)
+				{
+					this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawRating(LoadGame::rating);
 				}
 			}
 			else
@@ -277,9 +297,12 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 					this->infoBot->print("Captured", 12, 4, Colors::pair("yellow", "default", true));
 					this->drawCapture1(this->game->captured1);
 					this->drawCapture2(this->game->captured2);
-
 				}
-			}
+				if (EngineGlobals::Game::AI != 0)
+				{
+					this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+					this->drawRating(LoadGame::rating);
+				}			}
 		}
 	}
 	else
@@ -310,6 +333,12 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 			this->drawCapture1(this->game->captured1);
 			this->drawCapture2(this->game->captured2);
 
+		}
+
+		if (EngineGlobals::Game::AI != 0)
+		{
+			this->infoTop->print("Rating", 12, 4, Colors::pair("yellow", "default", true));
+			this->drawRating(LoadGame::rating);
 		}
 
 	}
@@ -515,4 +544,21 @@ std::string LayoutGame::toString(int num)
 		num /= 10;
 	}
 	return tmp;
+}
+void LayoutGame::drawRating(int number, bool isVip)
+{
+	string s = "";
+	while (number != 0)
+	{
+		s = (char)(number % 10 + '0') + s;
+		number/=10;
+	}
+	if (isVip)
+	{
+		this->infoTop->print(s, 13, 5, true, Colors::pair("white", "default", true));
+	}
+	else
+	{
+		this->infoTop->print(s, 13, 5 , Colors::pair("white", "default", true));
+	}
 }

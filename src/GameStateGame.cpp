@@ -119,12 +119,46 @@ void GameStateGame::update()
 		{
 			this->score1++;
 			this->vecScore.push_back(std::make_pair(this->score1, this->score2));
-			if (this->isAi) LoadGame::winGame++;
+			if (this->isAi) {
+				LoadGame::winGame++;
+				switch (EngineGlobals::Game::AI)
+				{
+					case 1:
+						LoadGame::rating += 10;
+						break;
+					case 2:
+					case 3:
+						LoadGame::rating += 30;
+						break;
+					case 4:
+						LoadGame::rating += 50;
+						break;
+					default:
+						break;
+				}
+			}
 		}
 		else
 		{
 			this->score2++;
 			this->vecScore.push_back(std::make_pair(this->score1, this->score2));
+			if (this->isAi) {
+				switch (EngineGlobals::Game::AI)
+				{
+					case 1:
+						LoadGame::rating -= 5;
+						break;
+					case 2:
+					case 3:
+						LoadGame::rating -= 15;
+						break;
+					case 4:
+						LoadGame::rating -= 25;
+						break;
+					default:
+						break;
+				}
+			}
 		}
 		this->game->updateScore(this->score1, this->score2);
 		this->game->draw();
