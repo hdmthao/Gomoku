@@ -90,6 +90,8 @@ void Board::setBoard(bool willLoad)
                     this->board[i][j] = X;
                 else if (loadboard[i][j] == '2')
                     this->board[i][j] = O;
+                else if (loadboard[i][j] == '5')
+                    this->board[i][j] = BLOCKED;
                 else
                     this->board[i][j] = EMPTY;
             }
@@ -166,6 +168,12 @@ void Board::draw(Window *win, role currentPlayer)
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                break;
                             default:
                                 break;
                         }
@@ -187,6 +195,13 @@ void Board::draw(Window *win, role currentPlayer)
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                break;
+
                             default:
                                 break;
                         }
@@ -210,6 +225,13 @@ void Board::draw(Window *win, role currentPlayer)
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                 break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                break;
+
                             default:
                                 break;
                         }
@@ -279,6 +301,12 @@ void Board::draw(Window *win, role currentPlayer)
                                 case OW:
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                    break;
 
                                 default:
                                     break;
@@ -301,6 +329,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 case OW:
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                    break;
+
                                 default:
                                     break;
                             }
@@ -323,6 +358,13 @@ void Board::draw(Window *win, role currentPlayer)
                                 case OW:
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "blue", true));
                                     break;
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
+                                    break;
+
 
                                 default:
                                     break;
@@ -394,7 +436,13 @@ void Board::draw(Window *win, role currentPlayer)
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                     break;
 
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
                                     break;
+
                                 default:
                                     break;
                             }
@@ -415,6 +463,13 @@ void Board::draw(Window *win, role currentPlayer)
                                     break;
                                 case OW:
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    break;
+
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
                                     break;
 
                                 default:
@@ -438,6 +493,13 @@ void Board::draw(Window *win, role currentPlayer)
                                     break;
                                 case OW:
                                     win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                    break;
+
+                                case BLOCKED:
+                                    win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+
                                     break;
 
                                 default:
@@ -505,6 +567,12 @@ void Board::draw(Window *win, role currentPlayer)
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
                                 break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
+                                break;
+
 
                         }
                     }
@@ -523,6 +591,11 @@ void Board::draw(Window *win, role currentPlayer)
                                 break;
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
                                 break;
 
                             default:
@@ -544,6 +617,11 @@ void Board::draw(Window *win, role currentPlayer)
                                 break;
                             case OW:
                                 win->printChar(EngineGlobals::Board::OIcon, posX + x, posY + y, true, Colors::pair("red", "white", true));
+                                break;
+                            case BLOCKED:
+                                win->printChar(ACS_CKBOARD, posX + x, posY + y, Colors::pair("green", "default", true));
+
+
                                 break;
 
                             default:
@@ -622,6 +700,49 @@ bool Board::update(role currentPlayer)
         contains.push_back(stone);
     }
     return true;
+}
+void Board::goRandom()
+{
+  if (EngineGlobals::Game::rule == 7)
+  {
+    int x, y;
+    int chance;
+    chance = rand() % 100;
+    if (chance < 30)
+    {
+      int i;
+      int count = 0;
+      do {
+        if (count == 100) break;
+        i = rand() % 8;
+        if (isOutOfBoard(this->currentX + dx[i], this->currentY + dy[i]) || board[this->currentX + dx[i]][this->currentY + dy[i]] != EMPTY) {
+          count++;
+          continue;
+        } else break;
+      } while (1);
+      if (count != 100) {
+      x = this->currentX + dx[i];
+      y = this->currentY + dy[i];
+    } else
+    {
+      do {
+        x = rand() % this->width + 1;
+        y = rand() % this->width + 1;
+      } while (board[x][y] != EMPTY);
+    }
+    } else
+    {
+      do {
+      x = rand() % this->width + 1;
+      y = rand() % this->width + 1;
+    } while (board[x][y] != EMPTY);
+    }
+    board[x][y] = BLOCKED;
+    stone.x = x;
+    stone.y = y;
+    stone.kind = BLOCKED;
+    contains.push_back(stone);
+  }
 }
 bool Board::undo()
 {
@@ -726,6 +847,8 @@ int Board::isCheckedForWin(int x, int y)
       case 2:
       case 3:
       case 5:
+      case 7:
+      case 8:
         stoneExpected = 5;
         break;
       case 4:

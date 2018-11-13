@@ -15,7 +15,7 @@ class Board
 public:
     enum kindStone
     {
-        EMPTY, X, O, XW, OW
+        EMPTY, X, O, XW, OW, BLOCKED
     };
 
     enum role
@@ -50,7 +50,7 @@ public:
     void moveUp();
     void moveDown();
     bool undo();
-
+    void goRandom();
     void makeMove();
 
     bool isOutOfBoard(int x, int y);

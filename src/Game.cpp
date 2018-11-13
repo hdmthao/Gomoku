@@ -223,6 +223,12 @@ void Game::handleInput()
 		if (this->board->update(currentPlayer))
 		{
 			this->countTurn++;
+			if(EngineGlobals::Game::rule == 7 && this->countTurn < this->board->height * this->board->height)
+				{
+					this->countTurn++;
+					this->board->goRandom();
+				}
+
 			if (this->currentPlayer == Board::PLAYER_1)
 				this->turnOnSound(1);
 			else
@@ -265,7 +271,7 @@ void Game::handleInput()
 	} else
 	if (Input::isPressed(90) || Input::isPressed(122))
 	{
-		if (EngineGlobals::Game::rule != 5 && !this->isAi && this->board->undo())
+		if (EngineGlobals::Game::rule != 5 && EngineGlobals::Game::rule != 7 && !this->isAi && this->board->undo())
 		{
 			this->countTurn--;
 			if (EngineGlobals::Game::rule == 6)

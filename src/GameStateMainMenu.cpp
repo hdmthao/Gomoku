@@ -828,7 +828,7 @@ void GameStateMainMenu::createRuleMenu()
 	item = new MenuItem("Connect6", RULE6);
 	ruleMenu->add(item);
 
-	item = new MenuItem("Rule 7", RULE7);
+	item = new MenuItem("LAT", RULE7);
 	ruleMenu->add(item);
 
 	item = new MenuItem("Rule 8", RULE8);

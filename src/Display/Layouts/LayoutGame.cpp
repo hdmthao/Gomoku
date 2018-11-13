@@ -433,6 +433,13 @@ void LayoutGame::draw(Menu *menu, std::string filename, bool isDefault)
 																							 		'\n'), 2, 12);
 			break;
 		case 7:
+			this->infoGame->print("LAT", 22, 8);
+			this->infoGame->print("6 Or More", 22, 9);
+			this->infoGame->print(Utils::String::split("Requires a row of 6 or more stones\n"
+																								 "Each turn, there are appear one\n"
+																							   "blocked box on the board. You can\n"
+																							   "not play in that box.\n", '\n'), 2, 12);
+			break;
 		case 8:
 		default:
 			this->infoGame->print("NULL", 22, 8);
